@@ -1,0 +1,144 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="Welcome">Welcome to the dance studio!</sys:String>
+    <sys:String x:Key="LoginText">Login / Registration</sys:String>
+    <sys:String x:Key="Client">Client</sys:String>
+    <sys:String x:Key="Admin">Administrator</sys:String>
+    <sys:String x:Key="Username">Username:</sys:String>
+    <sys:String x:Key="LogIn">Login</sys:String>
+    <sys:String x:Key="Regist">Registration</sys:String>
+    <sys:String x:Key="Continue">Continue</sys:String>
+
+    <sys:String x:Key="MenuMain">Main</sys:String>
+    <sys:String x:Key="MenuNews">News</sys:String>
+    <sys:String x:Key="MenuDirections">Directions</sys:String>
+    <sys:String x:Key="MenuTrainers">Trainers</sys:String>
+    <sys:String x:Key="MenuTimetable">Timetable</sys:String>
+    <sys:String x:Key="MenuAbonents">Abonents</sys:String>
+    <sys:String x:Key="MenuContacts">Contacts</sys:String>
+    <sys:String x:Key="MenuAboutUs">About us</sys:String>
+    <sys:String x:Key="MenuSignUp">Sign Up</sys:String>
+    <sys:String x:Key="MenuExit">Exit</sys:String>
+    <sys:String x:Key="MenuAccount">Account</sys:String>
+
+    <sys:String x:Key="Style">Style:</sys:String>
+    <sys:String x:Key="Price">Price:</sys:String>
+    <sys:String x:Key="Description">Description:</sys:String>
+    <sys:String x:Key="DescriptionEn">Description (EN):</sys:String>
+    <sys:String x:Key="AbonementButton">Sign up for a trial session</sys:String>
+
+    <sys:String x:Key="AboutTitle1">Dance center in Minsk</sys:String>
+    <sys:String x:Key="AboutTitle2">The most modern dance styles</sys:String>
+    <sys:String x:Key="AboutTitle3">More than 15 professional teachers</sys:String>
+    <sys:String x:Key="AboutTitle4">6 comfortable halls in one place</sys:String>
+    <sys:String x:Key="AboutTitle5">Location in the city center</sys:String>
+    <sys:String x:Key="AboutTitle6">A large number of master classes and events</sys:String>
+    <sys:String x:Key="AboutText1">The dance studio has a friendly and positive atmosphere where everyone can feel like a part of a large dance family. Professional dance training, new acquaintances and communication, and a fun time are waiting for you.</sys:String>
+    <sys:String x:Key="AboutText2">Training in more than 10 of the most popular styles and trends: Jazz-Funk, High Heels, Girly Choreo, Vogue, Dancehall, Hip-Hop, Contemporary, Twerk.</sys:String>
+    <sys:String x:Key="AboutText3">The teaching staff of the center is represented by true professionals in their field: many years of teaching experience, hundreds of master classes and camps attended abroad, dozens of organized dance events, judging at prestigious championships of the country and neighboring countries.</sys:String>
+    <sys:String x:Key="AboutText4">The training takes place in comfortable halls located on one floor, equipped with everything necessary for any type of training. In addition to the halls, the studio has a special chill-zone for our students to relax.</sys:String>
+    <sys:String x:Key="AboutText5">The dance studio is located within walking distance from the Proletarskaya metro station, with free parking and near a park area.</sys:String>
+    <sys:String x:Key="AboutText6">The dance studio hosts a large number of master classes and other events with professional filming every week.</sys:String>
+    <sys:String x:Key="Review">Add a review</sys:String>
+
+    <sys:String x:Key="Password">Password:</sys:String>
+    <sys:String x:Key="Phone">Phone number:</sys:String>
+    <sys:String x:Key="Email">E-mail:</sys:String>
+    <sys:String x:Key="Notifications">Notifications:</sys:String>
+    <sys:String x:Key="SpAbonents">Subscription list:</sys:String>
+    <sys:String x:Key="Profil">Edit profile</sys:String>
+
+    <sys:String x:Key="Title">Title:</sys:String>
+    <sys:String x:Key="TitleEn">Title (EN):</sys:String>
+    <sys:String x:Key="PublishDate">Date of publication:</sys:String>
+    <sys:String x:Key="Image">Image:</sys:String>
+    <sys:String x:Key="Load">Download...</sys:String>
+    <sys:String x:Key="SaveButton">Save</sys:String>
+    <sys:String x:Key="CancelButton">Cancel</sys:String>
+    <sys:String x:Key="DeleteButton">Delete</sys:String>
+    <sys:String x:Key="Published">Published:</sys:String>
+
+
+    <sys:String x:Key="Schedule">Schedule timetable</sys:String>
+    <sys:String x:Key="DayOfTheWeek">Day of the week</sys:String>
+    <sys:String x:Key="Time">Time</sys:String>
+    <sys:String x:Key="Trainer">Trainer</sys:String>
+    <sys:String x:Key="Actions">Actions</sys:String>
+    <sys:String x:Key="Redact">Edit</sys:String>
+    <sys:String x:Key="AddNewActivity">Add new activity</sys:String>
+    <sys:String x:Key="Add">Add</sys:String>
+
+    <sys:String x:Key="DanceStudio">Dance studio</sys:String>
+    <sys:String x:Key="Address">📍 Minsk, Partizansky Pr., 2, ap. 5</sys:String>
+    <sys:String x:Key="Floor">floor 4</sys:String>
+    <sys:String x:Key="Path">8 min from Proletarskaya metro station</sys:String>
+    <sys:String x:Key="Social">Social media</sys:String>
+
+    <sys:String x:Key="ChooseStyle">Choose your style!</sys:String>
+    <sys:String x:Key="Style1">Heels add fire to every move. This style is about confidence, grace and freedom. Feel like a queen of the stage!</sys:String>
+    <sys:String x:Key="Style2">This style is about allowing yourself to be different from what the made-up rules of morality dictate – to be sexy and confident.</sys:String>
+    <sys:String x:Key="Style3">If you want to express your individuality and try out different moods - Jazz Funk is definitely for you!</sys:String>
+    <sys:String x:Key="Style4">A combination of femininity, charisma and drive. A unique style that helps to reveal your individuality and raise your self-esteem</sys:String>
+    <sys:String x:Key="Style5">The art of posing in motion. A bright, expressive and slightly daring style inspired by fashion catwalks and freedom of expression</sys:String>
+    <sys:String x:Key="Style6">Contemporary choreography with an emphasis on feelings. Here you don't just dance - you tell a story with your body</sys:String>
+    <sys:String x:Key="Style7">Freedom, energy and rhythm of the streets. Dance for those who love to move in style and be themselves without limits</sys:String>
+    <sys:String x:Key="Style8">A charge of positivity and confidence! Afro-Caribbean rhythms, driving movements and real female power in dance</sys:String>
+    <sys:String x:Key="Style9">Plasticity, sensuality and control over the body. This style helps to better understand your femininity and develop flexibility</sys:String>
+    <sys:String x:Key="Style10">Gentle and deep stretches that improve your posture, well-being and unlock your body's capabilities step by step</sys:String>
+    <sys:String x:Key="Style11">Hot rhythms, plasticity and energy of Latin dances - without a partner, just you and the music. Pump up your posture, confidence and the fire inside you!</sys:String>
+    <sys:String x:Key="Style12">The power, rhythm and energy of African dances. Dance that awakens inner freedom and fills the body with a living vibration</sys:String>
+    <sys:String x:Key="Style13">If you want to dance and keep fit at the same time, this is for you. Cardio, dance and a boost of good mood in one!</sys:String>
+    <sys:String x:Key="Style14">A combination of ballet and fitness - for those who dream of grace, flexibility and feminine posture. Strengthen your muscles and feel like you're in the theater</sys:String>
+    <sys:String x:Key="Style15">A soft version of strip plastic with an emphasis on smoothness, femininity and freedom of movement. Suitable even for beginners!</sys:String>
+    <sys:String x:Key="Info">What awaits you:</sys:String>
+    <sys:String x:Key="Info1">- Classes for all skill levels</sys:String>
+    <sys:String x:Key="Info2">- Variety of styles: from modern choreography to street styles</sys:String>
+    <sys:String x:Key="Info3">- Friendly atmosphere and support from professional teachers</sys:String>
+    <sys:String x:Key="Info4">- Workouts that inspire, energize and bring pleasure</sys:String>
+    <sys:String x:Key="DirectionsButton">Join now!</sys:String>
+
+    <sys:String x:Key="MainText1">For those who want not only to move beautifully, but also</sys:String>
+    <sys:String x:Key="MainText2">FEEL!</sys:String>
+    <sys:String x:Key="MainText3">For beginners</sys:String>
+    <sys:String x:Key="MainText4">Whether you are just taking your first steps in dance or already have a base, you will be able to move at your own pace with us. Beginners will receive a gentle and confident introduction to the world of dance, master the basics and techniques of different styles, and learn to feel the music and their body.</sys:String>
+    <sys:String x:Key="MainText5">For those who continue</sys:String>
+    <sys:String x:Key="MainText6">Those who continue will be able to deepen their knowledge, strengthen their technique and discover new facets of style, improving their plasticity, coordination and confidence on the parquet.</sys:String>
+
+    <sys:String x:Key="BuyAbonents">Purchase of a subscription</sys:String>
+    <sys:String x:Key="Abonent">Abonement:</sys:String>
+    <sys:String x:Key="PaymentMethod">Payment method:</sys:String>
+    <sys:String x:Key="Method1">Cash</sys:String>
+    <sys:String x:Key="Method2">Bank card</sys:String>
+    <sys:String x:Key="Method3">Online</sys:String>
+    <sys:String x:Key="Buy">Buy a subscription</sys:String>
+    <sys:String x:Key="SignOn">Sign up for a class</sys:String>
+    <sys:String x:Key="Level">Level of training:</sys:String>
+    <sys:String x:Key="Level1">Beginning</sys:String>
+    <sys:String x:Key="Level2">Middle</sys:String>
+    <sys:String x:Key="Level3">Advanced</sys:String>
+    <sys:String x:Key="Sign">Sign up</sys:String>
+
+    <sys:String x:Key="PriceAt">Price from:</sys:String>
+    <sys:String x:Key="To">to:</sys:String>
+    <sys:String x:Key="Filtr">Filter</sys:String>
+    <sys:String x:Key="More">Read more..</sys:String>
+
+    <sys:String x:Key="Monday">Monday</sys:String>
+    <sys:String x:Key="Tuesday">Tuesday</sys:String>
+    <sys:String x:Key="Wednesday">Wednesday</sys:String>
+    <sys:String x:Key="Thursday">Thursday</sys:String>
+    <sys:String x:Key="Friday">Friday</sys:String>
+    <sys:String x:Key="Saturday">Saturday</sys:String>
+    <sys:String x:Key="Sunday">Sunday</sys:String>
+
+    <sys:String x:Key="ViewTimetable">View class timetable</sys:String>
+    <sys:String x:Key="OurTrainers">Our trainers</sys:String>
+
+    <sys:String x:Key="FIOTrainers">Full name of the trainer</sys:String>
+
+    <sys:String x:Key="StyleTitle">Style name:</sys:String>
+
+    <sys:String x:Key="SpRecords">List of entries:И</sys:String>
+
+</ResourceDictionary>

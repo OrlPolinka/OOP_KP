@@ -1,0 +1,63 @@
+﻿<Page x:Class="dance_studio.Pages.Login"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:dance_studio.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1440"
+      Title="Login">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/ResourcesStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="White" Width="1440" Height="800">
+
+        <ComboBox x:Name="LanguageComboBox" SelectionChanged="LanguageComboBox_SelectionChanged" Margin="1157,45,88,709" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16">
+            <ComboBoxItem Tag="ru" IsSelected="True" FontSize="16">Русский</ComboBoxItem>
+            <ComboBoxItem Tag="en" FontSize="16">English</ComboBoxItem>
+        </ComboBox>
+
+
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{DynamicResource Welcome}" 
+       FontSize="30" FontWeight="Bold" 
+       HorizontalAlignment="Center" Margin="0,73,0,638"/>
+
+            <TextBlock Text="{DynamicResource LoginText}" 
+                   FontSize="24" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,160,0,562"/>
+
+            <StackPanel VerticalAlignment="Top" Height="412" Margin="413,246,413,0">
+
+                <TextBox IsReadOnly="True" Text="{DynamicResource Username}" Height="29" Width="314" HorizontalAlignment="Left" Margin="45,0,0,0" FontSize="14" VerticalAlignment="Top" VerticalContentAlignment="Center" BorderBrush="{x:Null}"/>
+                <TextBox x:Name="UsernameTextBox"
+         Height="35" Width="487"
+         VerticalContentAlignment="Center"
+         HorizontalContentAlignment="Center"/>
+                <TextBox IsReadOnly="True" Text="{DynamicResource Password}" Height="29" Width="314" HorizontalAlignment="Left" Margin="45,30,0,0" FontSize="14" VerticalAlignment="Top" VerticalContentAlignment="Center" BorderBrush="{x:Null}"/>
+                <PasswordBox x:Name="PasswordBox"
+         Margin="0,0,0,30"
+         Height="35" Width="487"
+         VerticalContentAlignment="Center"
+         HorizontalContentAlignment="Center" />
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                    <RadioButton x:Name="LoginRadio" Content="{DynamicResource LogIn}" IsChecked="True" Margin="20,0,20,0" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="RegisterRadio" Content="{DynamicResource Regist}" Margin="20,0,17,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
+                </StackPanel>
+
+                <Button Content="{DynamicResource Continue}" Width="150" Height="35" Click="OnSubmitClick" HorizontalAlignment="Center" Margin="0,30,0,30" HorizontalContentAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
