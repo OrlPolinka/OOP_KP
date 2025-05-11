@@ -42,6 +42,11 @@ namespace dance_studio
         public string ImagePath { get; set; }
         public string Fio { get; set; }
         public string Bio { get; set; }
+        public string FioEn { get; set; }
+        public string BioEn { get; set; }
+        // Свойства, которые возвращают данные в зависимости от языка
+        public string CurrentFio => Lang.currentLanguageCode == "en" ? FioEn : Fio;
+        public string CurrentBio => Lang.currentLanguageCode == "en" ? BioEn : Bio;
     }
 
 
@@ -772,22 +777,28 @@ ORDER BY N.PUBLISH_DATE DESC";
                         Id = Convert.ToInt32(reader["TRAINERS_ID"]),
                         Fio = reader["FIO"].ToString(),
                         Bio = reader["BIO"].ToString(),
-                        ImagePath = reader["IMAGEPATH"].ToString()
+                        ImagePath = reader["IMAGEPATH"].ToString(),
+                        FioEn = reader["FIO_EN"].ToString(),
+                        BioEn = reader["BIO_EN"].ToString(),
                     });
                 }
             }
             return trainersList;
         }
 
-        public static bool AddTrainersToDB(string fio, string bio, string imagePath)
+        public static bool AddTrainersToDB(string fio, string bio, string imagePath, string fioEn, string bioEn)
         {
-            string query = "INSERT INTO TRAINERS (IMAGEPATH, FIO, BIO) VALUES (@ImagePath, @FIO, @BIO)";
+            string query = "INSERT INTO TRAINERS (IMAGEPATH, FIO, BIO, FIO_EN, BIO_EN) VALUES (@ImagePath, @FIO, @BIO, @FIO_EN, @BIO_EN)";
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ImagePath", imagePath);
                 command.Parameters.AddWithValue("@FIO", fio);
-                command.Parameters.AddWithValue("@BIO", bio);
+                command.Parameters.AddWithValue("@BIO", string.IsNullOrEmpty(bio) ? (object)DBNull.Value : bio);
+
+                // Параметры для английской версии
+                command.Parameters.AddWithValue("@FIO_EN", string.IsNullOrEmpty(fioEn) ? (object)DBNull.Value : fioEn);
+                command.Parameters.AddWithValue("@BIO_EN", string.IsNullOrEmpty(bioEn) ? (object)DBNull.Value : bioEn);
 
                 try
                 {

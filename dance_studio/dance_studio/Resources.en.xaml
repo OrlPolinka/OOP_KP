@@ -138,6 +138,7 @@
     <sys:String x:Key="OurTrainers">Our trainers</sys:String>
 
     <sys:String x:Key="FIOTrainers">Full name of the trainer</sys:String>
+    <sys:String x:Key="FIOTrainersEn">Full name of the trainer (EN)</sys:String>
 
     <sys:String x:Key="StyleTitle">Style name:</sys:String>
     <sys:String x:Key="StyleTitleEn">Style name (EN):</sys:String>

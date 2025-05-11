@@ -53,16 +53,18 @@ namespace dance_studio.Pages
         {
             string fio = FIOTextBox.Text;
             string description = DescriptionTextBox.Text;
+            string fioEn = FIOENTextBox.Text;
+            string descriptionEn = DescriptionENTextBox.Text;
             string imagePath = ImagePathTextBlock.Text;
 
-            if (string.IsNullOrWhiteSpace(fio) || string.IsNullOrWhiteSpace(description))
+            if (string.IsNullOrWhiteSpace(fio) || string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(fioEn) || string.IsNullOrWhiteSpace(descriptionEn))
             {
                 MessageBox.Show("Пожалуйста, заполните все обязательные поля.");
                 return;
             }
 
             // Сохранение новости в базу данных
-            bool isSuccess = DatabaseHelper.AddTrainersToDB(fio, description, imagePath);
+            bool isSuccess = DatabaseHelper.AddTrainersToDB(fio, description, imagePath, fioEn, descriptionEn);
 
             if (isSuccess)
             {
