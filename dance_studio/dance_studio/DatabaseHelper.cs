@@ -28,6 +28,12 @@ namespace dance_studio
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string TitleEn { get; set; }
+        public string DescriptionEn { get; set; }
+
+        // Свойства, которые возвращают данные в зависимости от языка
+        public string CurrentTitle => Lang.currentLanguageCode == "en" ? TitleEn : Title;
+        public string CurrentDescription => Lang.currentLanguageCode == "en" ? DescriptionEn : Description;
     }
 
     public partial class Trainers
@@ -43,9 +49,16 @@ namespace dance_studio
     public class Abonements
     {
         public string Title { get; set; }
-        public string Description { get; set; }
-        public string Price { get; set; }
+        public string TitleEn { get; set; }
         public string Style { get; set; }
+        public string StyleEn { get; set; }
+        public string Description { get; set; }
+        public string DescriptionEn { get; set; }
+        public string Price { get; set; }
+        // Динамические свойства для текущего языка
+        public string CurrentTitle => Lang.currentLanguageCode == "en" ? TitleEn : Title;
+        public string CurrentStyle => Lang.currentLanguageCode == "en" ? StyleEn : Style;
+        public string CurrentDescription => Lang.currentLanguageCode == "en" ? DescriptionEn : Description;
     }
 
     public class Subscription
@@ -122,20 +135,27 @@ namespace dance_studio
             }
         }
 
-        public static bool AddStyle(string title, string description)
+        public static bool AddStyle(string title, string description, string titleEn, string descriptionEn)
         {
-            string query = "INSERT INTO STYLES (STYLE_TITLE, STYLE_DESCRRIPTION) VALUES (@Title, @Description)";
+            string query = @"
+        INSERT INTO STYLES 
+            (STYLE_TITLE, STYLE_DESCRRIPTION, STYLE_TITLE_EN, STYLE_DESCRIPTION_EN) 
+        VALUES 
+            (@Title, @Description, @TitleEn, @DescriptionEn)";
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Title", title);
                 command.Parameters.AddWithValue("@Description", description);
+                command.Parameters.AddWithValue("@TitleEn", titleEn);
+                command.Parameters.AddWithValue("@DescriptionEn", descriptionEn);
 
                 try
                 {
                     connection.Open();
-                    command.ExecuteNonQuery();
-                    return true;
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
                 }
                 catch (Exception ex)
                 {
@@ -169,7 +189,7 @@ namespace dance_studio
 
         public static List<Styles> GetStyles()
         {
-            List<Styles> trainersList = new List<Styles>();
+            List<Styles> stylesList = new List<Styles>();
             string query = "SELECT * FROM STYLES";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -180,15 +200,17 @@ namespace dance_studio
 
                 while (reader.Read())
                 {
-                    trainersList.Add(new Styles
+                    stylesList.Add(new Styles
                     {
                         Id = Convert.ToInt32(reader["STYLE_ID"]),
-                        Title = reader["STYLE_TITLE"].ToString(),
-                        Description = reader["STYLE_DESCRRIPTION"].ToString()
+                        Title = reader["STYLE_TITLE"]?.ToString() ?? string.Empty,
+                        Description = reader["STYLE_DESCRRIPTION"]?.ToString() ?? string.Empty,
+                        TitleEn = reader["STYLE_TITLE_EN"]?.ToString() ?? string.Empty,
+                        DescriptionEn = reader["STYLE_DESCRIPTION_EN"]?.ToString() ?? string.Empty
                     });
                 }
             }
-            return trainersList;
+            return stylesList;
         }
 
 
@@ -371,7 +393,7 @@ namespace dance_studio
         public static List<Abonements> GetAbonements()
         {
             var abonements = new List<Abonements>();
-            string query = "SELECT TITLE, PRICE FROM ABONEMENTS";
+            string query = "SELECT TITLE, TITLE_EN, PRICE, STYLE, STYLE_EN FROM ABONEMENTS";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -384,6 +406,9 @@ namespace dance_studio
                         abonements.Add(new Abonements
                         {
                             Title = reader["TITLE"].ToString(),
+                            TitleEn = reader["TITLE_EN"]?.ToString() ?? string.Empty,
+                            Style = reader["STYLE"]?.ToString() ?? string.Empty,
+                            StyleEn = reader["STYLE_EN"]?.ToString() ?? string.Empty,
                             Price = reader["PRICE"].ToString()
                         });
                     }
@@ -396,7 +421,7 @@ namespace dance_studio
         public static Abonements GetAbonement(string title)
         {
             Abonements abonement = null;
-            string query = "SELECT*FROM ABONEMENTS WHERE TITLE = @title";
+            string query = "SELECT*FROM ABONEMENTS WHERE TITLE = @title OR TITLE_EN = @title";
 
             try
             {
@@ -413,8 +438,11 @@ namespace dance_studio
                             abonement = new Abonements
                             {
                                 Title = reader["TITLE"].ToString(),
-                                Style = reader["STYLE"].ToString(),
-                                Description = reader["DESCRIPTION"].ToString(),
+                                TitleEn = reader["TITLE_EN"]?.ToString() ?? string.Empty,
+                                Style = reader["STYLE"]?.ToString() ?? string.Empty,
+                                StyleEn = reader["STYLE_EN"]?.ToString() ?? string.Empty,
+                                Description = reader["DESCRIPTION"]?.ToString() ?? string.Empty,
+                                DescriptionEn = reader["DESCRIPTION_EN"]?.ToString() ?? string.Empty,
                                 Price = reader["PRICE"].ToString()
                             };
                         }
@@ -428,7 +456,7 @@ namespace dance_studio
                 MessageBox.Show("Ошибка при получении абонемента: " + ex.Message);
                 return null;
             }
-        }
+        }   
 
 
         public static bool DeleteAbonementByTitle(string title)
@@ -446,20 +474,35 @@ namespace dance_studio
         }
 
 
-        public static bool AddAbonement(string title, string description, string price, string style)
+        public static bool AddAbonement(string title, string description, string price, string style,
+                                string titleEn, string descriptionEn, string styleEn)
         {
-            string query = "INSERT INTO ABONEMENTS (TITLE, DESCRIPTION, PRICE, STYLE) " +
-                           "VALUES (@title, @description, @price, @style)";
+            // Обновленный запрос с добавлением английских версий
+            string query = "INSERT INTO ABONEMENTS (TITLE, DESCRIPTION, PRICE, STYLE, " +
+                          "TITLE_EN, DESCRIPTION_EN, STYLE_EN) " +
+                          "VALUES (@title, @description, @price, @style, " +
+                          "@titleEn, @descriptionEn, @styleEn)";
 
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    // Параметры для русской версии
                     cmd.Parameters.AddWithValue("@title", title);
-                    cmd.Parameters.AddWithValue("@description", string.IsNullOrEmpty(description) ? (object)DBNull.Value : description);
+                    cmd.Parameters.AddWithValue("@description",
+                        string.IsNullOrEmpty(description) ? (object)DBNull.Value : description);
                     cmd.Parameters.AddWithValue("@price", price);
-                    cmd.Parameters.AddWithValue("@style", string.IsNullOrEmpty(style) ? (object)DBNull.Value : style);
+                    cmd.Parameters.AddWithValue("@style",
+                        string.IsNullOrEmpty(style) ? (object)DBNull.Value : style);
+
+                    // Параметры для английской версии
+                    cmd.Parameters.AddWithValue("@titleEn",
+                        string.IsNullOrEmpty(titleEn) ? (object)DBNull.Value : titleEn);
+                    cmd.Parameters.AddWithValue("@descriptionEn",
+                        string.IsNullOrEmpty(descriptionEn) ? (object)DBNull.Value : descriptionEn);
+                    cmd.Parameters.AddWithValue("@styleEn",
+                        string.IsNullOrEmpty(styleEn) ? (object)DBNull.Value : styleEn);
 
                     conn.Open();
                     int rowsAffected = cmd.ExecuteNonQuery();

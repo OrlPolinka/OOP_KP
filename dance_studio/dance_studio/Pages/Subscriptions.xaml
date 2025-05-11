@@ -58,7 +58,7 @@
                     <DataTemplate>
                         <Border Margin="10" Padding="10" Width="300" Background="#FFEEC2C2" CornerRadius="10" >
                             <StackPanel >
-                                <TextBlock Text="{Binding Title}" FontSize="20" HorizontalAlignment="Center" Margin="0,5"/>
+                                <TextBlock Text="{Binding CurrentTitle}" FontSize="20" HorizontalAlignment="Center" Margin="0,5"/>
                                 <TextBlock Text="{Binding Price, StringFormat={}{0} BUN}" FontSize="18" HorizontalAlignment="Center" Margin="10"/>
                                 <Button Content="{DynamicResource More}" FontSize="18" HorizontalAlignment="Center" Click="GoToAbonement"/>
                             </StackPanel>

@@ -22,6 +22,9 @@
     <sys:String x:Key="MenuExit">Выход</sys:String>
     <sys:String x:Key="MenuAccount">Личный кабинет</sys:String>
 
+    <sys:String x:Key="StyleEN">Стиль (EN):</sys:String>
+
+
     <sys:String x:Key="Style">Стиль:</sys:String>
     <sys:String x:Key="Price">Цена:</sys:String>
     <sys:String x:Key="Description">Описание:</sys:String>
@@ -138,6 +141,7 @@
     <sys:String x:Key="FIOTrainers">ФИО тренера</sys:String>
 
     <sys:String x:Key="StyleTitle">Название стиля:</sys:String>
+    <sys:String x:Key="StyleTitleEn">Название стиля (EN):</sys:String>
 
     <sys:String x:Key="SpRecords">Список записей:</sys:String>
 </ResourceDictionary>

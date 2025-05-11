@@ -51,16 +51,18 @@ namespace dance_studio.Pages
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string style = StyleTextBox.Text;
+            string styleEn = StyleEnTextBox.Text;
             string description = DescriptionTextBox.Text;
+            string descriptionEn = DescriptionEnTextBox.Text;
 
-            if (string.IsNullOrWhiteSpace(style) || string.IsNullOrWhiteSpace(description))
+            if (string.IsNullOrWhiteSpace(style) || string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(styleEn) || string.IsNullOrWhiteSpace(descriptionEn))
             {
                 MessageBox.Show("Пожалуйста, заполните все обязательные поля.");
                 return;
             }
 
             // Сохранение новости в базу данных
-            bool isSuccess = DatabaseHelper.AddStyle(style, description);
+            bool isSuccess = DatabaseHelper.AddStyle(style, description, styleEn, descriptionEn);
 
             if (isSuccess)
             {
@@ -77,7 +79,9 @@ namespace dance_studio.Pages
         private void ClearForm()
         {
             StyleTextBox.Text = string.Empty;
+            StyleEnTextBox.Text = string.Empty;
             DescriptionTextBox.Text = string.Empty;
+            DescriptionEnTextBox.Text = string.Empty;
         }
 
 
@@ -132,42 +136,6 @@ namespace dance_studio.Pages
             var styles = DatabaseHelper.GetStyles();
             StylesItemsControl.ItemsSource = styles;
         }
-
-        //private void AnimateScroll(double toValue)
-        //{
-        //    DoubleAnimation animation = new DoubleAnimation
-        //    {
-        //        To = toValue,
-        //        Duration = TimeSpan.FromMilliseconds(500),
-        //        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-        //    };
-
-        //    AnimationClock clock = animation.CreateClock();
-        //    MyScroll.ApplyAnimationClock(ScrollViewerHorizontalOffsetProperty, clock);
-        //}
-
-        //// Регистрируем свойство один раз
-        //public static readonly DependencyProperty ScrollViewerHorizontalOffsetProperty =
-        //    DependencyProperty.Register(
-        //        "ScrollViewerHorizontalOffset",
-        //        typeof(double),
-        //        typeof(MainWindow),
-        //        new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
-        //    );
-
-        //public double ScrollViewerHorizontalOffset
-        //{
-        //    get { return (double)GetValue(ScrollViewerHorizontalOffsetProperty); }
-        //    set { SetValue(ScrollViewerHorizontalOffsetProperty, value); }
-        //}
-
-        //private static void OnHorizontalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is ScrollViewer scrollViewer)
-        //    {
-        //        scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
-        //    }
-        //}
 
         public static ScrollViewer My_Scroll { get; set; } // Статическое свойство
 

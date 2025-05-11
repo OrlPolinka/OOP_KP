@@ -22,12 +22,15 @@ namespace dance_studio.Pages
     /// </summary>
     public partial class Abonement : Page
     {
-        public Abonement(string title)
+        public Abonement(string title, string titleEn, string currentLanguage)
         {
             try
             {
                 InitializeComponent();
-                var abonement = DatabaseHelper.GetAbonement(title);
+
+                string searchTitle = currentLanguage == "en" ? titleEn : title;
+
+                var abonement = DatabaseHelper.GetAbonement(searchTitle);
                 if (abonement == null)
                 {
                     MessageBox.Show("Абонемент не найден.");
@@ -37,7 +40,9 @@ namespace dance_studio.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"Ошибка при загрузке абонемента: {ex.Message}");
+                // Возврат на предыдущую страницу при ошибке
+                NavigationService?.GoBack();
             }
         }
 

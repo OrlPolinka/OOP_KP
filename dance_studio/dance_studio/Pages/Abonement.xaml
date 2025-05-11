@@ -37,7 +37,7 @@
 
 
         <StackPanel Margin="0,103,0,187">
-            <TextBlock Text="{Binding Title}" 
+            <TextBlock Text="{Binding CurrentTitle}" 
                        FontSize="28" 
                        FontWeight="Bold" 
                        HorizontalAlignment="Center" 
@@ -49,11 +49,11 @@
            Margin="0,20,0,0" 
            Foreground="#555"/>
 
-            <TextBlock Text="{Binding Style}" 
+            <TextBlock Text="{Binding CurrentStyle}" 
                        FontSize="22" 
                        FontStyle="Italic" 
                        Foreground="#666" 
-                       Margin="0,0,0,10"/>
+                       Margin="0,0,0,10" Width="1250"/>
 
             <TextBlock Text="{DynamicResource Price}" 
                        FontSize="20" 
@@ -63,22 +63,18 @@
                        FontSize="24" 
                        FontWeight="SemiBold" 
                        Foreground="#FFF73E1E"
-                       Margin="0,5,0,20"/>
+                       Margin="0,5,0,20" Width="1250"/>
 
             <TextBlock Text="{DynamicResource Description}" 
                        FontSize="20" 
                        Foreground="#555"/>
-            <TextBox Text="{Binding Description}" 
+            <TextBlock Text="{Binding CurrentDescription}" 
                      FontSize="18" 
-                     IsReadOnly="True"
                      TextWrapping="Wrap" 
-                     AcceptsReturn="True"
-                     VerticalScrollBarVisibility="Auto"
                      Height="150" 
                      Background="#FAFAFA" 
-                     BorderBrush="#CCC"
                      Foreground="#444"
-                     Margin="0,5,0,0"/>
+                     Margin="0,5,0,0" Width="1250"/>
 
         </StackPanel>
 

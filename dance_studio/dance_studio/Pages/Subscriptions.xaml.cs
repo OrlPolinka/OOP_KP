@@ -81,7 +81,9 @@ namespace dance_studio.Pages
                 if (abonement != null)
                 {
                     string title = abonement.Title;
-                    NavigationService?.Navigate(new Abonement(title));
+                    NavigationService?.Navigate(new Abonement(abonement.Title,
+                abonement.TitleEn,
+                Lang.currentLanguageCode));
                 }
             }
             catch (Exception ex)

@@ -103,15 +103,24 @@ namespace dance_studio.Pages
             string description = DescriptionTextBox.Text;
             string style = StyleTextBox.Text;
             string price = PriceTextBox.Text;
+            string titleEn = TitleEnTextBox.Text;
+            string descriptionEn = DescriptionEnTextBox.Text;
+            string styleEn = StyleEnTextBox.Text;
 
-            if (string.IsNullOrWhiteSpace(title))
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(style) || string.IsNullOrWhiteSpace(titleEn) || string.IsNullOrWhiteSpace(descriptionEn) || string.IsNullOrWhiteSpace(styleEn))
             {
                 MessageBox.Show("Пожалуйста, заполните все обязательные поля.");
                 return;
             }
 
+            if (!decimal.TryParse(price, out decimal priceValue) || priceValue <= 0)
+            {
+                MessageBox.Show("Введите корректную цену (только цифры, больше нуля)");
+                return;
+            }
+
             // Сохранение новости в базу данных
-            bool isSuccess = DatabaseHelper.AddAbonement(title, description, price, style);
+            bool isSuccess = DatabaseHelper.AddAbonement(title, description, price, style, titleEn, descriptionEn, styleEn);
 
             if (isSuccess)
             {

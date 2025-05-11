@@ -22,6 +22,8 @@
     <sys:String x:Key="MenuExit">Exit</sys:String>
     <sys:String x:Key="MenuAccount">Account</sys:String>
 
+    <sys:String x:Key="StyleEN">Style (EN):</sys:String>
+
     <sys:String x:Key="Style">Style:</sys:String>
     <sys:String x:Key="Price">Price:</sys:String>
     <sys:String x:Key="Description">Description:</sys:String>
@@ -138,6 +140,7 @@
     <sys:String x:Key="FIOTrainers">Full name of the trainer</sys:String>
 
     <sys:String x:Key="StyleTitle">Style name:</sys:String>
+    <sys:String x:Key="StyleTitleEn">Style name (EN):</sys:String>
 
     <sys:String x:Key="SpRecords">List of entries:И</sys:String>
 
