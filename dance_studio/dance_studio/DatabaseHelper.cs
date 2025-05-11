@@ -12,9 +12,38 @@ using System.Data;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Diagnostics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace dance_studio
 {
+
+    public class Review : INotifyPropertyChanged
+    {
+        public int ReviewId { get; set; }
+        public string UserName { get; set; }
+        public string Text { get; set; }
+        public int Rating { get; set; }
+
+        private Visibility _editButtonsVisibility;
+        public Visibility EditButtonsVisibility
+        {
+            get => _editButtonsVisibility;
+            set
+            {
+                _editButtonsVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     public class Client_records
     {
         public TimeSpan Time { get; set; }
@@ -734,16 +763,16 @@ ORDER BY N.PUBLISH_DATE DESC";
         }
 
 
-        public static void AddReviewToDatabase(string reviewText, string userName)
+        public static void AddReviewToDatabase(string reviewText, string userName, int rating)
         {
-
-            string query = "INSERT INTO Reviews (REV_TEXT, USER_NAME) VALUES (@ReviewText, @UserName)";
+            string query = "INSERT INTO Reviews (REV_TEXT, USER_NAME, RATING, DATE_CREATED) VALUES (@ReviewText, @UserName, @Rating, GETDATE())";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ReviewText", reviewText);
-                command.Parameters.AddWithValue("@UserName", userName); // Добавляем имя пользователя
+                command.Parameters.AddWithValue("@UserName", userName);
+                command.Parameters.AddWithValue("@Rating", rating);
 
                 try
                 {
@@ -757,6 +786,91 @@ ORDER BY N.PUBLISH_DATE DESC";
             }
         }
 
+
+        public static bool DeleteReview(int reviewId)
+        {
+            string query = "DELETE FROM REVIEWS WHERE REV_ID  = @reviewId";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@reviewId", reviewId);
+
+                try
+                {
+                    conn.Open();
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении отзыва: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+        public static bool UpdateReview(int reviewId, string newText, int newRating)
+        {
+            string query = "UPDATE REVIEWS SET REV_TEXT = @text, RATING = @rating WHERE REV_ID = @reviewId";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@text", newText);
+                cmd.Parameters.AddWithValue("@rating", newRating);
+                cmd.Parameters.AddWithValue("@reviewId", reviewId);
+
+                try
+                {
+                    conn.Open();
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при обновлении отзыва: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+        public static List<Review> GetReviews()
+        {
+            List<Review> reviews = new List<Review>();
+
+            // Добавляем RATING и DATE_CREATED в запрос
+            string query = "SELECT REV_ID, USER_NAME, REV_TEXT, RATING, DATE_CREATED FROM Reviews ORDER BY DATE_CREATED DESC";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var review = new Review
+                            {
+                                ReviewId = reader.GetInt32(0),
+                                UserName = reader.GetString(1),
+                                Text = reader.GetString(2),
+                                Rating = reader.IsDBNull(3) ? 0 : reader.GetInt32(3), // Безопасное получение рейтинга
+                                EditButtonsVisibility = reader.GetString(1) == Seccion.Username ?
+                                                      Visibility.Visible : Visibility.Collapsed
+                            };
+                            reviews.Add(review);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при загрузке отзывов: " + ex.Message);
+                }
+            }
+            return reviews;
+        }
 
 
         public static List<Trainers> GetTrainers()

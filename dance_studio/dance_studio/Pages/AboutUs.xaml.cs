@@ -52,32 +52,6 @@ namespace dance_studio.Pages
         }
 
 
-        //private void AnimateScroll(double toValue)
-        //{
-        //    DoubleAnimation animation = new DoubleAnimation
-        //    {
-        //        To = toValue,
-        //        Duration = TimeSpan.FromMilliseconds(300),
-        //        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-        //    };
-
-        //    AnimationClock clock = animation.CreateClock();
-        //    MyScroll.ApplyAnimationClock(ScrollViewerHorizontalOffsetProperty, clock);
-        //}
-
-        //// Вспомогательное свойство для прокрутки
-        //public static readonly DependencyProperty ScrollViewerHorizontalOffsetProperty =
-        //    DependencyProperty.RegisterAttached("ScrollViewerHorizontalOffset", typeof(double), typeof(MainWindow),
-        //        new PropertyMetadata(0.0, OnHorizontalOffsetChanged));
-
-        //private static void OnHorizontalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is ScrollViewer scrollViewer)
-        //    {
-        //        scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
-        //    }
-        //}
-
         public static ScrollViewer My_Scroll { get; set; } // Статическое свойство
         private void ScrollLeft(object sender, RoutedEventArgs e)
         {
@@ -280,21 +254,16 @@ namespace dance_studio.Pages
             if (Seccion.IsClient)
             {
                 // Открываем диалоговое окно для ввода отзыва
-                AddReview addReview = new AddReview();
-                bool? result = addReview.ShowDialog();
-
-                if (result == true)
+                var addReviewWindow = new AddReview();
+                if (addReviewWindow.ShowDialog() == true)
                 {
-                    // Получаем текст отзыва из окна
-                    string reviewText = addReview.ReviewText;
-                    string userName = Seccion.Username;
-
-                    DatabaseHelper.AddReviewToDatabase(reviewText, userName);
-
+                    DatabaseHelper.AddReviewToDatabase(
+                        addReviewWindow.ReviewText,
+                        Seccion.Username,
+                        addReviewWindow.Rating
+                    );
+                    // Обновить список отзывов
                     LoadReviews();
-
-                    // Добавляем новый отзыв в ScrollViewer
-                    //AddReviewToScrollViewer(reviewText);
                 }
             }
             else
@@ -303,91 +272,195 @@ namespace dance_studio.Pages
             }
         }
 
-        public void AddReviewToScrollViewer(string reviewText, string userName)
-        {
-            // Создаем новый элемент отзыва
-            Border newReviewBorder = new Border
-            {
-                Width = 300,
-                Height = 200,
-                Margin = new Thickness(10),
-                CornerRadius = new CornerRadius(20),
-                BorderBrush = Brushes.Gray,
-                BorderThickness = new Thickness(1),
-                Background = new SolidColorBrush(Color.FromArgb(114, 255, 255, 255)) // #72FFFFFF
-            };
+        //public void AddReviewToScrollViewer(string reviewText, string userName)
+        //{
+        //    // Создаем новый элемент отзыва
+        //    Border newReviewBorder = new Border
+        //    {
+        //        Width = 300,
+        //        Height = 200,
+        //        Margin = new Thickness(10),
+        //        CornerRadius = new CornerRadius(20),
+        //        BorderBrush = Brushes.Gray,
+        //        BorderThickness = new Thickness(1),
+        //        Background = new SolidColorBrush(Color.FromArgb(114, 255, 255, 255)) // #72FFFFFF
+        //    };
 
-            StackPanel reviewStackPanel = new StackPanel { Margin = new Thickness(10) };
+        //    StackPanel reviewStackPanel = new StackPanel { Margin = new Thickness(10) };
 
-            TextBlock titleTextBlock = new TextBlock
-            {
-                Text = "отзыв",
-                FontSize = 24,
-                Foreground = new SolidColorBrush(Color.FromArgb(139, 0, 0, 0)) // #8B0000
-            };
+        //    TextBlock titleTextBlock = new TextBlock
+        //    {
+        //        Text = "отзыв",
+        //        FontSize = 24,
+        //        Foreground = new SolidColorBrush(Color.FromArgb(139, 0, 0, 0)) // #8B0000
+        //    };
 
-            TextBlock userNameTextBlock = new TextBlock
-            {
-                Text = "Пользователь: " + userName,  // Отображаем имя пользователя
-                FontSize = 14,
-                Foreground = Brushes.Gray,
-                Margin = new Thickness(0, 5, 0, 0)
-            };
+        //    TextBlock userNameTextBlock = new TextBlock
+        //    {
+        //        Text = "Пользователь: " + userName,  // Отображаем имя пользователя
+        //        FontSize = 14,
+        //        Foreground = Brushes.Gray,
+        //        Margin = new Thickness(0, 5, 0, 0)
+        //    };
 
-            TextBlock contentTextBlock = new TextBlock
-            {
-                TextWrapping = TextWrapping.Wrap,
-                Text = reviewText,
-                FontSize = 14,
-                Margin = new Thickness(0, 10, 0, 0)
-            };
+        //    TextBlock contentTextBlock = new TextBlock
+        //    {
+        //        TextWrapping = TextWrapping.Wrap,
+        //        Text = reviewText,
+        //        FontSize = 14,
+        //        Margin = new Thickness(0, 10, 0, 0)
+        //    };
 
-            reviewStackPanel.Children.Add(titleTextBlock);
-            reviewStackPanel.Children.Add(userNameTextBlock);  // Добавляем имя пользователя
-            reviewStackPanel.Children.Add(contentTextBlock);
+        //    reviewStackPanel.Children.Add(titleTextBlock);
+        //    reviewStackPanel.Children.Add(userNameTextBlock);  // Добавляем имя пользователя
+        //    reviewStackPanel.Children.Add(contentTextBlock);
 
-            newReviewBorder.Child = reviewStackPanel;
+        //    newReviewBorder.Child = reviewStackPanel;
 
-            // Добавляем новый отзыв в StackPanel в ScrollViewer
-            this.ReviewStackPanel.Children.Add(newReviewBorder);
-        }
+        //    // Добавляем новый отзыв в StackPanel в ScrollViewer
+        //    this.ReviewStackPanel.Children.Add(newReviewBorder);
+        //}
 
 
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["DANCE_STUDIO_BD"].ConnectionString;
 
-        public void LoadReviews()
+
+
+        // Удаление отзыва
+        private void DeleteReview_Click(object sender, RoutedEventArgs e)
         {
-
-
-            string query = "SELECT REV_TEXT, USER_NAME FROM Reviews ORDER BY DATE_CREATED DESC";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            if (sender is Button button && button.DataContext is Review review)
             {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                try
                 {
-                    this.ReviewStackPanel.Children.Clear(); // Очистка текущих отзывов на экране
-
-                    try
+                    if (DatabaseHelper.DeleteReview(review.ReviewId))
                     {
-
-                        while (reader.Read())
-                        {
-                            string reviewText = reader.GetString(0); // Чтение текста отзыва
-                            string userName = reader.GetString(1);  // Чтение имени пользователя
-
-                            // Добавляем каждый отзыв в ScrollViewer
-                            AddReviewToScrollViewer(reviewText, userName);
-                        }
-                    }
-
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Ошибка при загрузке отзывов: " + ex.Message);
+                        // Обновляем список отзывов
+                        LoadReviews();
+                        MessageBox.Show("Отзыв успешно удален");
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении отзыва: {ex.Message}");
+                }
+            }
+        }
+
+        // Редактирование отзыва
+        private void EditReview_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is Review review)
+            {
+                // Открываем окно редактирования
+                var editWindow = new EditReviewWindow(review);
+                if (editWindow.ShowDialog() == true)
+                {
+                    // Обновляем список после редактирования
+                    LoadReviews();
+                }
+            }
+        }
+
+        private void LoadReviews()
+        {
+            try
+            {
+                ReviewStackPanel.Children.Clear();
+
+                var reviews = DatabaseHelper.GetReviews();
+                if (reviews == null || reviews.Count == 0)
+                {
+                    // Добавляем сообщение, если отзывов нет
+                    ReviewStackPanel.Children.Add(new TextBlock
+                    {
+                        Text = "Пока нет отзывов",
+                        FontSize = 16,
+                        Foreground = Brushes.White,
+                        Margin = new Thickness(10)
+                    });
+                    return;
+                }
+
+                foreach (var review in reviews)
+                {
+                    var reviewItem = new Border
+                    {
+                        CornerRadius = new CornerRadius(10),
+                        Background = new SolidColorBrush(Colors.White),
+                        Margin = new Thickness(10),
+                        Padding = new Thickness(15),
+                        Width = 300,
+                        BorderBrush = Brushes.LightGray,
+                        BorderThickness = new Thickness(1)
+                    };
+
+                    var stackPanel = new StackPanel();
+
+                    // Добавляем элементы отзыва
+                    stackPanel.Children.Add(new TextBlock
+                    {
+                        Text = $"Пользователь: {review.UserName}",
+                        FontWeight = FontWeights.Bold,
+                        FontSize = 16
+                    });
+
+                    stackPanel.Children.Add(new TextBlock
+                    {
+                        Text = $"Оценка: {new string('★', review.Rating)}{new string('☆', 5 - review.Rating)}",
+                        Margin = new Thickness(0, 5, 0, 0),
+                        Foreground = Brushes.Gold,
+                        FontSize = 14
+                    });
+
+                    stackPanel.Children.Add(new TextBlock
+                    {
+                        Text = review.Text,
+                        TextWrapping = TextWrapping.Wrap,
+                        Margin = new Thickness(0, 10, 0, 0),
+                        FontSize = 14
+                    });
+
+                    // Добавляем кнопки (если это отзыв текущего пользователя)
+                    if (review.EditButtonsVisibility == Visibility.Visible)
+                    {
+                        var buttonsPanel = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            Margin = new Thickness(0, 10, 0, 0)
+                        };
+
+                        var editButton = new Button
+                        {
+                            Content = "Изменить",
+                            Margin = new Thickness(0, 0, 10, 0),
+                            Padding = new Thickness(5),
+                            DataContext = review
+                        };
+                        editButton.Click += EditReview_Click;
+
+                        var deleteButton = new Button
+                        {
+                            Content = "Удалить",
+                            Padding = new Thickness(5),
+                            DataContext = review
+                        };
+                        deleteButton.Click += DeleteReview_Click;
+
+                        buttonsPanel.Children.Add(editButton);
+                        buttonsPanel.Children.Add(deleteButton);
+
+                        stackPanel.Children.Add(buttonsPanel);
+                    }
+
+                    reviewItem.Child = stackPanel;
+                    ReviewStackPanel.Children.Add(reviewItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке отзывов: " + ex.Message);
             }
         }
     }

@@ -143,6 +143,9 @@
     <sys:String x:Key="StyleTitle">Style name:</sys:String>
     <sys:String x:Key="StyleTitleEn">Style name (EN):</sys:String>
 
-    <sys:String x:Key="SpRecords">List of entries:И</sys:String>
+    <sys:String x:Key="SpRecords">List of entries:</sys:String>
+
+    <sys:String x:Key="Rev">The text of the review:</sys:String>
+    <sys:String x:Key="Grade">Grade:</sys:String>
 
 </ResourceDictionary>

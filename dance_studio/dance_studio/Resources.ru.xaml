@@ -145,4 +145,8 @@
     <sys:String x:Key="StyleTitleEn">Название стиля (EN):</sys:String>
 
     <sys:String x:Key="SpRecords">Список записей:</sys:String>
+
+    <sys:String x:Key="Rev">Текст отзыва:</sys:String>
+    <sys:String x:Key="Grade">Оценка:</sys:String>
+    
 </ResourceDictionary>

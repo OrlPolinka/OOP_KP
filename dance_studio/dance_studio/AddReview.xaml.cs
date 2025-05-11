@@ -20,6 +20,7 @@ namespace dance_studio
     public partial class AddReview : Window
     {
         public string ReviewText { get; private set; }
+        public int Rating { get; private set; }
 
         public AddReview()
         {
@@ -28,10 +29,15 @@ namespace dance_studio
 
         private void AddReview_Click(object sender, RoutedEventArgs e)
         {
-            // Сохраняем введенный текст
-            ReviewText = ReviewTextBox.Text;
+            if (string.IsNullOrWhiteSpace(ReviewTextBox.Text))
+            {
+                MessageBox.Show("Введите текст отзыва");
+                return;
+            }
 
-            // Закрываем окно, возвращая true
+            ReviewText = ReviewTextBox.Text;
+            Rating = RatingComboBox.SelectedIndex + 1; // Индексы начинаются с 0, поэтому +1
+
             this.DialogResult = true;
             this.Close();
         }
