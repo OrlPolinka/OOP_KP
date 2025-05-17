@@ -32,11 +32,20 @@ namespace dance_studio.Pages
                 InitializeComponent();
                 AbonementComboBox.SelectionChanged += AbonementComboBox_SelectionChanged;
                 this.Loaded += Data_Loaded;
+                //PhoneBox1.PhoneTextBox.Text = "+375 (29) 123-45-67";
+                //PhoneBox2.PhoneTextBox.Text = "+375 (29) 123-45-67";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+
+        private void PhoneBox1_PhoneValidated(object sender, RoutedEventArgs e)
+        {
+            string phone = PhoneBox1.PhoneTextBox.Text;
+            MessageBox.Show($"Номер телефона валиден: {phone}");
         }
 
         private void Data_Loaded(object sender, RoutedEventArgs e)

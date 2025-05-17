@@ -199,6 +199,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\ValidatedTextPhoneBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources.en.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -274,6 +278,9 @@
     </Compile>
     <Compile Include="Pages\Trainers.xaml.cs">
       <DependentUpon>Trainers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ValidatedTextPhoneBox.xaml.cs">
+      <DependentUpon>ValidatedTextPhoneBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
