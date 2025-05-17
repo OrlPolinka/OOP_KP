@@ -16,10 +16,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800">
-        <Grid.Background>
-            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
-        </Grid.Background>
+    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
@@ -126,25 +123,52 @@ Click="DeleteButton_Click"/>
                 <Button Content="→" Width="50" Margin="0,144,10,156" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
                 <TextBlock HorizontalAlignment="Center" Margin="0,54,0,0" TextWrapping="Wrap" Text="{DynamicResource OurTrainers}" VerticalAlignment="Top" FontSize="36"/>
 
-                <Button Content="{DynamicResource ViewTimetable}" FontSize="24" Margin="0,702,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="414" Height="72" Foreground="Black" Cursor="Hand" Background="Red" Click="GoToTimetable">
+                <Button Content="{DynamicResource ViewTimetable}" 
+        FontSize="24" 
+        Margin="0,702,0,0" 
+        VerticalAlignment="Top" 
+        HorizontalAlignment="Center" 
+        Width="414" 
+        Height="72" 
+        Foreground="Black" 
+        Cursor="Hand" 
+        Background="Red" 
+        Click="GoToTimetable">
                     <Button.Template>
-                        <ControlTemplate TargetType="{x:Type Button}">
+                        <ControlTemplate TargetType="Button">
                             <Border x:Name="border"
-    Background="{TemplateBinding Background}"
-    BorderBrush="{TemplateBinding BorderBrush}"
-    BorderThickness="{TemplateBinding BorderThickness}"
-    CornerRadius="50"
-    Padding="10"
-    SnapsToDevicePixels="True">
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="50"
+                    Padding="10"
+                    SnapsToDevicePixels="True">
                                 <ContentPresenter Content="{TemplateBinding Content}"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  RecognizesAccessKey="True"/>
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RecognizesAccessKey="True"/>
                             </Border>
                             <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="DarkOrange"/>
-                                </Trigger>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="DarkOrange"
+                                            Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="Red"
+                                            Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter TargetName="border" Property="Background" Value="Red"/>
                                 </Trigger>
@@ -155,6 +179,7 @@ Click="DeleteButton_Click"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
+
             </Grid>
         </Grid>
     </Grid>

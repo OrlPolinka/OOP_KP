@@ -16,10 +16,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800">
-        <Grid.Background>
-            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
-        </Grid.Background>
+    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
@@ -35,6 +32,12 @@
             <MenuItem Header="{DynamicResource MenuAccount}" FontSize="16" HorizontalAlignment="Right" Foreground="White" Click="GoToAccount"/>
         </Menu>
         <Frame x:Name="MainFrame" Grid.Row="1"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,20,0">
+            <Button Content="{DynamicResource light}" Click="LightTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+            <Button Content="{DynamicResource dark}" Click="DarkTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+        </StackPanel>
+
 
         <StackPanel Margin="294,44,192,0">
             <TextBlock Text="{DynamicResource MenuAccount}" FontWeight="Bold" Margin="0,0,0,5" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -98,8 +101,61 @@
                 </ListBox>
             </Grid>
 
-            <Button Content="{DynamicResource Profil}" Click="EditProfile_Click" Margin="0,15,0,10" FontSize="18" Width="594" Height="53" Background="#FFE80808" BorderBrush="#8B0000" BorderThickness="2"/>
-           
+            <Button Content="{DynamicResource Profil}"
+        Click="EditProfile_Click"
+        Margin="0,15,0,10"
+        FontSize="18"
+        Width="594"
+        Height="53"
+        Background="#FFE80808"
+        BorderBrush="#8B0000"
+        BorderThickness="2">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="0"
+                    Padding="0"
+                    SnapsToDevicePixels="True">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RecognizesAccessKey="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="DarkOrange"
+                                            Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="#FFE80808"
+                                            Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFE80808" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
         </StackPanel>
     </Grid>
 </Page>

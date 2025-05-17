@@ -16,10 +16,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800">
-        <Grid.Background>
-            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
-        </Grid.Background>
+    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
 
         <ComboBox x:Name="LanguageComboBox" SelectionChanged="LanguageComboBox_SelectionChanged" Margin="1157,45,88,709" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16">
             <ComboBoxItem Tag="ru" IsSelected="True" FontSize="16">Русский</ComboBoxItem>
@@ -42,7 +39,7 @@
 
             <StackPanel VerticalAlignment="Top" Height="412" Margin="413,246,413,0">
 
-                <TextBox IsReadOnly="True" Text="{DynamicResource Username}" Height="29" Width="314" HorizontalAlignment="Left" Margin="45,0,0,0" FontSize="14" VerticalAlignment="Top" VerticalContentAlignment="Center" BorderBrush="{x:Null}"/>
+                <TextBox IsReadOnly="True" Text="{DynamicResource Username}" Height="29" Width="314" HorizontalAlignment="Left" Margin="45,0,0,0" FontSize="14" VerticalAlignment="Top" VerticalContentAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}"/>
                 <TextBox x:Name="UsernameTextBox"
          Height="35" Width="487"
          VerticalContentAlignment="Center"
@@ -59,7 +56,52 @@
                     <RadioButton x:Name="RegisterRadio" Content="{DynamicResource Regist}" Margin="20,0,17,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
                 </StackPanel>
 
-                <Button Content="{DynamicResource Continue}" Width="150" Height="35" Click="OnSubmitClick" HorizontalAlignment="Center" Margin="0,30,0,30" HorizontalContentAlignment="Center" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+                <Button Content="{DynamicResource Continue}" Width="329" Height="58" Click="OnSubmitClick" HorizontalAlignment="Center" Margin="0,30,0,30" HorizontalContentAlignment="Center" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Foreground="Black" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="50"
+                    Padding="5"
+                    SnapsToDevicePixels="True">
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RecognizesAccessKey="True"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="DarkOrange"
+                                            Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="#FFF75555"
+                                            Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="Red"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

@@ -16,10 +16,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800">
-        <Grid.Background>
-            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
-        </Grid.Background>
+    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
 
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">

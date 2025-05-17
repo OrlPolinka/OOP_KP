@@ -16,10 +16,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Margin="10">
-        <Grid.Background>
-            <ImageBrush ImageSource="/главная5.jpg"/>
-        </Grid.Background>
+    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height = "Auto"/>
             <RowDefinition Height = "Auto"/>

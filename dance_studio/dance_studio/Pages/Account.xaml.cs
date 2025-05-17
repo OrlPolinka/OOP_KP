@@ -38,6 +38,36 @@ namespace dance_studio.Pages
             }
         }
 
+        private void ApplyTheme(string themePath)
+        {
+            var themeDictionary = new ResourceDictionary
+            {
+                Source = new Uri(themePath, UriKind.RelativeOrAbsolute)
+            };
+
+            // Находим текущую тему
+            var dictionaries = Application.Current.Resources.MergedDictionaries;
+            var existingTheme = dictionaries
+                .FirstOrDefault(d => d.Source != null &&
+                    (d.Source.OriginalString.Contains("LightTheme.xaml") || d.Source.OriginalString.Contains("DarkTheme.xaml")));
+
+            if (existingTheme != null)
+                dictionaries.Remove(existingTheme);
+
+            dictionaries.Add(themeDictionary);
+        }
+
+        private void LightTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyTheme("Resources/LightTheme.xaml");
+        }
+
+        private void DarkTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyTheme("Resources/DarkTheme.xaml");
+        }
+
+
         private void Subscriptions_Loaded(object sender, RoutedEventArgs e)
         {
             try

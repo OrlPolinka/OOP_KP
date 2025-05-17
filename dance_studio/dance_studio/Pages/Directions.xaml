@@ -16,10 +16,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800">
-        <Grid.Background>
-            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
-        </Grid.Background>
+    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="*"/>
@@ -93,23 +90,40 @@
 
         <Button Content="{DynamicResource DirectionsButton}" FontSize="24" Margin="615,230,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="395" Height="72" Foreground="Black" Cursor="Hand" Background="#FFF3000F" Grid.Row="1" Click="GoToSignUp">
             <Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
+                <ControlTemplate TargetType="Button">
                     <Border x:Name="border"
-        Background="{TemplateBinding Background}"
-        BorderBrush="{TemplateBinding BorderBrush}"
-        BorderThickness="{TemplateBinding BorderThickness}"
-        CornerRadius="50"
-        Padding="10"
-        SnapsToDevicePixels="True">
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="50"
+                    Padding="10"
+                    SnapsToDevicePixels="True">
                         <ContentPresenter Content="{TemplateBinding Content}"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      RecognizesAccessKey="True"/>
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="DarkOrange"/>
-                        </Trigger>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="DarkOrange"
+                                            Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="#FFF3000F"
+                                            Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background" Value="Red"/>
                         </Trigger>
@@ -120,5 +134,6 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
+
     </Grid>
 </Page>

@@ -16,10 +16,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800">
-        <Grid.Background>
-            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
-        </Grid.Background>
+    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}" FontSize="16" Foreground="White" Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
@@ -48,16 +45,70 @@
                     <TextBlock Text="{DynamicResource BuyAbonents}" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
 
                     <TextBlock Text="{DynamicResource Username}" FontSize="16"/>
-                    <ComboBox x:Name="UserComboBox1" DisplayMemberPath="USER_NAME" FontSize="16"/>
+
+                    <ComboBox x:Name="UserComboBox1"
+          DisplayMemberPath="USER_NAME"
+          FontSize="16">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите значение"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+
 
                     <TextBlock Text="{DynamicResource Abonent}" FontSize="16"/>
-                    <ComboBox x:Name="AbonementComboBox" DisplayMemberPath="TITLE" FontSize="16"/>
+                    
+                    <ComboBox x:Name="AbonementComboBox"
+                              DisplayMemberPath="TITLE"
+          Width="628"
+          ItemsSource="{Binding Subscriptions}"
+          SelectedItem="{Binding SelectedSubscription, Mode=TwoWay}">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedItem, ElementName=SubscriptionComboBox}" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите абонемент"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+
 
                     <TextBlock Text="{DynamicResource Phone}" FontSize="16"/>
-                    <TextBox x:Name="PhoneBox1" FontSize="16"/>
+                    <TextBox x:Name="PhoneBox1" FontSize="16">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Введите номер телефона"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
                     <TextBlock Text="Instagram:" FontSize="16"/>
-                    <TextBox x:Name="InstagramBox1" FontSize="16"/>
+                    <TextBox x:Name="InstagramBox1" FontSize="16">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Введите Instagram"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
                     <TextBlock Text="{DynamicResource Price}" FontSize="16"/>
                     <TextBox x:Name="PriceTextBox" FontSize="16" IsReadOnly="True"/>
@@ -67,46 +118,247 @@
                         <ComboBoxItem Content="{DynamicResource Method1}" FontSize="16"/>
                         <ComboBoxItem Content="{DynamicResource Method2}" FontSize="16"/>
                         <ComboBoxItem Content="{DynamicResource Method3}" FontSize="16"/>
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Выберите способ оплаты"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
                     </ComboBox>
 
-                    <Button Content="{DynamicResource Buy}" Click="BuyAbonement_Click" Margin="0 10" FontSize="20" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+                    <Button Content="{DynamicResource Buy}" Click="BuyAbonement_Click" Margin="0,10,0,10" FontSize="20" Foreground="Black" Cursor="Hand" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="50"
+                    Padding="10"
+                    SnapsToDevicePixels="True">
+                                    <ContentPresenter Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RecognizesAccessKey="True"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <!-- MultiTrigger для MouseOver + IsEnabled -->
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver" Value="True"/>
+                                            <Condition Property="IsEnabled" Value="True"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="border" Property="Background" Value="DarkOrange"/>
+                                    </MultiTrigger>
+
+                                    <!-- MultiTrigger для IsPressed + IsEnabled -->
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsPressed" Value="True"/>
+                                            <Condition Property="IsEnabled" Value="True"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="border" Property="Background" Value="Red"/>
+                                    </MultiTrigger>
+
+                                    <!-- Обычный триггер для отключённого состояния -->
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
                 </StackPanel>
             </Border>
             
             <!-- Форма записи на занятие -->
             <Border Grid.Row="0" Grid.Column="2" BorderBrush="#8B0000" BorderThickness="1" Margin="10,64,10,10" Padding="10">
-                <StackPanel Grid.Column="2" Margin="0,86,0,86">
+                <StackPanel Grid.Column="2" Margin="0,86,0,86" Cursor="">
                     <TextBlock Text="{DynamicResource SignOn}" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
 
                     <TextBlock Text="{DynamicResource Username}" FontSize="16"/>
-                    <ComboBox x:Name="UserComboBox2" DisplayMemberPath="USER_NAME" FontSize="16"/>
-
+                    <ComboBox x:Name="UserComboBox2" DisplayMemberPath="USER_NAME" FontSize="16">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите пользователя"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+                    
                     <TextBlock Text="{DynamicResource Time}" FontSize="16"/>
-                    <ComboBox x:Name="TimeComboBox" DisplayMemberPath="TIME" FontSize="16"/>
+                    <ComboBox x:Name="TimeComboBox" DisplayMemberPath="TIME" FontSize="16">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите время"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
 
                     <TextBlock Text="{DynamicResource DayOfTheWeek}" FontSize="16"/>
-                    <ComboBox x:Name="DayOfWeekComboBox" DisplayMemberPath="TIME" FontSize="16"/>
+                    <ComboBox x:Name="DayOfWeekComboBox" DisplayMemberPath="TIME" FontSize="16">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите день недели"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
 
                     <TextBlock Text="{DynamicResource Trainer}" FontSize="16"/>
-                    <ComboBox x:Name="TrainerComboBox" DisplayMemberPath="FIO" FontSize="16"/>
+                    <ComboBox x:Name="TrainerComboBox" DisplayMemberPath="FIO" FontSize="16">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите тренера"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
 
                     <TextBlock Text="{DynamicResource Style}" FontSize="16"/>
-                    <ComboBox x:Name="StyleComboBox" DisplayMemberPath="STYLE_TITLE" FontSize="16"/>
+                    <ComboBox x:Name="StyleComboBox" DisplayMemberPath="STYLE_TITLE" FontSize="16">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите стиль"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
 
                     <TextBlock Text="{DynamicResource Phone}" FontSize="16"/>
-                    <TextBox x:Name="PhoneBox2" FontSize="16"/>
+                    <TextBox x:Name="PhoneBox2" FontSize="16">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, введите телефон"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
                     <TextBlock Text="Instagram:" FontSize="16"/>
-                    <TextBox x:Name="InstagramBox2" FontSize="16"/>
+                    <TextBox x:Name="InstagramBox2" FontSize="16">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, введите Instagram"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
                     <TextBlock Text="{DynamicResource Level}" FontSize="16"/>
                     <ComboBox x:Name="LevelBox" FontSize="16">
                         <ComboBoxItem Content="{DynamicResource Level1}" FontSize="16"/>
                         <ComboBoxItem Content="{DynamicResource Level2}" FontSize="16"/>
                         <ComboBoxItem Content="{DynamicResource Level3}" FontSize="16"/>
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Style.Triggers>
+                                    <Trigger Property="SelectedItem" Value="{x:Null}">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите уровень"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
                     </ComboBox>
 
-                    <Button Content="{DynamicResource Sign}"  Margin="0 10" FontSize="20" Click="Register_Click" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+                    <Button Content="{DynamicResource Sign}" Margin="0,10,0,10" FontSize="20" Click="Register_Click" Foreground="Black" Cursor="Hand" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="50"
+                    Padding="10"
+                    SnapsToDevicePixels="True">
+                                    <ContentPresenter Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RecognizesAccessKey="True"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <!-- MultiTrigger для MouseOver + IsEnabled с анимацией -->
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver" Value="True"/>
+                                            <Condition Property="IsEnabled" Value="True"/>
+                                        </MultiTrigger.Conditions>
+                                        <MultiTrigger.EnterActions>
+                                            <BeginStoryboard Name="MouseOverStoryboard">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="border"
+                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                To="DarkOrange"
+                                                Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </MultiTrigger.EnterActions>
+                                        <MultiTrigger.ExitActions>
+                                            <BeginStoryboard Name="MouseLeaveStoryboard">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="border"
+                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                To="#FFF75555"
+                                                Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </MultiTrigger.ExitActions>
+                                    </MultiTrigger>
+
+                                    <!-- MultiTrigger для IsPressed + IsEnabled -->
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsPressed" Value="True"/>
+                                            <Condition Property="IsEnabled" Value="True"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="border" Property="Background" Value="Red"/>
+                                    </MultiTrigger>
+
+                                    <!-- Обычный Trigger для IsEnabled False -->
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+
                     <!--Click="Register_Click"-->
                 </StackPanel>
             </Border>

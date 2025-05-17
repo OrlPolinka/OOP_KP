@@ -37,13 +37,6 @@
 
 
 
-    <!--<Style x:Key="ModernButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="#FF6A5ACD"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Cursor" Value="Hand"/>
-    </Style>-->
-
     <!-- Стиль для TextBlock -->
     <Style  TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Palatino Linotype"/>
