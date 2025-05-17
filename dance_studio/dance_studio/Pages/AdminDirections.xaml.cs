@@ -21,6 +21,7 @@ namespace dance_studio.Pages
     /// </summary>
     public partial class AdminDirections : Page
     {
+        private UndoRedoManager _undoRedoManager = new UndoRedoManager();
         public AdminDirections()
         {
             try
@@ -89,8 +90,7 @@ namespace dance_studio.Pages
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             // Очистка всех полей формы
-            StyleTextBox.Clear();
-            DescriptionTextBox.Clear();
+            ClearForm();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

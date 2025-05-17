@@ -57,6 +57,8 @@
     <sys:String x:Key="Image">Image:</sys:String>
     <sys:String x:Key="Load">Download...</sys:String>
     <sys:String x:Key="SaveButton">Save</sys:String>
+    <sys:String x:Key="UndoButton">Undo last action</sys:String>
+    <sys:String x:Key="RedoButton">Redo last action</sys:String>
     <sys:String x:Key="CancelButton">Cancel</sys:String>
     <sys:String x:Key="DeleteButton">Delete</sys:String>
     <sys:String x:Key="Published">Published:</sys:String>

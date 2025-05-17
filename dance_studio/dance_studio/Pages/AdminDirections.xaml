@@ -79,6 +79,8 @@
                 <TextBlock Text="{DynamicResource DescriptionEn}" Grid.Row="6" Margin="0,10,0,5" FontSize="16"/>
                 <TextBox Name="DescriptionEnTextBox" Grid.Row="7" Width="450" Height="150" TextWrapping="Wrap" AcceptsReturn="True" FontSize="16"/>
 
+                
+                
                 <StackPanel Grid.Row="9" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                     <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100" Click="SaveButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
                     <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>

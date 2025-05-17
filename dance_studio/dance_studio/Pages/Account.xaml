@@ -13,7 +13,23 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/ResourcesStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <ControlTemplate x:Key="RoundButtonTemplate" TargetType="Button">
+                <Border CornerRadius="50" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2">
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+
+            <Style x:Key="RoundButtonStyle" TargetType="Button">
+                <Setter Property="Template" Value="{StaticResource RoundButtonTemplate}"/>
+                <Setter Property="Background" Value="LightCoral"/>
+                <Setter Property="BorderBrush" Value="DarkRed"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Padding" Value="10"/>
+            </Style>
         </ResourceDictionary>
+
+        
     </Page.Resources>
 
     <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
@@ -34,10 +50,14 @@
         <Frame x:Name="MainFrame" Grid.Row="1"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,20,0">
-            <Button Content="{DynamicResource light}" Click="LightTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
-            <Button Content="{DynamicResource dark}" Click="DarkTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+            <Button Content="{DynamicResource light}" Click="LightTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Style="{StaticResource RoundButtonStyle}" Height="49" Width="137" />
+            <Button Content="{DynamicResource dark}" Click="DarkTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Style="{StaticResource RoundButtonStyle}" Height="49" Width="137"/>
         </StackPanel>
 
+        <ComboBox x:Name="LanguageComboBox" SelectionChanged="LanguageComboBox_SelectionChanged" Margin="31,58,1259,696" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16">
+            <ComboBoxItem Tag="ru" IsSelected="True" FontSize="16">Русский</ComboBoxItem>
+            <ComboBoxItem Tag="en" FontSize="16">English</ComboBoxItem>
+        </ComboBox>
 
         <StackPanel Margin="294,44,192,0">
             <TextBlock Text="{DynamicResource MenuAccount}" FontWeight="Bold" Margin="0,0,0,5" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>

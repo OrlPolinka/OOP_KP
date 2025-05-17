@@ -215,7 +215,7 @@ namespace dance_studio.Pages
                 MessageBox.Show(ex.Message);
             }
         }
-        private void GoToSignUp(object sender, RoutedEventArgs e)
+        public void GoToSignUp(object sender, RoutedEventArgs e)
         {
             try
             {

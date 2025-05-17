@@ -38,6 +38,24 @@ namespace dance_studio.Pages
             }
         }
 
+
+        public void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (LanguageComboBox.SelectedItem is ComboBoxItem item && item.Tag is string lang)
+                {
+                    ((App)Application.Current).ChangeLanguage(lang);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // Логирование ошибки или вывод в консоль
+                Console.WriteLine($"Ошибка: {ex.Message}");
+            }
+        }
+
         private void ApplyTheme(string themePath)
         {
             var themeDictionary = new ResourceDictionary

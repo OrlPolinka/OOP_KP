@@ -159,6 +159,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\AnimatedButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Contacts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -240,6 +244,9 @@
     </Compile>
     <Compile Include="Pages\AdminTrainers.xaml.cs">
       <DependentUpon>AdminTrainers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AnimatedButton.xaml.cs">
+      <DependentUpon>AnimatedButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
