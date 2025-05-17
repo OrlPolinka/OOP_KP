@@ -10,6 +10,7 @@ namespace dance_studio.Pages
         public ValidatedTextPhoneBox()
         {
             InitializeComponent();
+
         }
 
         // DependencyProperty Text с валидацией и коррекцией

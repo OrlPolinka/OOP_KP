@@ -27,6 +27,7 @@ namespace dance_studio.Pages
         void Undo();
     }
 
+
     // Команда добавления абонемента (добавляет в БД при Execute, удаляет при Undo)
     public class AddSubscriptionCommand : ICommandAction
     {

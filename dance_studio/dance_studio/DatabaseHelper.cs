@@ -744,24 +744,57 @@ ORDER BY N.PUBLISH_DATE DESC";
         // Удаление новости из базы данных
         public static bool DeleteNewsFromDatabase(int newsId)
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "DELETE FROM NEWS WHERE ID = @NewsId";
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                conn.Open();
+                using (SqlTransaction transaction = conn.BeginTransaction())
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@NewsId", newsId);
+                    try
+                    {
+                        // 1. Удаляем локализации
+                        string deleteLocalizationsQuery = "DELETE FROM NewsLocalization WHERE NewsID = @NewsId";
+                        SqlCommand deleteLocalizationsCmd = new SqlCommand(deleteLocalizationsQuery, conn, transaction);
+                        deleteLocalizationsCmd.Parameters.AddWithValue("@NewsId", newsId);
+                        deleteLocalizationsCmd.ExecuteNonQuery();
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected > 0;
+                        // 2. Удаляем саму новость
+                        string deleteNewsQuery = "DELETE FROM NEWS WHERE ID = @NewsId";
+                        SqlCommand deleteNewsCmd = new SqlCommand(deleteNewsQuery, conn, transaction);
+                        deleteNewsCmd.Parameters.AddWithValue("@NewsId", newsId);
+                        int rowsAffected = deleteNewsCmd.ExecuteNonQuery();
+
+                        transaction.Commit();
+                        return rowsAffected > 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        Console.WriteLine($"Ошибка при удалении: {ex.Message}");
+                        return false;
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
         }
+        //public static bool DeleteNewsFromDatabase(int newsId)
+        //{
+        //    try
+        //    {
+        //        string query = "DELETE FROM NEWS WHERE ID = @NewsId";
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            SqlCommand cmd = new SqlCommand(query, conn);
+        //            cmd.Parameters.AddWithValue("@NewsId", newsId);
+
+        //            int rowsAffected = cmd.ExecuteNonQuery();
+        //            return rowsAffected > 0;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //}
 
 
         public static void AddReviewToDatabase(string reviewText, string userName, int rating)
