@@ -27,8 +27,8 @@ namespace dance_studio.Pages
             try
             {
                 InitializeComponent();
-                this.Loaded += timetable_Loaded;
-                DaysOfWeekControl.ItemsSource = DaysOfWeek;
+                Loaded += timetable_Loaded;
+                //DaysOfWeekControl.ItemsSource = DaysOfWeek;
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace dance_studio.Pages
         private void LoadTimetable()
         {
             var all = DatabaseHelper.GetTimetable(); // получаем расписание
-            var daysOfWeek = new[] { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" };
+            var daysOfWeek = new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
             DaysContainer.Items.Clear(); // Очистка контейнера, если уже что-то есть
 

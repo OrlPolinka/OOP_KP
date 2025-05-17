@@ -43,7 +43,6 @@ namespace dance_studio.Pages
             try
             {
                 LoadSubscriptions();
-                //LoadRecords();
             }
             catch (Exception ex)
             {
@@ -60,7 +59,6 @@ namespace dance_studio.Pages
             // Загружаем подписки по текущему пользователю
             try
             {
-                //DatabaseHelper.GetInfo(Seccion.Username);
 
                 try
                 {
@@ -70,7 +68,6 @@ namespace dance_studio.Pages
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", Seccion.Username);
-                        //cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = username;
 
                         conn.Open();
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -110,110 +107,7 @@ namespace dance_studio.Pages
                 MessageBox.Show("Ошибка при загрузке данных: " + ex.Message);
             }
 
-            //SubscriptionList.ItemsSource = subscriptions;
         }
-
-
-        
-        //private void LoadRecords()
-        //{
-        //    string fio_trainer = "";
-        //    string style = "";
-        //    try
-        //    {
-
-        //        try
-        //        {
-
-        //            // Получение фио тренера по его id
-        //            string trainerQuery = @"
-        //        SELECT T.FIO 
-        //        FROM CLIENT_RECORDS CR
-        //        JOIN TRAINERS T ON CR.TRAINERS_ID = T.TRAINERS_ID
-        //        WHERE CR.USER_NAME = @username";
-
-        //            using (SqlConnection conn = new SqlConnection(connectionString))
-        //            using (SqlCommand trainerCmd = new SqlCommand(trainerQuery, conn)) {
-        //                trainerCmd.Parameters.AddWithValue("@username", Seccion.Username);
-        //                object trainerFioObj = trainerCmd.ExecuteScalar();
-        //                if (trainerFioObj != null)
-        //                {
-        //                    fio_trainer = trainerFioObj.ToString();
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show("Тренер не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //                    return;
-        //                }
-        //            }
-        //                // Получение названия стиля по его id
-        //                string styleQuery = @"
-        //        SELECT S.STYLE_TITLE 
-        //        FROM CLIENT_RECORDS CR
-        //        JOIN STYLES S ON CR.STYLE_ID = S.STYLE_ID
-        //        WHERE CR.USER_NAME = @username";
-        //            using (SqlConnection conn = new SqlConnection(connectionString))
-        //            using (SqlCommand styleCmd = new SqlCommand(styleQuery, conn))
-        //            {
-        //                styleCmd.Parameters.AddWithValue("@username", Seccion.Username);
-        //                object styleTitleObj = styleCmd.ExecuteScalar();
-        //                if (styleTitleObj != null)
-        //                {
-        //                   style = styleTitleObj.ToString();
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show("Стиль не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //                    return;
-        //                }
-        //            }
-
-
-        //            string query = "SELECT TIME, PASSWORD, PHONE, EMAIL, NOTIFICATIONS FROM CLIENTS WHERE USER_NAME = @username";
-
-        //            using (SqlConnection conn = new SqlConnection(connectionString))
-        //            using (SqlCommand cmd = new SqlCommand(query, conn))
-        //            {
-        //                cmd.Parameters.AddWithValue("@username", Seccion.Username);
-        //                //cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = username;
-
-        //                conn.Open();
-        //                using (SqlDataReader reader = cmd.ExecuteReader())
-        //                {
-        //                    if (reader.Read())
-        //                    {
-        //                        string name = reader["USER_NAME"] == DBNull.Value ? "" : reader["USER_NAME"].ToString();
-        //                        string password = reader["PASSWORD"] == DBNull.Value ? "" : reader["PASSWORD"].ToString();
-        //                        string phone = reader["PHONE"] == DBNull.Value ? "" : reader["PHONE"].ToString();
-        //                        string email = reader["EMAIL"] == DBNull.Value ? "" : reader["EMAIL"].ToString();
-        //                        string notifications = reader["NOTIFICATIONS"] == DBNull.Value ? "" : reader["NOTIFICATIONS"].ToString();
-
-        //                        UsernameBox.Text = name;
-        //                        PasswordBox.Text = password;
-        //                        PhoneBox.Text = phone;
-        //                        EmailBox.Text = email;
-        //                        NotificationsBox.Text = notifications;
-
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show("Ошибка при получении имени: " + ex.Message);
-        //        }
-
-        //        var subscriptions = DatabaseHelper.GetUserSubscriptions(Seccion.Username);
-        //        SubscriptionList.ItemsSource = subscriptions;
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Ошибка при загрузке данных: " + ex.Message);
-        //    }
-
-        //}
 
         private void EditProfile_Click(object sender, RoutedEventArgs e)
         {
@@ -241,14 +135,14 @@ namespace dance_studio.Pages
             {
                 // Если обновление прошло успешно, обновляем данные в Seccion
                 Seccion.Username = newUsername;
-                MessageBox.Show("Имя пользователя успешно обновлено!");
+                MessageBox.Show("Личные данные успешно обновлены!");
 
                 // Можно обновить интерфейс, если нужно
                 UsernameBox.Text = newUsername;
             }
             else
             {
-                MessageBox.Show("Ошибка при обновлении имени пользователя!");
+                MessageBox.Show("Ошибка при обновлении личных данных!");
             }
         }
 

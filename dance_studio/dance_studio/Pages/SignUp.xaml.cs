@@ -139,7 +139,7 @@ namespace dance_studio.Pages
             string priceText = PriceTextBox.Text;
             string payment = (PaymentBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            if (username == null || abonement == null) { MessageBox.Show("Выберите пользователя и абонемент."); return; }
+            if (username == null || abonement == null  || payment == null || phone == null || insta == null || priceText == null) { MessageBox.Show("Заполните все поля"); return; }
 
             decimal price;
             if (!decimal.TryParse(priceText, out price))
@@ -182,7 +182,11 @@ namespace dance_studio.Pages
             if (UserComboBox2.SelectedItem == null ||
     TimeComboBox.SelectedItem == null ||
     TrainerComboBox.SelectedItem == null ||
-    StyleComboBox.SelectedItem == null)
+    StyleComboBox.SelectedItem == null ||
+    DayOfWeekComboBox == null ||
+    LevelBox == null ||
+    PhoneBox2 == null ||
+    InstagramBox2 == null)
             {
                 MessageBox.Show("Выберите все поля из списка.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;

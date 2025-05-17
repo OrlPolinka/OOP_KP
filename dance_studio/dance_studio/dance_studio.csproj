@@ -303,6 +303,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>DANCE_STUDIO_BD.mdf</DependentUpon>
     </Content>
+    <Resource Include="главная5.jpg" />
+    <Resource Include="Pages\фон.jpg" />
     <Resource Include="Pages\главная5.jpg" />
     <Resource Include="Pages\главная.jpg" />
     <Resource Include="Pages\главная1.jpg" />

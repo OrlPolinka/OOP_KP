@@ -16,7 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="White" Width="1440" Height="800">
+    <Grid Width="1440" Height="800">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
@@ -42,26 +45,66 @@
             </Grid.ColumnDefinitions>
 
 
-            <ScrollViewer Grid.Column="0"  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,151,0,149">
-                <ItemsControl x:Name="SubscriptionItemsControl">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Margin="10" Padding="10" Width="300" Background="#FFEEC2C2" CornerRadius="10">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding CurrentTitle}" FontSize="20" HorizontalAlignment="Center" Margin="0,5"/>
-                                    <TextBlock Text="{Binding Price, StringFormat={}{0} BUN}" FontSize="18" HorizontalAlignment="Center" Margin="10"/>
-                                    <Button Name="DeleteButton" Content="{DynamicResource DeleteButton}" Width="100" Margin="10,0,0,0" Click="DeleteButton_Click"/>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+            <Border Grid.Row="0" Grid.Column="0" BorderBrush="#8B0000" BorderThickness="1" Margin="11,124,9,146" RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="-0.756"/>
+                        <RotateTransform/>
+                        <TranslateTransform X="4.787"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+
+                <ScrollViewer 
+    VerticalScrollBarVisibility="Auto" 
+    HorizontalScrollBarVisibility="Disabled"
+    Margin="0,2,0,-1"
+    Padding="10">
+                    <ItemsControl x:Name="SubscriptionItemsControl">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="2" 
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
+                    Margin="10" 
+                    Padding="15" 
+                    MinWidth="300"
+                    MaxWidth="400"
+                    MinHeight="180"
+                    Background="#FFEEC2C2" 
+                    CornerRadius="10">
+                                    <StackPanel>
+                                        <TextBlock 
+                            Text="{Binding CurrentTitle}" 
+                            FontSize="20" 
+                            FontWeight="Bold"
+                            HorizontalAlignment="Center" 
+                            Margin="0,5"
+                            TextWrapping="Wrap"/>
+                                        <TextBlock 
+                            Text="{Binding Price, StringFormat={}{0} BUN}" 
+                            FontSize="18" 
+                            HorizontalAlignment="Center" 
+                            Margin="10"/>
+                                        <Button 
+                                        Name="DeleteButton"
+                            Content="{DynamicResource DeleteButton}" 
+                            FontSize="18" 
+                            HorizontalAlignment="Center" 
+                            Padding="10,5"
+                            Click="DeleteButton_Click"  Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
 
 
             <Grid Margin="30,98,30,11" Grid.Column="1">
@@ -106,8 +149,8 @@
 
 
                 <StackPanel Grid.Row="14" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,21,32,-59">
-                    <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100" Click="SaveButton_Click" Height="38" FontSize="16"/>
-                    <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16"/>
+                    <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100" Click="SaveButton_Click" Height="38" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+                    <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
 
                 </StackPanel>
             </Grid>

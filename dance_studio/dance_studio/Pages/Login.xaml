@@ -16,7 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="White" Width="1440" Height="800">
+    <Grid Width="1440" Height="800">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
         <ComboBox x:Name="LanguageComboBox" SelectionChanged="LanguageComboBox_SelectionChanged" Margin="1157,45,88,709" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16">
             <ComboBoxItem Tag="ru" IsSelected="True" FontSize="16">Русский</ComboBoxItem>
@@ -44,7 +47,7 @@
          Height="35" Width="487"
          VerticalContentAlignment="Center"
          HorizontalContentAlignment="Center"/>
-                <TextBox IsReadOnly="True" Text="{DynamicResource Password}" Height="29" Width="314" HorizontalAlignment="Left" Margin="45,30,0,0" FontSize="14" VerticalAlignment="Top" VerticalContentAlignment="Center" BorderBrush="{x:Null}"/>
+                <TextBox IsReadOnly="True" Text="{DynamicResource Password}" Height="29" Width="314" HorizontalAlignment="Left" Margin="45,30,0,0" FontSize="14" VerticalAlignment="Top" VerticalContentAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}"/>
                 <PasswordBox x:Name="PasswordBox"
          Margin="0,0,0,30"
          Height="35" Width="487"
@@ -56,7 +59,7 @@
                     <RadioButton x:Name="RegisterRadio" Content="{DynamicResource Regist}" Margin="20,0,17,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
                 </StackPanel>
 
-                <Button Content="{DynamicResource Continue}" Width="150" Height="35" Click="OnSubmitClick" HorizontalAlignment="Center" Margin="0,30,0,30" HorizontalContentAlignment="Center"/>
+                <Button Content="{DynamicResource Continue}" Width="150" Height="35" Click="OnSubmitClick" HorizontalAlignment="Center" Margin="0,30,0,30" HorizontalContentAlignment="Center" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
             </StackPanel>
         </Grid>
     </Grid>

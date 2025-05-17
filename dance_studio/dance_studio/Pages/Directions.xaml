@@ -16,7 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="White" Width="1440" Height="800">
+    <Grid Width="1440" Height="800">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="*"/>
@@ -38,35 +41,36 @@
         </Menu>
         <Frame x:Name="MainFrame" Grid.Row="1"/>
 
-        <Button Content="←" Width="50" Margin="0,159,1390,0" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
+        <Button Content="←" Width="50" Margin="10,122,1380,37" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
 
+        <Border Grid.Row="0" Grid.Column="0" BorderBrush="#8B0000" BorderThickness="1" Margin="10,88,10,5">
 
-        <ScrollViewer x:Name="MyScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Margin="0,76,0,324" Grid.RowSpan="2">
-            <ItemsControl  x:Name="StylesItemsControl">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="20"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Width="300" Height="200" Margin="10" Background="White" CornerRadius="20" BorderBrush="Gray" BorderThickness="1">
-                            <StackPanel Margin="10">
-                                <TextBlock Text="{Binding CurrentTitle}" FontSize="24" Foreground="#8B0000"/>
-                                <TextBlock TextWrapping="Wrap" Text="{Binding CurrentDescription}" FontSize="14" Margin="0,10,0,0"/>
+            <ScrollViewer x:Name="MyScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Margin="0,9,0,-1" Grid.RowSpan="2">
+                <ItemsControl  x:Name="StylesItemsControl">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="20"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="300" Height="200" Margin="10" Background="White" CornerRadius="20" BorderBrush="Gray" BorderThickness="1">
+                                <StackPanel Margin="10">
+                                    <TextBlock Text="{Binding CurrentTitle}" FontSize="24" Foreground="#8B0000"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding CurrentDescription}" FontSize="14" Margin="0,10,0,0"/>
 
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
 
+        <Button Content="→" Width="50" Margin="0,122,10,37" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
 
-        <Button Content="→" Width="50" Margin="0,159,0,0" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
-
-        <TextBlock HorizontalAlignment="Left" Margin="49,122,0,0" TextWrapping="Wrap" Text="{DynamicResource MenuDirections}" VerticalAlignment="Top" FontSize="24"/>
-        <TextBlock HorizontalAlignment="Left" Margin="959,98,0,0" TextWrapping="Wrap" Text="{DynamicResource ChooseStyle}" VerticalAlignment="Top" FontSize="36" Foreground="#FFF30000"/>
+        <TextBlock HorizontalAlignment="Left" Margin="46,106,0,0" TextWrapping="Wrap" Text="{DynamicResource MenuDirections}" VerticalAlignment="Top" FontSize="24"/>
+        <TextBlock HorizontalAlignment="Left" Margin="948,44,0,0" TextWrapping="Wrap" Text="{DynamicResource ChooseStyle}" VerticalAlignment="Top" FontSize="36" Foreground="#FFF30000"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="681,47,0,0" TextWrapping="Wrap" Text="{DynamicResource Info}" VerticalAlignment="Top" FontSize="22" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="615,103,0,0" TextWrapping="Wrap" Text="{DynamicResource Info1}" VerticalAlignment="Top" Height="21" Width="312" FontSize="16" Grid.Row="1"/>

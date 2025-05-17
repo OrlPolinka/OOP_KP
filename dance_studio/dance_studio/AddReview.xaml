@@ -17,6 +17,9 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/главная5.jpg"/>
+        </Grid.Background>
         <StackPanel Margin="10">
             <TextBlock Text="{DynamicResource Grade}" Margin="0,0,0,5"/>
             <ComboBox x:Name="RatingComboBox" SelectedIndex="4">
@@ -32,7 +35,7 @@
                      TextWrapping="Wrap" AcceptsReturn="True"/>
 
             <Button Content="{DynamicResource Add}" Width="100" Height="40" 
-                    Margin="0,10,0,0" Click="AddReview_Click"/>
+                    Margin="0,10,0,0" Click="AddReview_Click"  Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
         </StackPanel>
     </Grid>
 </Window>

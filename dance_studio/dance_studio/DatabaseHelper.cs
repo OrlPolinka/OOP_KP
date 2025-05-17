@@ -259,7 +259,8 @@ namespace dance_studio
                    tr.FIO AS TRAINER
             FROM TIMETABLE t
             JOIN STYLES s ON t.STYLE_ID = s.STYLE_ID
-            JOIN TRAINERS tr ON t.TRAINER_ID = tr.TRAINERS_ID";
+            JOIN TRAINERS tr ON t.TRAINER_ID = tr.TRAINERS_ID
+            ORDER BY t.DAY_OF_WEEK, t.TIME";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -837,7 +838,6 @@ ORDER BY N.PUBLISH_DATE DESC";
         {
             List<Review> reviews = new List<Review>();
 
-            // Добавляем RATING и DATE_CREATED в запрос
             string query = "SELECT REV_ID, USER_NAME, REV_TEXT, RATING, DATE_CREATED FROM Reviews ORDER BY DATE_CREATED DESC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

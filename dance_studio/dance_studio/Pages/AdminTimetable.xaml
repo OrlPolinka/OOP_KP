@@ -16,7 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="White" Width="1440" Height="800">
+    <Grid Width="1440" Height="800">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
@@ -45,7 +48,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Таблица расписания -->
-                <DataGrid Grid.Column="0" x:Name="TimetableGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,0,0,10">
+                <DataGrid x:Name="TimetableGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="252,0,31,10" Grid.ColumnSpan="2">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{DynamicResource DayOfTheWeek}" Binding="{Binding DayOfWeek}" />
                         <DataGridTextColumn Header="{DynamicResource Time}" Binding="{Binding Time}" />
@@ -65,13 +68,13 @@
                 </DataGrid>
 
                 <!-- Форма для добавления новой записи -->
-                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
+                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="20,20,0,20" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <TextBlock FontSize="18" Text="{DynamicResource AddNewActivity}" Margin="0,0,0,10"/>
-                    <TextBox x:Name="NewDayOfWeek" Width="200" Margin="0,5" Text="{DynamicResource DayOfTheWeek}" />
-                    <TextBox x:Name="NewTime" Width="200" Margin="0,5" Text="{DynamicResource Time}" />
-                    <TextBox x:Name="NewStyle" Width="200" Margin="0,5" Text="{DynamicResource Style}" />
-                    <TextBox x:Name="NewTrainer" Width="200" Margin="0,5" Text="{DynamicResource Trainer}" />
-                    <Button Content="{DynamicResource Add}" Width="200" Click="Add_Click" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="NewDayOfWeek" Width="200" Margin="0,5" Text="{DynamicResource DayOfTheWeek}" HorizontalAlignment="Left" />
+                    <TextBox x:Name="NewTime" Width="200" Margin="0,5" Text="{DynamicResource Time}" HorizontalAlignment="Left" />
+                    <TextBox x:Name="NewStyle" Width="200" Margin="0,5" Text="{DynamicResource Style}" HorizontalAlignment="Left" />
+                    <TextBox x:Name="NewTrainer" Width="200" Margin="0,5" Text="{DynamicResource Trainer}" HorizontalAlignment="Left" />
+                    <Button Content="{DynamicResource Add}" Width="200" Click="Add_Click" HorizontalAlignment="Left" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
                 </StackPanel>
             </Grid>
         </StackPanel>

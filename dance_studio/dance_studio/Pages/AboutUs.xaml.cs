@@ -272,56 +272,6 @@ namespace dance_studio.Pages
             }
         }
 
-        //public void AddReviewToScrollViewer(string reviewText, string userName)
-        //{
-        //    // Создаем новый элемент отзыва
-        //    Border newReviewBorder = new Border
-        //    {
-        //        Width = 300,
-        //        Height = 200,
-        //        Margin = new Thickness(10),
-        //        CornerRadius = new CornerRadius(20),
-        //        BorderBrush = Brushes.Gray,
-        //        BorderThickness = new Thickness(1),
-        //        Background = new SolidColorBrush(Color.FromArgb(114, 255, 255, 255)) // #72FFFFFF
-        //    };
-
-        //    StackPanel reviewStackPanel = new StackPanel { Margin = new Thickness(10) };
-
-        //    TextBlock titleTextBlock = new TextBlock
-        //    {
-        //        Text = "отзыв",
-        //        FontSize = 24,
-        //        Foreground = new SolidColorBrush(Color.FromArgb(139, 0, 0, 0)) // #8B0000
-        //    };
-
-        //    TextBlock userNameTextBlock = new TextBlock
-        //    {
-        //        Text = "Пользователь: " + userName,  // Отображаем имя пользователя
-        //        FontSize = 14,
-        //        Foreground = Brushes.Gray,
-        //        Margin = new Thickness(0, 5, 0, 0)
-        //    };
-
-        //    TextBlock contentTextBlock = new TextBlock
-        //    {
-        //        TextWrapping = TextWrapping.Wrap,
-        //        Text = reviewText,
-        //        FontSize = 14,
-        //        Margin = new Thickness(0, 10, 0, 0)
-        //    };
-
-        //    reviewStackPanel.Children.Add(titleTextBlock);
-        //    reviewStackPanel.Children.Add(userNameTextBlock);  // Добавляем имя пользователя
-        //    reviewStackPanel.Children.Add(contentTextBlock);
-
-        //    newReviewBorder.Child = reviewStackPanel;
-
-        //    // Добавляем новый отзыв в StackPanel в ScrollViewer
-        //    this.ReviewStackPanel.Children.Add(newReviewBorder);
-        //}
-
-
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["DANCE_STUDIO_BD"].ConnectionString;
 
 
@@ -429,6 +379,7 @@ namespace dance_studio.Pages
                             Orientation = Orientation.Horizontal,
                             HorizontalAlignment = HorizontalAlignment.Right,
                             Margin = new Thickness(0, 10, 0, 0)
+                            
                         };
 
                         var editButton = new Button
@@ -436,7 +387,10 @@ namespace dance_studio.Pages
                             Content = "Изменить",
                             Margin = new Thickness(0, 0, 10, 0),
                             Padding = new Thickness(5),
-                            DataContext = review
+                            DataContext = review,
+                            Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF75555")),
+                            BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B0000")),
+                            BorderThickness = new Thickness(1)
                         };
                         editButton.Click += EditReview_Click;
 
@@ -444,7 +398,10 @@ namespace dance_studio.Pages
                         {
                             Content = "Удалить",
                             Padding = new Thickness(5),
-                            DataContext = review
+                            DataContext = review,
+                            Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF75555")),
+                            BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B0000")),
+                            BorderThickness = new Thickness(1)
                         };
                         deleteButton.Click += DeleteReview_Click;
 

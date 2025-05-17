@@ -17,6 +17,9 @@
     </Window.Resources>
 
     <Grid Margin="10">
+        <Grid.Background>
+            <ImageBrush ImageSource="/главная5.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height = "Auto"/>
             <RowDefinition Height = "Auto"/>
@@ -38,8 +41,8 @@
         <TextBox x:Name="ReviewTextBox" Grid.Row="3" AcceptsReturn="True" TextWrapping="Wrap" Height="100"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button Content="{DynamicResource SaveButton}" Width="150" Margin="0,0,10,0" Click="SaveButton_Click" Height="70"/>
-            <Button Content="{DynamicResource CancelButton}" Width="150" Click="CancelButton_Click" Height="70"/>
+            <Button Content="{DynamicResource SaveButton}" Width="150" Margin="0,0,10,0" Click="SaveButton_Click" Height="57"  Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+            <Button Content="{DynamicResource CancelButton}" Width="150" Click="CancelButton_Click" Height="57"  Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
         </StackPanel>
     </Grid>
 </Window>

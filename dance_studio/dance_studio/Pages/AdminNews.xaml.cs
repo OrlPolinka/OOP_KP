@@ -55,7 +55,7 @@ namespace dance_studio.Pages
             DateTime? publishDate = PublishDatePicker.SelectedDate.Value;
             string imagePath = ImagePathTextBlock.Text;
 
-            if (string.IsNullOrEmpty(titleRu) || string.IsNullOrEmpty(descRu) || !publishDate.HasValue)
+            if (string.IsNullOrEmpty(titleRu) || string.IsNullOrEmpty(descRu) || !publishDate.HasValue || string.IsNullOrEmpty(titleEn) || string.IsNullOrEmpty(descEn))
             {
                 MessageBox.Show("Пожалуйста, заполните все обязательные поля.");
                 return;

@@ -16,7 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid  Background="White" Width="1440" Height="800">
+    <Grid Width="1440" Height="800">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
@@ -95,7 +98,8 @@
                 </ListBox>
             </Grid>
 
-            <Button Content="{DynamicResource Profil}" Click="EditProfile_Click" Margin="0,15,0,10" FontSize="18" Width="594" Height="53"/>
+            <Button Content="{DynamicResource Profil}" Click="EditProfile_Click" Margin="0,15,0,10" FontSize="18" Width="594" Height="53" Background="#FFE80808" BorderBrush="#8B0000" BorderThickness="2"/>
+           
         </StackPanel>
     </Grid>
 </Page>

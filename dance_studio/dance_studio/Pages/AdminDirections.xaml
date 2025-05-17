@@ -40,18 +40,23 @@
 
 
         <Grid Grid.RowSpan="2" Margin="0,39,0,0">
+            <Grid.Background>
+                <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="920 px"/>
-                <ColumnDefinition Width="500 px"/>
+                <ColumnDefinition Width="920"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!-- Разделительная линия -->
+            <Border Grid.Column="1" Grid.RowSpan="2" Background="Black"/>
 
-
-            <Grid Margin="10,98,10,126" Grid.Column="1" Grid.RowSpan="2">
+            <Grid Margin="10,98,10,126" Grid.Column="2" Grid.RowSpan="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -78,18 +83,20 @@
                 <TextBox Name="DescriptionEnTextBox" Grid.Row="7" Width="450" Height="150" TextWrapping="Wrap" AcceptsReturn="True" FontSize="16"/>
 
                 <StackPanel Grid.Row="9" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                    <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100" Click="SaveButton_Click" FontSize="16"/>
-                    <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16"/>
+                    <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100" Click="SaveButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+                    <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
 
                 </StackPanel>
             </Grid>
 
 
 
-            <Button Grid.Row="0" Grid.Column="0" Content="←" Width="50" Margin="0,129,870,30" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
+            <Border Grid.Row="0" Grid.Column="0" BorderBrush="#8B0000" BorderThickness="1" Margin="10,64,10,10">
 
 
-            <ScrollViewer Grid.Column="0" Grid.Row="0" x:Name="MyScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Margin="0,67,0,348" Grid.RowSpan="2">
+
+
+                    <ScrollViewer  x:Name="MyScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Margin="0,9,0,0" Panel.ZIndex="10">
                 <ItemsControl  x:Name="StylesItemsControl">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -118,10 +125,13 @@ Click="DeleteButton_Click"/>
                 </ItemsControl>
             </ScrollViewer>
 
+           
+            </Border>
+             <Button  Content="←" Width="50" Margin="10,122,860,36" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
 
-            <Button Grid.Column="0" Grid.Row="0" Content="→" Width="50" Margin="0,129,3,30" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
-
-            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="51,98,0,0" TextWrapping="Wrap" Text="{DynamicResource MenuDirections}" VerticalAlignment="Top" FontSize="24"/>
+            <Button Content="→" Width="50" Margin="0,122,10,36" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
+            <TextBlock  HorizontalAlignment="Left" Margin="25,73,0,0" TextWrapping="Wrap" Text="{DynamicResource MenuDirections}" VerticalAlignment="Top" FontSize="24"/>
+            
             <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="289,10,0,0" TextWrapping="Wrap" Text="{DynamicResource ChooseStyle}" VerticalAlignment="Top" FontSize="36" Foreground="#FFF30000" Width="431"/>
 
             <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="464,14,0,0" TextWrapping="Wrap" Text="{DynamicResource Info}" VerticalAlignment="Top" FontSize="22" Grid.Row="1"/>

@@ -16,7 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="White" Width="1440" Height="800">
+    <Grid Width="1440" Height="800">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
@@ -43,31 +46,79 @@
             <TextBlock Text="{DynamicResource To}" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16"/>
             <TextBox x:Name="MaxPriceTextBox" Width="60" Margin="0,0,10,0" FontSize="16"/>
 
-            <Button Content="{DynamicResource Filtr}" Click="FilterByPrice_Click" FontSize="16" Padding="10,2"/>
+            <Button Content="{DynamicResource Filtr}" Click="FilterByPrice_Click" FontSize="16" Padding="10,2" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
         </StackPanel>
 
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,151,0,149">
-            <ItemsControl x:Name="SubscriptionItemsControl">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="10" Padding="10" Width="300" Background="#FFEEC2C2" CornerRadius="10" >
-                            <StackPanel >
-                                <TextBlock Text="{Binding CurrentTitle}" FontSize="20" HorizontalAlignment="Center" Margin="0,5"/>
-                                <TextBlock Text="{Binding Price, StringFormat={}{0} BUN}" FontSize="18" HorizontalAlignment="Center" Margin="10"/>
-                                <Button Content="{DynamicResource More}" FontSize="18" HorizontalAlignment="Center" Click="GoToAbonement"/>
-                            </StackPanel>
+        <Border Grid.Row="0" Grid.Column="0" BorderBrush="#8B0000" BorderThickness="1" Margin="10,182,10,144">
+            <ScrollViewer 
+    VerticalScrollBarVisibility="Auto"
+    HorizontalScrollBarVisibility="Disabled"
+    Margin="0,-1,0,-1"
+    Padding="10">
 
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                <!-- Основной контейнер -->
+                <ItemsControl x:Name="SubscriptionItemsControl">
+
+                    <!-- Панель расположения элементов (3 колонки) -->
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3" 
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <!-- Шаблон элемента абонемента -->
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border 
+                    Margin="10"
+                    Padding="15"
+                    Width="300"
+                    Height="200"
+                    Background="#FFEEC2C2"
+                    CornerRadius="10"
+                    BorderThickness="1"
+                    BorderBrush="#FFD1A3A3">
+
+                                <StackPanel>
+                                    <!-- Заголовок -->
+                                    <TextBlock 
+                            Text="{Binding CurrentTitle}" 
+                            FontSize="18"
+                            FontWeight="Bold"
+                            HorizontalAlignment="Center"
+                            Margin="0,5"
+                            TextWrapping="Wrap"
+                            TextAlignment="Center"/>
+
+                                    <!-- Цена -->
+                                    <TextBlock 
+                            Text="{Binding Price, StringFormat={}{0} BUN}" 
+                            FontSize="16"
+                            HorizontalAlignment="Center"
+                            Margin="5"/>
+
+                                    <!-- Кнопка "Подробнее" -->
+                                    <Button 
+                            Content="{DynamicResource More}"
+                            FontSize="16"
+                            HorizontalAlignment="Center"
+                            Padding="15,5"
+                            Margin="0,10,0,0"
+                            Background="#FFD1A3A3"
+                            Foreground="White"
+                            Click="GoToAbonement"/>
+                                </StackPanel>
+
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
 
 
 
