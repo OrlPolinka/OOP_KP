@@ -53,6 +53,12 @@ namespace dance_studio.Pages
             try
             {
                 LoadData();
+                if (!string.IsNullOrEmpty(Seccion.Username))
+                {
+                    // Если у вас TextBox для имени пользователя
+                    UserComboBox1.Text = Seccion.Username;
+                    UserComboBox2.Text = Seccion.Username;
+                }
             }
             catch (Exception ex)
             {
@@ -85,8 +91,8 @@ namespace dance_studio.Pages
                     SqlDataAdapter userAdapter = new SqlDataAdapter("SELECT USER_NAME FROM CLIENTS", conn);
                     DataTable userTable = new DataTable();
                     userAdapter.Fill(userTable);
-                    UserComboBox1.ItemsSource = userTable.DefaultView;
-                    UserComboBox2.ItemsSource = userTable.DefaultView;
+                    //UserComboBox1.Text = userTable.DefaultView;
+                    //UserComboBox2.Text = userTable.DefaultView;
 
                     // Абонементы
                     SqlDataAdapter abAdapter = new SqlDataAdapter("SELECT PRICE, TITLE FROM ABONEMENTS", conn);
@@ -141,7 +147,7 @@ namespace dance_studio.Pages
 
         public void BuyAbonement_Click(object sender, RoutedEventArgs e)
         {
-            string username = (UserComboBox1.SelectedItem as DataRowView)?["USER_NAME"].ToString();
+            string username = UserComboBox1.Text;
             string abonement = (AbonementComboBox.SelectedItem as DataRowView)?["TITLE"].ToString();
             string phone = PhoneBox1.Text;
             string insta = InstagramBox1.Text;
@@ -188,7 +194,7 @@ namespace dance_studio.Pages
         {
 
 
-            if (UserComboBox2.SelectedItem == null ||
+            if (UserComboBox2.Text == null ||
     TimeComboBox.SelectedItem == null ||
     TrainerComboBox.SelectedItem == null ||
     StyleComboBox.SelectedItem == null ||
@@ -201,7 +207,7 @@ namespace dance_studio.Pages
                 return;
             }
 
-            string username = (UserComboBox2.SelectedItem as DataRowView)?["USER_NAME"].ToString();
+            string username = UserComboBox2.Text;
             string timeString = (TimeComboBox.SelectedItem as DataRowView)?["TIME"].ToString();
             string dayOfTheWeek = (DayOfWeekComboBox.SelectedItem as DataRowView)?["DAY_OF_WEEK"].ToString();
             string trainerName = (TrainerComboBox.SelectedItem as DataRowView)?["FIO"].ToString();
@@ -421,7 +427,14 @@ namespace dance_studio.Pages
         {
             try
             {
-                NavigationService?.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                if (Seccion.IsClient)
+                {
+                    NavigationService?.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                }
+                else
+                {
+                    MessageBox.Show("Данная страница только для клиентов.");
+                }
             }
             catch (Exception ex)
             {

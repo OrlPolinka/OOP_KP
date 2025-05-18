@@ -219,7 +219,14 @@ namespace dance_studio.Pages
         {
             try
             {
-                NavigationService?.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                if (Seccion.IsClient)
+                {
+                    NavigationService?.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                }
+                else
+                {
+                    MessageBox.Show("Данная страница только для клиентов.");
+                }
             }
             catch (Exception ex)
             {
@@ -240,7 +247,6 @@ namespace dance_studio.Pages
 
                 if (Seccion.IsClient)
                 {
-                    // Вариант 1: Использование NavigationService с очисткой журнала
                     NavigationService?.Navigate(new Uri("Pages/Account.xaml", UriKind.Relative));
 
                     // Очищаем журнал навигации
@@ -249,14 +255,6 @@ namespace dance_studio.Pages
                         NavigationService.RemoveBackEntry();
                     }
 
-                    /* 
-                    // Вариант 2: Использование Frame (более надежный способ)
-                    // В XAML: <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
-                    if (!(MainFrame.Content is Account))
-                    {
-                        MainFrame.Navigate(new Account());
-                    }
-                    */
                 }
                 else
                 {

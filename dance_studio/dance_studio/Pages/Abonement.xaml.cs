@@ -201,7 +201,14 @@ namespace dance_studio.Pages
         {
             try
             {
-                NavigationService?.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                if (Seccion.IsClient)
+                {
+                    NavigationService?.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                }
+                else
+                {
+                    MessageBox.Show("Данная страница только для клиентов.");
+                }
             }
             catch (Exception ex)
             {

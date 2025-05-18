@@ -46,7 +46,7 @@
 
                     <TextBlock Text="{DynamicResource Username}" FontSize="16"/>
 
-                    <ComboBox x:Name="UserComboBox1"
+                    <!--<ComboBox x:Name="UserComboBox1"
           DisplayMemberPath="USER_NAME"
           FontSize="16">
                         <ComboBox.Style>
@@ -59,7 +59,10 @@
                                 </Style.Triggers>
                             </Style>
                         </ComboBox.Style>
-                    </ComboBox>
+                    </ComboBox>-->
+                    <TextBox x:Name="UserComboBox1" 
+         FontSize="16"
+         IsReadOnly="True"/>
 
 
                     <TextBlock Text="{DynamicResource Abonent}" FontSize="16"/>
@@ -184,7 +187,7 @@
                     <TextBlock Text="{DynamicResource SignOn}" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
 
                     <TextBlock Text="{DynamicResource Username}" FontSize="16"/>
-                    <ComboBox x:Name="UserComboBox2" DisplayMemberPath="USER_NAME" FontSize="16">
+                    <!--<ComboBox x:Name="UserComboBox2" DisplayMemberPath="USER_NAME" FontSize="16">
                         <ComboBox.Style>
                             <Style TargetType="ComboBox">
                                 <Style.Triggers>
@@ -195,8 +198,11 @@
                                 </Style.Triggers>
                             </Style>
                         </ComboBox.Style>
-                    </ComboBox>
-                    
+                    </ComboBox>-->
+                    <TextBox x:Name="UserComboBox2" 
+FontSize="16"
+IsReadOnly="True"/>
+
                     <TextBlock Text="{DynamicResource Time}" FontSize="16"/>
                     <ComboBox x:Name="TimeComboBox" DisplayMemberPath="TIME" FontSize="16">
                         <ComboBox.Style>
