@@ -68,7 +68,7 @@
 
                 <!-- Кнопки -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                    <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100" Click="SaveButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
+                    <Button Name="SaveButton" Command="{x:Static local:AdminNews.SaveCommand}" Content="{DynamicResource SaveButton}" Width="100"  FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/> <!--Click="SaveButton_Click"-->
                     <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
                 </StackPanel>
             </StackPanel>

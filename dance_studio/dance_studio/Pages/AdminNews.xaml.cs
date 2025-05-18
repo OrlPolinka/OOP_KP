@@ -20,17 +20,17 @@ namespace dance_studio.Pages
     /// </summary>
     public partial class AdminNews : Page
     {
-    //    public static readonly RoutedUICommand SaveCommand = new RoutedUICommand(
-    //    "Save",
-    //    "SaveCommand",
-    //    typeof(AdminNews));
+        public static readonly RoutedUICommand SaveCommand = new RoutedUICommand(
+        "Save",
+        "SaveCommand",
+        typeof(AdminNews));
         public AdminNews()
         {
             try
             {
                 InitializeComponent();
                 this.Loaded += News_Loaded;// Привязка команды к обработчику
-                //CommandBindings.Add(new CommandBinding(SaveCommand, SaveCommand_Executed, SaveCommand_CanExecute));
+                CommandBindings.Add(new CommandBinding(SaveCommand, SaveCommand_Executed, SaveCommand_CanExecute));
 
             }
             catch (Exception ex)
@@ -38,19 +38,19 @@ namespace dance_studio.Pages
                 MessageBox.Show(ex.Message);
             }
         }
-        //private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        //{
-        //    SaveButton_Click(sender, e);  // повторно используем существующий метод сохранения
-        //}
+        private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveButton_Click(sender, e);  // повторно используем существующий метод сохранения
+        }
 
-        //private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    // Логика для активации команды (например, проверка заполненности полей)
-        //    bool canSave = !string.IsNullOrEmpty(TitleTextBox.Text) &&
-        //                   !string.IsNullOrEmpty(DescriptionTextBox.Text) &&
-        //                   PublishDatePicker.SelectedDate.HasValue;
-        //    e.CanExecute = canSave;
-        //}
+        private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            // Логика для активации команды (например, проверка заполненности полей)
+            bool canSave = !string.IsNullOrEmpty(TitleTextBox.Text) &&
+                           !string.IsNullOrEmpty(DescriptionTextBox.Text) &&
+                           PublishDatePicker.SelectedDate.HasValue;
+            e.CanExecute = canSave;
+        }
 
         private void News_Loaded(object sender, RoutedEventArgs e)
         {
@@ -101,7 +101,9 @@ namespace dance_studio.Pages
         private void ClearForm()
         {
             TitleTextBox.Text = string.Empty;
+            TitleTextBoxEn.Text = string.Empty;
             DescriptionTextBox.Text = string.Empty;
+            DescriptionTextBoxEn.Text = string.Empty;
             PublishDatePicker.SelectedDate = null;
             ImagePathTextBlock.Text = string.Empty;
         }
@@ -111,10 +113,7 @@ namespace dance_studio.Pages
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             // Очистка всех полей формы
-            TitleTextBox.Clear();
-            DescriptionTextBox.Clear();
-            PublishDatePicker.SelectedDate = null;
-            ImagePathTextBlock.Text = string.Empty;
+            ClearForm();
         }
 
         // Обработчик кнопки "Загрузить изображение"
