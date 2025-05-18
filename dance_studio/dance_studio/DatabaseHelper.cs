@@ -14,6 +14,9 @@ using System.Windows.Media;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 
 namespace dance_studio
 {
@@ -106,6 +109,49 @@ namespace dance_studio
 
 
     // Класс модели для новостей
+    // News.cs
+    [Table("NEWS")] // Указываем имя таблицы в БД
+    public class Newss
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [Required]
+        public DateTime PublishDate { get; set; }
+
+        [MaxLength(255)]
+        public string ImagePath { get; set; }
+
+        [MaxLength(50)]
+        public string Status { get; set; }
+
+        // Навигационное свойство для локализаций
+        public virtual ICollection<NewsLocalization> Localizations { get; set; } = new List<NewsLocalization>();
+    }
+
+    // NewsLocalization.cs
+    [Table("NEWSLOCALIZATION")]
+    public class NewsLocalization
+    {
+        [Key]
+        [Column(Order = 1)]
+        public int NewsId { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        [MaxLength(10)]
+        public string LanguageCode { get; set; } // 'ru', 'en'
+
+        [Required]
+        [MaxLength(100)]
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        [ForeignKey("NewsId")]
+        public virtual Newss News { get; set; }
+    }
     public partial class News
     {
         public int Id { get; set; }
@@ -114,9 +160,26 @@ namespace dance_studio
         public string Description { get; set; }
         public string Status { get; set; }
         public string ImagePath { get; set; }
-
-
     }
+
+
+
+    public class DanceStudioContext : DbContext
+    {
+        public DanceStudioContext() : base("name=DanceStudioContext") { }
+
+        public DbSet<Newss> News { get; set; }
+        public DbSet<NewsLocalization> NewsLocalizations { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // Настройка составного ключа для локализаций
+            modelBuilder.Entity<NewsLocalization>()
+                .HasKey(nl => new { nl.NewsId, nl.LanguageCode });
+        }
+    }
+
+
 
     public class Seccion
     {
@@ -656,6 +719,120 @@ namespace dance_studio
                 return false;
             }
         }
+        public void AddNewsWithLocalizations(string titleRu, string titleEn,
+                           string descRu, string descEn,
+                           DateTime publishDate, string imagePath)
+        {
+            using (var context = new DanceStudioContext())
+            {
+                var news = new Newss
+                {
+                    PublishDate = publishDate,
+                    ImagePath = imagePath,
+                    Status = "Active",
+                    Localizations =
+            {
+                new NewsLocalization { LanguageCode = "ru", Title = titleRu, Description = descRu },
+                new NewsLocalization { LanguageCode = "en", Title = titleEn, Description = descEn }
+            }
+                };
+
+                context.News.Add(news);
+                context.SaveChanges();
+            }
+        }
+
+        public List<Newss> GetNewsByLanguage(string languageCode)
+        {
+            using (var context = new DanceStudioContext())
+            {
+                return context.News
+                    .Include(n => n.Localizations)
+                    .Where(n => n.Localizations.Any(l => l.LanguageCode == languageCode))
+                    .OrderByDescending(n => n.PublishDate)
+                    .ToList();
+            }
+        }
+
+        public void UpdateNewsLocalization(int newsId, string languageCode,
+                                 string newTitle, string newDescription)
+        {
+            using (var context = new DanceStudioContext())
+            {
+                var localization = context.NewsLocalizations
+                    .FirstOrDefault(nl => nl.NewsId == newsId && nl.LanguageCode == languageCode);
+
+                if (localization != null)
+                {
+                    localization.Title = newTitle;
+                    localization.Description = newDescription;
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void DeleteNews(int newsId)
+        {
+            using (var context = new DanceStudioContext())
+            {
+                var news = context.News
+                    .Include(n => n.Localizations)
+                    .FirstOrDefault(n => n.Id == newsId);
+
+                if (news != null)
+                {
+                    context.NewsLocalizations.RemoveRange(news.Localizations);
+                    context.News.Remove(news);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        // Асинхронный метод с фильтрацией
+        public async Task<List<Newss>> GetFilteredNewsAsync(string language,
+                                                          DateTime? fromDate = null,
+                                                          string status = null)
+        {
+            using (var context = new DanceStudioContext())
+            {
+                var query = context.News
+                    .Include(n => n.Localizations)
+                    .Where(n => n.Localizations.Any(l => l.LanguageCode == language));
+
+                if (fromDate.HasValue)
+                    query = query.Where(n => n.PublishDate >= fromDate);
+
+                if (!string.IsNullOrEmpty(status))
+                    query = query.Where(n => n.Status == status);
+
+                return await query
+                    .OrderByDescending(n => n.PublishDate)
+                    .ToListAsync();
+            }
+        }
+
+        public void UpdateNewsWithTransaction(int newsId, DateTime newDate, string newImagePath)
+        {
+            using (var context = new DanceStudioContext())
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var news = context.News.Find(newsId);
+                    news.PublishDate = newDate;
+                    news.ImagePath = newImagePath;
+
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
 
 
         public static List<News> GetNewsFromDatabase()
@@ -664,11 +841,11 @@ namespace dance_studio
             string languageCode = Lang.currentLanguageCode;
 
             string query = @"
-SELECT N.ID, NL.TITLE, N.PUBLISH_DATE, NL.DESCRIPTION, N.IMAGEPATH
-FROM NEWS N
-INNER JOIN NEWSLOCALIZATION NL ON N.ID = NL.NewsID
-WHERE NL.LanguageCode = @LanguageCode
-ORDER BY N.PUBLISH_DATE DESC";
+        SELECT N.ID, NL.TITLE, N.PUBLISH_DATE, NL.DESCRIPTION, N.IMAGEPATH
+        FROM NEWS N
+        INNER JOIN NEWSLOCALIZATION NL ON N.ID = NL.NewsID
+        WHERE NL.LanguageCode = @LanguageCode
+        ORDER BY N.PUBLISH_DATE DESC";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {

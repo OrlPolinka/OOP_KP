@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Data.Entity;
 using System.Windows.Shapes;
 
 namespace dance_studio.Pages
@@ -24,6 +25,10 @@ namespace dance_studio.Pages
         "Save",
         "SaveCommand",
         typeof(AdminNews));
+
+
+        private readonly DanceStudioContext _context = new DanceStudioContext();
+        private int? _editingNewsId = null;
         public AdminNews()
         {
             try
@@ -52,11 +57,11 @@ namespace dance_studio.Pages
             e.CanExecute = canSave;
         }
 
-        private void News_Loaded(object sender, RoutedEventArgs e)
+        private async void News_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                LoadNewsList();
+                 LoadNewsList();
             }
             catch (Exception ex)
             {
@@ -65,7 +70,7 @@ namespace dance_studio.Pages
         }
 
         // Обработчик кнопки "Сохранить"
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string titleRu = TitleTextBox.Text.Trim();
             string titleEn = TitleTextBoxEn.Text.Trim();
@@ -79,6 +84,42 @@ namespace dance_studio.Pages
                 MessageBox.Show("Пожалуйста, заполните все обязательные поля.");
                 return;
             }
+            //try
+            //{
+            //    var news = new Newss
+            //    {
+            //        PublishDate = PublishDatePicker.SelectedDate.Value,
+            //        ImagePath = ImagePathTextBlock.Text,
+            //        Status = "Active",
+            //        Localizations =
+            //    {
+            //        new NewsLocalization
+            //        {
+            //            LanguageCode = "ru",
+            //            Title = TitleTextBox.Text.Trim(),
+            //            Description = DescriptionTextBox.Text.Trim()
+            //        },
+            //        new NewsLocalization
+            //        {
+            //            LanguageCode = "en",
+            //            Title = TitleTextBoxEn.Text.Trim(),
+            //            Description = DescriptionTextBoxEn.Text.Trim()
+            //        }
+            //    }
+            //    };
+
+            //    _context.News.Add(news);
+            //    await _context.SaveChangesAsync();
+
+            //    MessageBox.Show("Новость успешно сохранена!");
+            //    await LoadNewsListAsync();
+            //    ClearForm();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Ошибка при сохранении: {ex.Message}");
+            //}
+
 
             // Генерируем уникальные ключи
             string guid = Guid.NewGuid().ToString("N");
@@ -128,46 +169,91 @@ namespace dance_studio.Pages
         }
 
         // Метод для загрузки новостей из базы данных и отображения их в ListBox
+        private async Task LoadNewsListAsync()
+        {
+            try
+            {
+                var newsList = await _context.News
+                     .Include("Localizations")
+                    .OrderByDescending(n => n.PublishDate)
+                    .ToListAsync();
+
+                NewsListBox.ItemsSource = newsList;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке новостей: {ex.Message}");
+            }
+        }
+
         private void LoadNewsList()
         {
             var newsList = DatabaseHelper.GetNewsFromDatabase();
             NewsListBox.ItemsSource = newsList;
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-        //    if (sender is Button button)
-        //    {
-        //        int newsId;
+            //if (!(sender is Button button) || !(button.Tag is int newsId)) return;
 
-        //        try
-        //        {
-        //            newsId = Convert.ToInt32(button.Tag); // безопасно, если Tag — int, long, string с числом и т.д.
-        //        }
-        //        catch
-        //        {
-        //            MessageBox.Show("Некорректный ID новости.");
-        //            return;
-        //        }
-        //        Console.WriteLine($"Пытаемся удалить новость с ID = {newsId}"); // Вывод в отладку
-        
-        //        var result = MessageBox.Show("Удалить эту новость?", "Подтверждение", MessageBoxButton.YesNo);
-        //        if (result == MessageBoxResult.Yes)
-        //        {
+            //var result = MessageBox.Show("Удалить эту новость?", "Подтверждение", MessageBoxButton.YesNo);
+            //if (result != MessageBoxResult.Yes) return;
 
-        //            bool deleted = DatabaseHelper.DeleteNewsFromDatabase(newsId);
-        //            if (deleted)
-        //            {
-        //                MessageBox.Show("Новость удалена.");
-        //                LoadNewsList(); // обновление списка
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("Ошибка при удалении.");
-        //            }
-        //        }
-        //    }
+            //try
+            //{
+            //    var news = await _context.News
+            //        .Include(n => n.Localizations)
+            //        .FirstOrDefaultAsync(n => n.Id == newsId);
+
+            //    if (news != null)
+            //    {
+            //        _context.NewsLocalizations.RemoveRange(news.Localizations);
+            //        _context.News.Remove(news);
+            //        await _context.SaveChangesAsync();
+
+            //        MessageBox.Show("Новость удалена");
+            //        await LoadNewsListAsync();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Ошибка при удалении: {ex.Message}");
+            //}
+            //    if (sender is Button button)
+            //    {
+            //        int newsId;
+
+            //        try
+            //        {
+            //            newsId = Convert.ToInt32(button.Tag); // безопасно, если Tag — int, long, string с числом и т.д.
+            //        }
+            //        catch
+            //        {
+            //            MessageBox.Show("Некорректный ID новости.");
+            //            return;
+            //        }
+            //        Console.WriteLine($"Пытаемся удалить новость с ID = {newsId}"); // Вывод в отладку
+
+            //        var result = MessageBox.Show("Удалить эту новость?", "Подтверждение", MessageBoxButton.YesNo);
+            //        if (result == MessageBoxResult.Yes)
+            //        {
+
+            //            bool deleted = DatabaseHelper.DeleteNewsFromDatabase(newsId);
+            //            if (deleted)
+            //            {
+            //                MessageBox.Show("Новость удалена.");
+            //                LoadNewsList(); // обновление списка
+            //            }
+            //            else
+            //            {
+            //                MessageBox.Show("Ошибка при удалении.");
+            //            }
+            //        }
+            //    }
             //if (sender is Button button && button.Tag is int newsId)
+
+
+
             if (sender is Button button && button.Tag != null && int.TryParse(button.Tag.ToString(), out int newsId))
             {
                 var result = MessageBox.Show("Удалить эту новость?", "Подтверждение", MessageBoxButton.YesNo);
