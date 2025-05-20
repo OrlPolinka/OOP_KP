@@ -56,7 +56,6 @@ namespace dance_studio.Pages
         }
 
 
-        // Обработчик кнопки "Удалить" в ListBox
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Abonements abonement)
@@ -94,14 +93,11 @@ namespace dance_studio.Pages
         }
 
 
-        // Обработчик кнопки "Отмена"
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            // Очистка всех полей формы
             ClearForm();
         }
 
-        // Обработчик кнопки "Сохранить"
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string title = TitleTextBox.Text;
@@ -140,13 +136,12 @@ namespace dance_studio.Pages
 
 
 
-                // Сохранение новости в базу данных
                 bool isSuccess = DatabaseHelper.AddAbonement(title, description, price, style, titleEn, descriptionEn, styleEn);
 
                 if (isSuccess)
                 {
                     MessageBox.Show("Абонемент успешно сохранен!");
-                    LoadSubscriptionCards(); // Перезагружаем список новостей
+                    LoadSubscriptionCards(); 
                     ClearForm();
                 }
                 else
@@ -181,12 +176,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/News.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminNews.xaml", UriKind.Relative));
                 }
             }
@@ -241,12 +234,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Timetable.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminTimetable.xaml", UriKind.Relative));
                 }
             }
@@ -262,12 +253,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Subscriptions.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminSubscriptions.xaml", UriKind.Relative));
                 }
             }

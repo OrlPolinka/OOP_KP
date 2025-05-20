@@ -63,7 +63,6 @@ namespace dance_studio
         public string TitleEn { get; set; }
         public string DescriptionEn { get; set; }
 
-        // Свойства, которые возвращают данные в зависимости от языка
         public string CurrentTitle => Lang.currentLanguageCode == "en" ? TitleEn : Title;
         public string CurrentDescription => Lang.currentLanguageCode == "en" ? DescriptionEn : Description;
     }
@@ -76,7 +75,6 @@ namespace dance_studio
         public string Bio { get; set; }
         public string FioEn { get; set; }
         public string BioEn { get; set; }
-        // Свойства, которые возвращают данные в зависимости от языка
         public string CurrentFio => Lang.currentLanguageCode == "en" ? FioEn : Fio;
         public string CurrentBio => Lang.currentLanguageCode == "en" ? BioEn : Bio;
     }
@@ -92,7 +90,6 @@ namespace dance_studio
         public string Description { get; set; }
         public string DescriptionEn { get; set; }
         public string Price { get; set; }
-        // Динамические свойства для текущего языка
         public string CurrentTitle => Lang.currentLanguageCode == "en" ? TitleEn : Title;
         public string CurrentStyle => Lang.currentLanguageCode == "en" ? StyleEn : Style;
         public string CurrentDescription => Lang.currentLanguageCode == "en" ? DescriptionEn : Description;
@@ -108,50 +105,6 @@ namespace dance_studio
     }
 
 
-    // Класс модели для новостей
-    // News.cs
-    [Table("NEWS")] // Указываем имя таблицы в БД
-    public class Newss
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [Required]
-        public DateTime PublishDate { get; set; }
-
-        [MaxLength(255)]
-        public string ImagePath { get; set; }
-
-        [MaxLength(50)]
-        public string Status { get; set; }
-
-        // Навигационное свойство для локализаций
-        public virtual ICollection<NewsLocalization> Localizations { get; set; } = new List<NewsLocalization>();
-    }
-
-    // NewsLocalization.cs
-    [Table("NEWSLOCALIZATION")]
-    public class NewsLocalization
-    {
-        [Key]
-        [Column(Order = 1)]
-        public int NewsId { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        [MaxLength(10)]
-        public string LanguageCode { get; set; } // 'ru', 'en'
-
-        [Required]
-        [MaxLength(100)]
-        public string Title { get; set; }
-
-        public string Description { get; set; }
-
-        [ForeignKey("NewsId")]
-        public virtual Newss News { get; set; }
-    }
     public partial class News
     {
         public int Id { get; set; }
@@ -161,24 +114,6 @@ namespace dance_studio
         public string Status { get; set; }
         public string ImagePath { get; set; }
     }
-
-
-
-    public class DanceStudioContext : DbContext
-    {
-        public DanceStudioContext() : base("name=DanceStudioContext") { }
-
-        public DbSet<Newss> News { get; set; }
-        public DbSet<NewsLocalization> NewsLocalizations { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            // Настройка составного ключа для локализаций
-            modelBuilder.Entity<NewsLocalization>()
-                .HasKey(nl => new { nl.NewsId, nl.LanguageCode });
-        }
-    }
-
 
 
     public class Seccion
@@ -194,8 +129,8 @@ namespace dance_studio
         public int Id { get; set; }
         public string DayOfWeek { get; set; }
         public string Time { get; set; }
-        public string Style { get; set; } // Название стиля
-        public string Trainer { get; set; } // ФИО тренера
+        public string Style { get; set; } 
+        public string Trainer { get; set; } 
     }
 
     internal class DatabaseHelper
@@ -227,7 +162,7 @@ namespace dance_studio
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Ошибка при добавлении уведомлений: {ex.Message}");
-                    throw; // Можно заменить на MessageBox.Show() в UI-приложении
+                    throw; 
                 }
             }
         }
@@ -509,15 +444,6 @@ namespace dance_studio
             }
         }
 
-        public static string HashPassword(string password)
-        {
-            using (var sha256 = System.Security.Cryptography.SHA256.Create())
-            {
-                var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(bytes); // хешируем пароль
-            }
-        }
-
 
         public static List<Abonements> GetAbonements()
         {
@@ -606,7 +532,6 @@ namespace dance_studio
         public static bool AddAbonement(string title, string description, string price, string style,
                                 string titleEn, string descriptionEn, string styleEn)
         {
-            // Обновленный запрос с добавлением английских версий
             string query = "INSERT INTO ABONEMENTS (TITLE, DESCRIPTION, PRICE, STYLE, " +
                           "TITLE_EN, DESCRIPTION_EN, STYLE_EN) " +
                           "VALUES (@title, @description, @price, @style, " +
@@ -889,339 +814,10 @@ namespace dance_studio
                 }
                 catch (Exception ex)
                 {
-                    // Логирование ошибки
                     Debug.WriteLine($"Ошибка обновления таблицы {table}: {ex.Message}");
                 }
             }
         }
-
-
-        //public static bool UpdateUsernameInDatabase(string oldUsername, string newUsername, string password, string phone, string email)
-        //{
-        //    using (SqlConnection conn = new SqlConnection(connectionString))
-        //    {
-        //        conn.Open();
-        //        using (SqlTransaction transaction = conn.BeginTransaction())
-        //        {
-        //            try
-        //    {
-        //        // Проверка запрещенных значений
-        //        if (newUsername.Equals("Орловская Полина", StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            MessageBox.Show("Это имя пользователя запрещено для использования");
-        //            return false;
-        //        }
-
-        //        if (password.Equals("admin", StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            MessageBox.Show("Пароль 'admin' недопустим");
-        //            return false;
-        //        }
-
-        //        // Проверка существования нового имени пользователя (кроме текущего пользователя)
-        //        if (IsUsernameExists(newUsername, Seccion.Role) && !newUsername.Equals(oldUsername, StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            MessageBox.Show("Пользователь с таким именем уже существует!");
-        //            return false;
-        //        }
-
-        //        UpdateDependentTables(conn, transaction, oldUsername, newUsername);
-
-        //        string query = "UPDATE CLIENTS SET USER_NAME = @newUsername, PASSWORD = @password, PHONE = @phone, EMAIL = @email WHERE USER_NAME = @oldUsername";
-
-        //        using (SqlCommand cmd = new SqlCommand(query, conn))
-        //        {
-        //            cmd.Parameters.AddWithValue("@newUsername", newUsername);
-        //            cmd.Parameters.AddWithValue("@password", password);
-        //            cmd.Parameters.AddWithValue("@phone", phone);
-        //            cmd.Parameters.AddWithValue("@email", email);
-        //            cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
-
-        //            conn.Open();
-        //            int rowsAffected = cmd.ExecuteNonQuery();
-
-        //            if (rowsAffected == 0)
-        //            {
-        //                MessageBox.Show("Пользователь не найден или данные не изменились");
-        //                return false;
-        //            }
-
-        //            return true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Ошибка при обновлении данных: " + ex.Message);
-        //        return false;
-        //    }
-        //}
-
-        //    public static bool UpdateUsernameInDatabase(string oldUsername, string newUsername, string password, string phone, string email)
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            using (SqlTransaction transaction = conn.BeginTransaction())
-        //            {
-        //                try
-        //                {
-        //                    // Проверка запрещенных значений
-        //                    if (newUsername.Equals("Орловская Полина", StringComparison.OrdinalIgnoreCase))
-        //                    {
-        //                        MessageBox.Show("Это имя пользователя запрещено для использования");
-        //                        transaction.Rollback();
-        //                        return false;
-        //                    }
-
-        //                    if (password.Equals("admin", StringComparison.OrdinalIgnoreCase))
-        //                    {
-        //                        MessageBox.Show("Пароль 'admin' недопустим");
-        //                        transaction.Rollback();
-        //                        return false;
-        //                    }
-
-        //                    // Проверка существования нового имени пользователя в транзакции
-        //                    if (IsUsernameExistsInTransaction(conn, transaction, newUsername) &&
-        //                        !newUsername.Equals(oldUsername, StringComparison.OrdinalIgnoreCase))
-        //                    {
-        //                        MessageBox.Show("Пользователь с таким именем уже существует!");
-        //                        transaction.Rollback();
-        //                        return false;
-        //                    }
-
-        //                    // Обновление всех зависимых таблиц
-        //                    UpdateAllDependentTables(conn, transaction, oldUsername, newUsername);
-
-        //                    // Обновление основной таблицы
-        //                    string query = @"UPDATE CLIENTS 
-        //                           SET USER_NAME = @newUsername, 
-        //                               PASSWORD = @password, 
-        //                               PHONE = @phone, 
-        //                               EMAIL = @email 
-        //                           WHERE USER_NAME = @oldUsername";
-
-        //                    using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
-        //                    {
-        //                        cmd.Parameters.AddWithValue("@newUsername", newUsername);
-        //                        cmd.Parameters.AddWithValue("@password", password);
-        //                        cmd.Parameters.AddWithValue("@phone", phone);
-        //                        cmd.Parameters.AddWithValue("@email", email);
-        //                        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
-
-        //                        int rowsAffected = cmd.ExecuteNonQuery();
-
-        //                        if (rowsAffected == 0)
-        //                        {
-        //                            MessageBox.Show("Пользователь не найден или данные не изменились");
-        //                            transaction.Rollback();
-        //                            return false;
-        //                        }
-
-        //                        transaction.Commit();
-        //                        return true;
-        //                    }
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    transaction.Rollback();
-        //                    MessageBox.Show("Ошибка при обновлении данных: " + ex.Message);
-        //                    return false;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    private static bool IsUsernameExistsInTransaction(SqlConnection conn, SqlTransaction transaction, string username)
-        //    {
-        //        string query = "SELECT COUNT(*) FROM CLIENTS WHERE USER_NAME = @username";
-        //        using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
-        //        {
-        //            cmd.Parameters.AddWithValue("@username", username);
-        //            return (int)cmd.ExecuteScalar() > 0;
-        //        }
-        //    }
-
-        //    private static void UpdateAllDependentTables(SqlConnection conn, SqlTransaction transaction,
-        //                                       string oldUsername, string newUsername)
-        //    {
-        //        // Список всех таблиц, где есть ссылки на CLIENTS.USER_NAME
-        //        string[] dependentTables = {
-        //    "CLIENT_SUBSCRIPTIONS",
-        //    "CLIENT_RECORDS",
-        //    "Reviews"
-        //};
-
-        //        foreach (var table in dependentTables)
-        //        {
-        //            string query = $"UPDATE {table} SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
-        //            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
-        //            {
-        //                cmd.Parameters.AddWithValue("@newUsername", newUsername);
-        //                cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
-        //                cmd.ExecuteNonQuery();
-        //            }
-        //        }
-        //    }
-
-
-        //private static void UpdateDependentTables(SqlConnection conn, SqlTransaction transaction, string oldUsername, string newUsername)
-        //{
-        //    string updateCLIENT_SUBSCRIPTIONS = "UPDATE CLIENT_SUBSCRIPTIONS SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
-
-        //    using (SqlConnection conn = new SqlConnection(connectionString))
-        //    using (SqlCommand cmd = new SqlCommand(updateCLIENT_SUBSCRIPTIONS, conn))
-        //    {
-        //        cmd.Parameters.AddWithValue("@newUsername", newUsername);
-        //        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
-        //        conn.Open();
-        //        cmd.ExecuteNonQuery();
-        //    }
-
-
-        //    string updateCLIENT_RECORDS = "UPDATE CLIENT_RECORDS SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
-
-        //    using (SqlConnection conn = new SqlConnection(connectionString))
-        //    using (SqlCommand cmd = new SqlCommand(updateCLIENT_RECORDS, conn))
-        //    {
-        //        cmd.Parameters.AddWithValue("@newUsername", newUsername);
-        //        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
-        //        conn.Open();
-        //        cmd.ExecuteNonQuery();
-        //    }
-
-        //    string updateReviews = "UPDATE Reviews SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
-
-        //    using (SqlConnection conn = new SqlConnection(connectionString))
-        //    using (SqlCommand cmd = new SqlCommand(updateReviews, conn))
-        //    {
-        //        cmd.Parameters.AddWithValue("@newUsername", newUsername);
-        //        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
-        //        conn.Open();
-        //        cmd.ExecuteNonQuery();
-        //    }
-        //}
-
-
-
-
-        //public void AddNewsWithLocalizations(string titleRu, string titleEn,
-        //                   string descRu, string descEn,
-        //                   DateTime publishDate, string imagePath)
-        //{
-        //    using (var context = new DanceStudioContext())
-        //    {
-        //        var news = new Newss
-        //        {
-        //            PublishDate = publishDate,
-        //            ImagePath = imagePath,
-        //            Status = "Active",
-        //            Localizations =
-        //    {
-        //        new NewsLocalization { LanguageCode = "ru", Title = titleRu, Description = descRu },
-        //        new NewsLocalization { LanguageCode = "en", Title = titleEn, Description = descEn }
-        //    }
-        //        };
-
-        //        context.News.Add(news);
-        //        context.SaveChanges();
-        //    }
-        //}
-
-        //public List<Newss> GetNewsByLanguage(string languageCode)
-        //{
-        //    using (var context = new DanceStudioContext())
-        //    {
-        //        return context.News
-        //            .Include(n => n.Localizations)
-        //            .Where(n => n.Localizations.Any(l => l.LanguageCode == languageCode))
-        //            .OrderByDescending(n => n.PublishDate)
-        //            .ToList();
-        //    }
-        //}
-
-        //public void UpdateNewsLocalization(int newsId, string languageCode,
-        //                         string newTitle, string newDescription)
-        //{
-        //    using (var context = new DanceStudioContext())
-        //    {
-        //        var localization = context.NewsLocalizations
-        //            .FirstOrDefault(nl => nl.NewsId == newsId && nl.LanguageCode == languageCode);
-
-        //        if (localization != null)
-        //        {
-        //            localization.Title = newTitle;
-        //            localization.Description = newDescription;
-        //            context.SaveChanges();
-        //        }
-        //    }
-        //}
-
-        //public void DeleteNews(int newsId)
-        //{
-        //    using (var context = new DanceStudioContext())
-        //    {
-        //        var news = context.News
-        //            .Include(n => n.Localizations)
-        //            .FirstOrDefault(n => n.Id == newsId);
-
-        //        if (news != null)
-        //        {
-        //            context.NewsLocalizations.RemoveRange(news.Localizations);
-        //            context.News.Remove(news);
-        //            context.SaveChanges();
-        //        }
-        //    }
-        //}
-
-        //// Асинхронный метод с фильтрацией
-        //public async Task<List<Newss>> GetFilteredNewsAsync(string language,
-        //                                                  DateTime? fromDate = null,
-        //                                                  string status = null)
-        //{
-        //    using (var context = new DanceStudioContext())
-        //    {
-        //        var query = context.News
-        //            .Include(n => n.Localizations)
-        //            .Where(n => n.Localizations.Any(l => l.LanguageCode == language));
-
-        //        if (fromDate.HasValue)
-        //            query = query.Where(n => n.PublishDate >= fromDate);
-
-        //        if (!string.IsNullOrEmpty(status))
-        //            query = query.Where(n => n.Status == status);
-
-        //        return await query
-        //            .OrderByDescending(n => n.PublishDate)
-        //            .ToListAsync();
-        //    }
-        //}
-
-        //public void UpdateNewsWithTransaction(int newsId, DateTime newDate, string newImagePath)
-        //{
-        //    using (var context = new DanceStudioContext())
-        //    using (var transaction = context.Database.BeginTransaction())
-        //    {
-        //        try
-        //        {
-        //            var news = context.News.Find(newsId);
-        //            news.PublishDate = newDate;
-        //            news.ImagePath = newImagePath;
-
-        //            context.SaveChanges();
-        //            transaction.Commit();
-        //        }
-        //        catch
-        //        {
-        //            transaction.Rollback();
-        //            throw;
-        //        }
-        //    }
-        //}
-
-
-
-
-
 
 
         public static List<News> GetNewsFromDatabase()
@@ -1341,27 +937,6 @@ namespace dance_studio
                 }
             }
         }
-        //public static bool DeleteNewsFromDatabase(int newsId)
-        //{
-        //    try
-        //    {
-        //        string query = "DELETE FROM NEWS WHERE ID = @NewsId";
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            SqlCommand cmd = new SqlCommand(query, conn);
-        //            cmd.Parameters.AddWithValue("@NewsId", newsId);
-
-        //            int rowsAffected = cmd.ExecuteNonQuery();
-        //            return rowsAffected > 0;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-        //}
-
 
         public static void AddReviewToDatabase(string reviewText, string userName, int rating)
         {

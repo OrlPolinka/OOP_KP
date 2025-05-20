@@ -56,16 +56,13 @@ namespace dance_studio.Pages
         {
             if ((sender as Button)?.DataContext is TimetableEntry entry)
             {
-                // Получаем данные из полей редактирования
                 entry.DayOfWeek = NewDayOfWeek.Text;
                 entry.Time = NewTime.Text;
                 entry.Style = NewStyle.Text;
                 entry.Trainer = NewTrainer.Text;
 
-                // Обновляем данные в базе
                 DatabaseHelper.UpdateTimetable(entry);
 
-                // Перезагружаем данные таблицы
                 LoadTimetable();
             }
         }
@@ -74,17 +71,14 @@ namespace dance_studio.Pages
         {
             if ((sender as Button)?.DataContext is TimetableEntry entry)
             {
-                // Удаляем запись из базы данных
                 DatabaseHelper.DeleteTimetable(entry.Id);
 
-                // Перезагружаем таблицу
                 LoadTimetable();
             }
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            // Создаем новый объект для добавления
             TimetableEntry newEntry = new TimetableEntry
             {
                 DayOfWeek = NewDayOfWeek.Text,
@@ -92,10 +86,8 @@ namespace dance_studio.Pages
                 Style = NewStyle.Text,
                 Trainer = NewTrainer.Text
             };
-            // Добавляем в базу данных
             DatabaseHelper.AddTimetable(newEntry);
 
-            // Перезагружаем таблицу
             LoadTimetable();
         }
 
@@ -120,12 +112,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/News.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminNews.xaml", UriKind.Relative));
                 }
             }
@@ -180,12 +170,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Timetable.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminTimetable.xaml", UriKind.Relative));
                 }
             }
@@ -201,12 +189,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Subscriptions.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminSubscriptions.xaml", UriKind.Relative));
                 }
             }

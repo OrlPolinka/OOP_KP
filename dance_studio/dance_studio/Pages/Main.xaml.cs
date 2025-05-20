@@ -30,8 +30,6 @@ namespace dance_studio.Pages
                 InitializeComponent();
                 this.Loaded += Window_Loaded;
 
-                // Обновите видимость элементов меню
-                //UpdateMenuVisibility();
             }
             catch (Exception ex)
             {
@@ -59,7 +57,6 @@ namespace dance_studio.Pages
             var menu = this.FindName("MainMenu") as Menu;
             if (menu != null)
             {
-                //Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/dancer_icon.ico"));
             }
         }
         public Visibility SignUpVisibility { get; set; }
@@ -83,12 +80,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/News.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminNews.xaml", UriKind.Relative));
                 }
             }
@@ -144,12 +139,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Timetable.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminTimetable.xaml", UriKind.Relative));
                 }
             }
@@ -165,12 +158,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Subscriptions.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminSubscriptions.xaml", UriKind.Relative));
                 }
             }

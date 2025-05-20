@@ -59,7 +59,6 @@ namespace dance_studio.Pages
         private void LoadSubscriptions()
         {
 
-            // Загружаем подписки по текущему пользователю
             try
             {
 
@@ -114,33 +113,27 @@ namespace dance_studio.Pages
 
         private void EditProfile_Click(object sender, RoutedEventArgs e)
         {
-            // Получаем новое имя из TextBox
             string newUsername = UsernameBox.Text.Trim();
             string password = PasswordBox.Text.Trim();
             string phone = PhoneBox.Text.Trim();
             string email = EmailBox.Text.Trim();
 
 
-            // Проверяем, чтобы имя не было пустым
             if (string.IsNullOrEmpty(newUsername))
             {
                 MessageBox.Show("Имя пользователя не может быть пустым!");
                 return;
             }
 
-            // Получаем текущего пользователя
-            string currentUsername = Seccion.Username; // Предполагаем, что текущий пользователь хранится в Seccion.Username
+            string currentUsername = Seccion.Username; 
 
-            // Обновляем имя пользователя в базе данных
             bool isUpdated = DatabaseHelper.UpdateUsernameInDatabase(currentUsername, newUsername, password, phone, email);
 
             if (isUpdated)
             {
-                // Если обновление прошло успешно, обновляем данные в Seccion
                 Seccion.Username = newUsername;
                 MessageBox.Show("Личные данные успешно обновлены!");
 
-                // Можно обновить интерфейс, если нужно
                 UsernameBox.Text = newUsername;
             }
             else
@@ -169,12 +162,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/News.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminNews.xaml", UriKind.Relative));
                 }
             }
@@ -229,12 +220,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Timetable.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminTimetable.xaml", UriKind.Relative));
                 }
             }
@@ -250,12 +239,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Subscriptions.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminSubscriptions.xaml", UriKind.Relative));
                 }
             }

@@ -35,7 +35,6 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
-            <!-- Menu items (оставлены без изменений) -->
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}" FontSize="16" Foreground="White" Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
             <MenuItem Header="{DynamicResource MenuDirections}" FontSize="16" Foreground="White" Click="GoToDirections"/>
@@ -51,7 +50,7 @@
 
         <TextBlock HorizontalAlignment="Center" Margin="0,53,0,0" TextWrapping="Wrap" Text="{DynamicResource MenuTimetable}" VerticalAlignment="Top" FontSize="24" />
         <Border Grid.Row="0" Grid.Column="0" BorderBrush="#8B0000" BorderThickness="1" Margin="10,90,10,10">
-            <!-- ScrollViewer добавлен здесь -->
+            
             <ScrollViewer Margin="0,9,0,19" VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -108,109 +107,3 @@
 </Page>
 
 
-
-<!--<Page x:Class="dance_studio.Pages.Timetable"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:dance_studio.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="1440"
-      Title="Timetable">
-
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Resources/ResourcesStyle.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            <DataTemplate x:Key="TimetableCardTemplate">
-                <Border Background="#DDD" Margin="5" Padding="5" CornerRadius="5">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Time}" FontWeight="Bold" />
-                        <TextBlock Text="{Binding Style}" />
-                        <TextBlock Text="{DynamicResource Trainer}" />
-                        <TextBlock Text="{Binding Trainer}" />
-                        <Button Content="{DynamicResource Sign}" Margin="5,5,0,0" Height="25" Click="GoToSignUp"/>
-                    </StackPanel>
-                </Border>
-            </DataTemplate>
-        </ResourceDictionary>
-    </Page.Resources>
-
-
-    <Grid Background="White" Width="1440" Height="800">
-
-
-
-        <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
-            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
-            <MenuItem Header="{DynamicResource MenuNews}" FontSize="16" Foreground="White" Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
-            <MenuItem Header="{DynamicResource MenuDirections}" FontSize="16" Foreground="White" Click="GoToDirections"/>
-            <MenuItem Header="{DynamicResource MenuTrainers}" FontSize="16" Foreground="White" Click="GoToTrainers"/>
-            <MenuItem Header="{DynamicResource MenuTimetable}" FontSize="16" Foreground="White" Click="GoToTimetable"  Visibility="{Binding TimetableVisibility}"/>
-            <MenuItem Header="{DynamicResource MenuAbonents}" FontSize="16" Foreground="White" Click="GoToSubscriptions"/>
-            <MenuItem Header="{DynamicResource MenuContacts}" FontSize="16" Foreground="White" Click="GoToContacts"/>
-            <MenuItem Header="{DynamicResource MenuAboutUs}" FontSize="16" Foreground="White" Click="GoToAboutUs"/>
-            <MenuItem Header="{DynamicResource MenuSignUp}" FontSize="16" Foreground="White" Click="GoToSignUp"/>
-            <MenuItem Header="{DynamicResource MenuExit}" FontSize="16" HorizontalAlignment="Right" Foreground="White" Click="GoToLogin"/>
-            <MenuItem Header="{DynamicResource MenuAccount}" FontSize="16" HorizontalAlignment="Right" Foreground="White" Click="GoToAccount"/>
-        </Menu>
-        <Frame x:Name="MainFrame" Grid.Row="1"/>
-
-        <Grid Margin="0,90,0,19">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-
-            -->
-<!-- Названия дней недели -->
-<!--
-            <ItemsControl x:Name="DaysOfWeekControl" Grid.Row="0" Grid.ColumnSpan="7" Margin="0,0,0,10" FontSize="16">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="7"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="#FFEBEBEB" CornerRadius="5" Margin="2" Padding="5">
-                            <TextBlock Text="{Binding}" FontWeight="Bold" TextAlignment="Center"/>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsSource>
-                    <x:Array Type="sys:String" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                        <sys:String>Понедельник</sys:String>
-                        <sys:String>Вторник</sys:String>
-                        <sys:String>Среда</sys:String>
-                        <sys:String>Четверг</sys:String>
-                        <sys:String>Пятница</sys:String>
-                        <sys:String>Суббота</sys:String>
-                        <sys:String>Воскресенье</sys:String>
-                    </x:Array>
-                </ItemsControl.ItemsSource>
-            </ItemsControl>
-
-            -->
-<!-- Контейнеры для карточек занятий -->
-<!--
-            <ItemsControl x:Name="DaysContainer" Grid.Row="1" Grid.ColumnSpan="7">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="7"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </Grid>
-        <TextBlock HorizontalAlignment="Center" Margin="0,53,0,0" TextWrapping="Wrap" Text="{DynamicResource MenuTimetable}" VerticalAlignment="Top" FontSize="24"/>
-
-    </Grid>
-</Page>-->

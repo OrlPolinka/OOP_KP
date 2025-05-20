@@ -44,7 +44,6 @@ namespace dance_studio.Pages
             }
             catch (Exception ex)
             {
-                // Логирование ошибки или вывод в консоль
                 Console.WriteLine($"Ошибка: {ex.Message}");
             }
         }

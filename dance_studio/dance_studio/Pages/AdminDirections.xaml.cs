@@ -43,10 +43,9 @@ namespace dance_studio.Pages
             if (string.IsNullOrEmpty(input))
                 return false;
 
-            // Проверяем, что в строке нет кириллицы и других неанглийских символов
             foreach (char c in input)
             {
-                if (c >= 'А' && c <= 'я') // Русские буквы (включая Ёё)
+                if (c >= 'А' && c <= 'я') 
                     return false;
             }
 
@@ -82,13 +81,12 @@ namespace dance_studio.Pages
             if (IsEnglishTextStrict(styleEn) && IsEnglishTextStrict(descriptionEn))
             {
 
-                // Сохранение новости в базу данных
                 bool isSuccess = DatabaseHelper.AddStyle(style, description, styleEn, descriptionEn);
 
                 if (isSuccess)
                 {
                     MessageBox.Show("Стиль успешно добавлен!");
-                    LoadStyles(); // Перезагружаем список новостей
+                    LoadStyles(); 
                     ClearForm();
                 }
                 else
@@ -108,10 +106,8 @@ namespace dance_studio.Pages
         }
 
 
-        // Обработчик кнопки "Отмена"
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            // Очистка всех полей формы
             ClearForm();
         }
 
@@ -139,7 +135,7 @@ namespace dance_studio.Pages
                     if (deleted)
                     {
                         MessageBox.Show("Стиль удален.");
-                        LoadStyles(); // обновление списка
+                        LoadStyles();
                     }
                     else
                     {
@@ -159,7 +155,7 @@ namespace dance_studio.Pages
             StylesItemsControl.ItemsSource = styles;
         }
 
-        public static ScrollViewer My_Scroll { get; set; } // Статическое свойство
+        public static ScrollViewer My_Scroll { get; set; } 
 
         private void ScrollLeft(object sender, RoutedEventArgs e)
         {
@@ -195,12 +191,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/News.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminNews.xaml", UriKind.Relative));
                 }
             }
@@ -255,12 +249,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Timetable.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminTimetable.xaml", UriKind.Relative));
                 }
             }
@@ -276,12 +268,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Subscriptions.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminSubscriptions.xaml", UriKind.Relative));
                 }
             }

@@ -23,7 +23,6 @@ namespace dance_studio.Pages
     /// </summary>
     public partial class SignUp : Page
     {
-        private bool isLoggedInAsClient; // флаг, получаем из логики входа
 
         public SignUp()
         {
@@ -32,8 +31,6 @@ namespace dance_studio.Pages
                 InitializeComponent();
                 AbonementComboBox.SelectionChanged += AbonementComboBox_SelectionChanged;
                 this.Loaded += Data_Loaded;
-                //PhoneBox1.PhoneTextBox.Text = "+375 (29) 123-45-67";
-                //PhoneBox2.PhoneTextBox.Text = "+375 (29) 123-45-67";
             }
             catch (Exception ex)
             {
@@ -55,7 +52,6 @@ namespace dance_studio.Pages
                 LoadData();
                 if (!string.IsNullOrEmpty(Seccion.Username))
                 {
-                    // Если у вас TextBox для имени пользователя
                     UserComboBox1.Text = Seccion.Username;
                     UserComboBox2.Text = Seccion.Username;
                 }
@@ -91,8 +87,6 @@ namespace dance_studio.Pages
                     SqlDataAdapter userAdapter = new SqlDataAdapter("SELECT USER_NAME FROM CLIENTS", conn);
                     DataTable userTable = new DataTable();
                     userAdapter.Fill(userTable);
-                    //UserComboBox1.Text = userTable.DefaultView;
-                    //UserComboBox2.Text = userTable.DefaultView;
 
                     // Абонементы
                     SqlDataAdapter abAdapter = new SqlDataAdapter("SELECT PRICE, TITLE FROM ABONEMENTS", conn);
@@ -100,7 +94,6 @@ namespace dance_studio.Pages
                     abAdapter.Fill(abTable);
                     AbonementComboBox.ItemsSource = abTable.DefaultView;
                     AbonementComboBox.DisplayMemberPath = "TITLE";
-                    // Внутренне используется вся строка DataRowView
                     AbonementComboBox.SelectedIndex = 0;
 
 
@@ -292,12 +285,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/News.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminNews.xaml", UriKind.Relative));
                 }
             }
@@ -352,12 +343,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Timetable.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminTimetable.xaml", UriKind.Relative));
                 }
             }
@@ -373,12 +362,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Subscriptions.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminSubscriptions.xaml", UriKind.Relative));
                 }
             }

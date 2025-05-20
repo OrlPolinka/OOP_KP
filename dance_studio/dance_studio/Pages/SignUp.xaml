@@ -50,20 +50,7 @@
 
                     <TextBlock Text="{DynamicResource Username}" FontSize="16"/>
 
-                    <!--<ComboBox x:Name="UserComboBox1"
-          DisplayMemberPath="USER_NAME"
-          FontSize="16">
-                        <ComboBox.Style>
-                            <Style TargetType="ComboBox">
-                                <Style.Triggers>
-                                    <Trigger Property="SelectedItem" Value="{x:Null}">
-                                        <Setter Property="BorderBrush" Value="Red"/>
-                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите значение"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ComboBox.Style>
-                    </ComboBox>-->
+                    
                     <TextBox x:Name="UserComboBox1" 
          FontSize="16"
          IsReadOnly="True"/>
@@ -92,18 +79,7 @@
                     <TextBlock Text="{DynamicResource Phone}" FontSize="16"/>
                     <local:ValidatedTextPhoneBox x:Name="PhoneBox1" Margin="0,0,0,0"/>
                     
-                    <!--<TextBox x:Name="PhoneBox1" FontSize="16">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="">
-                                        <Setter Property="BorderBrush" Value="Red"/>
-                                        <Setter Property="ToolTip" Value="Введите номер телефона"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>-->
+                   
 
                     <TextBlock Text="Instagram:" FontSize="16"/>
                     <TextBox x:Name="InstagramBox1" FontSize="16">
@@ -191,18 +167,7 @@
                     <TextBlock Text="{DynamicResource SignOn}" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
 
                     <TextBlock Text="{DynamicResource Username}" FontSize="16"/>
-                    <!--<ComboBox x:Name="UserComboBox2" DisplayMemberPath="USER_NAME" FontSize="16">
-                        <ComboBox.Style>
-                            <Style TargetType="ComboBox">
-                                <Style.Triggers>
-                                    <Trigger Property="SelectedItem" Value="{x:Null}">
-                                        <Setter Property="BorderBrush" Value="Red"/>
-                                        <Setter Property="ToolTip" Value="Пожалуйста, выберите пользователя"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ComboBox.Style>
-                    </ComboBox>-->
+                    
                     <TextBox x:Name="UserComboBox2" 
 FontSize="16"
 IsReadOnly="True"/>
@@ -266,18 +231,6 @@ IsReadOnly="True"/>
                     <TextBlock Text="{DynamicResource Phone}" FontSize="16"/>
                     <local:ValidatedTextPhoneBox x:Name="PhoneBox2" Margin="0,0,0,0" Text="+375 (29) 123-45-67" />
 
-                    <!--<TextBox x:Name="PhoneBox2" FontSize="16">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="">
-                                        <Setter Property="BorderBrush" Value="Red"/>
-                                        <Setter Property="ToolTip" Value="Пожалуйста, введите телефон"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>-->
 
                     <TextBlock Text="Instagram:" FontSize="16"/>
                     <TextBox x:Name="InstagramBox2" FontSize="16">
@@ -372,8 +325,6 @@ IsReadOnly="True"/>
                         </Button.Template>
                     </Button>
 
-
-                    <!--Click="Register_Click"-->
                 </StackPanel>
             </Border>
         </Grid>

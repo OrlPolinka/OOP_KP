@@ -43,29 +43,8 @@ namespace dance_studio.Pages
             TrainersItemsControl.ItemsSource = trainers;
         }
 
-        //private void AnimateScroll(double toValue)
-        //{
-        //    DoubleAnimation animation = new DoubleAnimation
-        //    {
-        //        To = toValue,
-        //        Duration = TimeSpan.FromMilliseconds(500),
-        //        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-        //    };
 
-        //    AnimationClock clock = animation.CreateClock();
-        //    //MyScroll.ApplyAnimationClock(ScrollViewerHorizontalOffsetProperty, clock);
-        //}
-
-
-        //public static void OnHorizontalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is ScrollViewer scrollViewer)
-        //    {
-        //        scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
-        //    }
-        //}
-
-        public static ScrollViewer My_Scroll { get; set; } // Статическое свойство
+        public static ScrollViewer My_Scroll { get; set; }
 
         private void ScrollLeft(object sender, RoutedEventArgs e)
         {
@@ -101,12 +80,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/News.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminNews.xaml", UriKind.Relative));
                 }
             }
@@ -161,12 +138,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Timetable.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminTimetable.xaml", UriKind.Relative));
                 }
             }
@@ -182,12 +157,10 @@ namespace dance_studio.Pages
             {
                 if (Seccion.IsClient)
                 {
-                    // Если пользователь администратор, показываем страницу с расписанием для админов
                     NavigationService?.Navigate(new Uri("Pages/Subscriptions.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    // Для клиентов показываем обычное расписание
                     NavigationService?.Navigate(new Uri("Pages/AdminSubscriptions.xaml", UriKind.Relative));
                 }
             }
