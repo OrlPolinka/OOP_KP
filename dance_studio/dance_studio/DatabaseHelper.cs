@@ -461,8 +461,31 @@ namespace dance_studio
         }
 
 
+        public static bool IsUsernameExists(string username, string role)
+        {
+            string table = role == "Администратор" ? "ADMINS" : "CLIENTS";
+            string query = $"SELECT COUNT(*) FROM {table} WHERE USER_NAME = @username";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@username", username);
+                conn.Open();
+
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
+
         public static bool RegisterUser(string username, string password, string role)
         {
+            if (IsUsernameExists(username, role))
+            {
+                Console.WriteLine("Пользователь с таким именем уже существует!");
+                return false;
+            }
+
             string table = role == "Администратор" ? "ADMINS" : "CLIENTS";
             string query = $"INSERT INTO {table} (USER_NAME, PASSWORD) VALUES (@username, @password)";
 
@@ -475,11 +498,12 @@ namespace dance_studio
 
                 try
                 {
-                    cmd.ExecuteNonQuery();
-                    return true;
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0; // Возвращаем true, если добавление успешно
                 }
-                catch (SqlException)
+                catch (SqlException ex)
                 {
+                    Console.WriteLine($"Ошибка при регистрации: {ex.Message}");
                     return false; // например, если логин уже существует
                 }
             }
@@ -699,36 +723,383 @@ namespace dance_studio
         }
 
 
+
         public static bool UpdateUsernameInDatabase(string oldUsername, string newUsername, string password, string phone, string email)
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "UPDATE CLIENTS SET USER_NAME = @newUsername, PASSWORD = @password, PHONE = @phone, EMAIL = @email WHERE USER_NAME = @oldUsername";
+                conn.Open();
 
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                // 1. Получаем полный список всех таблиц, зависящих от USER_NAME
+                List<string> allDependentTables = GetAllTablesWithUserNameReference(conn);
+
+                using (SqlTransaction transaction = conn.BeginTransaction())
                 {
-                    cmd.Parameters.AddWithValue("@newUsername", newUsername);
-                    cmd.Parameters.AddWithValue("@password", password);
-                    cmd.Parameters.AddWithValue("@phone", phone);
-                    cmd.Parameters.AddWithValue("@email", email);
-                    cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+                    try
+                    {
+                        // 2. Проверки валидации
+                        if (!ValidateNewCredentials(newUsername, password, oldUsername, conn, transaction))
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
 
-                    conn.Open();
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                        // 3. Временно отключаем проверку внешних ключей
+                        DisableForeignKeyChecks(conn, transaction);
 
-                    return rowsAffected > 0;
+                        // 4. Обновляем основную таблицу
+                        if (!UpdateMainUserRecord(conn, transaction, oldUsername, newUsername, password, phone, email))
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
+
+                        // 5. Обновляем все зависимые таблицы
+                        UpdateAllDependentTables(conn, transaction, allDependentTables, oldUsername, newUsername);
+
+                        // 6. Включаем проверку внешних ключей обратно
+                        EnableForeignKeyChecks(conn, transaction);
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show($"Ошибка обновления: {ex.Message}");
+                        return false;
+                    }
                 }
             }
-            catch (Exception ex)
+        }
+
+        private static List<string> GetAllTablesWithUserNameReference(SqlConnection conn)
+        {
+            var tables = new List<string>();
+            string query = @"
+        SELECT DISTINCT OBJECT_NAME(fk.parent_object_id) AS table_name
+        FROM sys.foreign_keys AS fk
+        INNER JOIN sys.foreign_key_columns AS fkc 
+            ON fk.object_id = fkc.constraint_object_id
+        INNER JOIN sys.tables AS t 
+            ON fk.referenced_object_id = t.object_id
+        INNER JOIN sys.columns AS c 
+            ON fkc.referenced_column_id = c.column_id 
+            AND fkc.referenced_object_id = c.object_id
+        WHERE t.name = 'CLIENTS' AND c.name = 'USER_NAME'";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                MessageBox.Show("Ошибка при обновлении имени в базе данных: " + ex.Message);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        tables.Add(reader["table_name"].ToString());
+                    }
+                }
+            }
+            return tables;
+        }
+
+        private static void DisableForeignKeyChecks(SqlConnection conn, SqlTransaction transaction)
+        {
+            string query = "EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'";
+            new SqlCommand(query, conn, transaction).ExecuteNonQuery();
+        }
+
+        private static void EnableForeignKeyChecks(SqlConnection conn, SqlTransaction transaction)
+        {
+            string query = "EXEC sp_MSforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'";
+            new SqlCommand(query, conn, transaction).ExecuteNonQuery();
+        }
+
+        private static bool ValidateNewCredentials(string newUsername, string password, string oldUsername,
+                                                 SqlConnection conn, SqlTransaction transaction)
+        {
+            if (newUsername.Equals("Орловская Полина", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Это имя пользователя запрещено");
                 return false;
+            }
+
+            if (password.Equals("admin", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Пароль 'admin' недопустим");
+                return false;
+            }
+
+            string checkQuery = "SELECT COUNT(*) FROM CLIENTS WHERE USER_NAME = @username";
+            using (SqlCommand cmd = new SqlCommand(checkQuery, conn, transaction))
+            {
+                cmd.Parameters.AddWithValue("@username", newUsername);
+                int count = (int)cmd.ExecuteScalar();
+                if (count > 0 && !newUsername.Equals(oldUsername, StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Пользователь с таким именем уже существует");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool UpdateMainUserRecord(SqlConnection conn, SqlTransaction transaction,
+                                               string oldUsername, string newUsername,
+                                               string password, string phone, string email)
+        {
+            string query = @"UPDATE CLIENTS 
+                    SET USER_NAME = @newUsername, 
+                        PASSWORD = @password, 
+                        PHONE = @phone, 
+                        EMAIL = @email 
+                    WHERE USER_NAME = @oldUsername";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.AddWithValue("@newUsername", newUsername);
+                cmd.Parameters.AddWithValue("@password", password);
+                cmd.Parameters.AddWithValue("@phone", phone);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+        private static void UpdateAllDependentTables(SqlConnection conn, SqlTransaction transaction,
+                                           List<string> tables, string oldUsername, string newUsername)
+        {
+            foreach (var table in tables)
+            {
+                try
+                {
+                    string query = $@"IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS 
+                                      WHERE TABLE_NAME = '{table}' 
+                                      AND COLUMN_NAME = 'USER_NAME')
+                             BEGIN
+                                 UPDATE {table} SET USER_NAME = @newUsername 
+                                 WHERE USER_NAME = @oldUsername
+                             END";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@newUsername", newUsername);
+                        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Логирование ошибки
+                    Debug.WriteLine($"Ошибка обновления таблицы {table}: {ex.Message}");
+                }
             }
         }
 
 
+        //public static bool UpdateUsernameInDatabase(string oldUsername, string newUsername, string password, string phone, string email)
+        //{
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    {
+        //        conn.Open();
+        //        using (SqlTransaction transaction = conn.BeginTransaction())
+        //        {
+        //            try
+        //    {
+        //        // Проверка запрещенных значений
+        //        if (newUsername.Equals("Орловская Полина", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            MessageBox.Show("Это имя пользователя запрещено для использования");
+        //            return false;
+        //        }
 
+        //        if (password.Equals("admin", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            MessageBox.Show("Пароль 'admin' недопустим");
+        //            return false;
+        //        }
+
+        //        // Проверка существования нового имени пользователя (кроме текущего пользователя)
+        //        if (IsUsernameExists(newUsername, Seccion.Role) && !newUsername.Equals(oldUsername, StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            MessageBox.Show("Пользователь с таким именем уже существует!");
+        //            return false;
+        //        }
+
+        //        UpdateDependentTables(conn, transaction, oldUsername, newUsername);
+
+        //        string query = "UPDATE CLIENTS SET USER_NAME = @newUsername, PASSWORD = @password, PHONE = @phone, EMAIL = @email WHERE USER_NAME = @oldUsername";
+
+        //        using (SqlCommand cmd = new SqlCommand(query, conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@newUsername", newUsername);
+        //            cmd.Parameters.AddWithValue("@password", password);
+        //            cmd.Parameters.AddWithValue("@phone", phone);
+        //            cmd.Parameters.AddWithValue("@email", email);
+        //            cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+
+        //            conn.Open();
+        //            int rowsAffected = cmd.ExecuteNonQuery();
+
+        //            if (rowsAffected == 0)
+        //            {
+        //                MessageBox.Show("Пользователь не найден или данные не изменились");
+        //                return false;
+        //            }
+
+        //            return true;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Ошибка при обновлении данных: " + ex.Message);
+        //        return false;
+        //    }
+        //}
+
+        //    public static bool UpdateUsernameInDatabase(string oldUsername, string newUsername, string password, string phone, string email)
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            using (SqlTransaction transaction = conn.BeginTransaction())
+        //            {
+        //                try
+        //                {
+        //                    // Проверка запрещенных значений
+        //                    if (newUsername.Equals("Орловская Полина", StringComparison.OrdinalIgnoreCase))
+        //                    {
+        //                        MessageBox.Show("Это имя пользователя запрещено для использования");
+        //                        transaction.Rollback();
+        //                        return false;
+        //                    }
+
+        //                    if (password.Equals("admin", StringComparison.OrdinalIgnoreCase))
+        //                    {
+        //                        MessageBox.Show("Пароль 'admin' недопустим");
+        //                        transaction.Rollback();
+        //                        return false;
+        //                    }
+
+        //                    // Проверка существования нового имени пользователя в транзакции
+        //                    if (IsUsernameExistsInTransaction(conn, transaction, newUsername) &&
+        //                        !newUsername.Equals(oldUsername, StringComparison.OrdinalIgnoreCase))
+        //                    {
+        //                        MessageBox.Show("Пользователь с таким именем уже существует!");
+        //                        transaction.Rollback();
+        //                        return false;
+        //                    }
+
+        //                    // Обновление всех зависимых таблиц
+        //                    UpdateAllDependentTables(conn, transaction, oldUsername, newUsername);
+
+        //                    // Обновление основной таблицы
+        //                    string query = @"UPDATE CLIENTS 
+        //                           SET USER_NAME = @newUsername, 
+        //                               PASSWORD = @password, 
+        //                               PHONE = @phone, 
+        //                               EMAIL = @email 
+        //                           WHERE USER_NAME = @oldUsername";
+
+        //                    using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+        //                    {
+        //                        cmd.Parameters.AddWithValue("@newUsername", newUsername);
+        //                        cmd.Parameters.AddWithValue("@password", password);
+        //                        cmd.Parameters.AddWithValue("@phone", phone);
+        //                        cmd.Parameters.AddWithValue("@email", email);
+        //                        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+
+        //                        int rowsAffected = cmd.ExecuteNonQuery();
+
+        //                        if (rowsAffected == 0)
+        //                        {
+        //                            MessageBox.Show("Пользователь не найден или данные не изменились");
+        //                            transaction.Rollback();
+        //                            return false;
+        //                        }
+
+        //                        transaction.Commit();
+        //                        return true;
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    transaction.Rollback();
+        //                    MessageBox.Show("Ошибка при обновлении данных: " + ex.Message);
+        //                    return false;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    private static bool IsUsernameExistsInTransaction(SqlConnection conn, SqlTransaction transaction, string username)
+        //    {
+        //        string query = "SELECT COUNT(*) FROM CLIENTS WHERE USER_NAME = @username";
+        //        using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+        //        {
+        //            cmd.Parameters.AddWithValue("@username", username);
+        //            return (int)cmd.ExecuteScalar() > 0;
+        //        }
+        //    }
+
+        //    private static void UpdateAllDependentTables(SqlConnection conn, SqlTransaction transaction,
+        //                                       string oldUsername, string newUsername)
+        //    {
+        //        // Список всех таблиц, где есть ссылки на CLIENTS.USER_NAME
+        //        string[] dependentTables = {
+        //    "CLIENT_SUBSCRIPTIONS",
+        //    "CLIENT_RECORDS",
+        //    "Reviews"
+        //};
+
+        //        foreach (var table in dependentTables)
+        //        {
+        //            string query = $"UPDATE {table} SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
+        //            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+        //            {
+        //                cmd.Parameters.AddWithValue("@newUsername", newUsername);
+        //                cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //        }
+        //    }
+
+
+        //private static void UpdateDependentTables(SqlConnection conn, SqlTransaction transaction, string oldUsername, string newUsername)
+        //{
+        //    string updateCLIENT_SUBSCRIPTIONS = "UPDATE CLIENT_SUBSCRIPTIONS SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
+
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    using (SqlCommand cmd = new SqlCommand(updateCLIENT_SUBSCRIPTIONS, conn))
+        //    {
+        //        cmd.Parameters.AddWithValue("@newUsername", newUsername);
+        //        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+        //        conn.Open();
+        //        cmd.ExecuteNonQuery();
+        //    }
+
+
+        //    string updateCLIENT_RECORDS = "UPDATE CLIENT_RECORDS SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
+
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    using (SqlCommand cmd = new SqlCommand(updateCLIENT_RECORDS, conn))
+        //    {
+        //        cmd.Parameters.AddWithValue("@newUsername", newUsername);
+        //        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+        //        conn.Open();
+        //        cmd.ExecuteNonQuery();
+        //    }
+
+        //    string updateReviews = "UPDATE Reviews SET USER_NAME = @newUsername WHERE USER_NAME = @oldUsername";
+
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    using (SqlCommand cmd = new SqlCommand(updateReviews, conn))
+        //    {
+        //        cmd.Parameters.AddWithValue("@newUsername", newUsername);
+        //        cmd.Parameters.AddWithValue("@oldUsername", oldUsername);
+        //        conn.Open();
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}
 
 
 

@@ -22,7 +22,7 @@
         </Grid.Background>
         
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
-            <MenuItem Header="{DynamicResource MenuMain}" Padding="6,0,6,0" Height="38"  Margin="300,0,0,0" Click="GoToMain"/>
+            <MenuItem Header="{DynamicResource MenuMain}" Padding="10,0,10,0" Height="38"  Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}"  Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
             <MenuItem Header="{DynamicResource MenuDirections}"  Click="GoToDirections"/>
             <MenuItem Header="{DynamicResource MenuTrainers}"  Click="GoToTrainers"/>

@@ -150,8 +150,8 @@
     <sys:String x:Key="Rev">The text of the review:</sys:String>
     <sys:String x:Key="Grade">Grade:</sys:String>
 
-    <sys:String x:Key="light">Light theme</sys:String>
-    <sys:String x:Key="dark">Pink theme</sys:String>
+    <sys:String x:Key="SaveActionsButton">Save and notify all users</sys:String>
+
 
 
 </ResourceDictionary>

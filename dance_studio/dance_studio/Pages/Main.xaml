@@ -25,10 +25,10 @@
         <custom:AnimatedButton HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,665,0,0"/>
 
 
-
-        <Menu x:Name="MainMenu" Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
-
-            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
+        
+            <Menu x:Name="MainMenu" Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
+           
+                <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White"  Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}" FontSize="16" Foreground="White" Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
             <MenuItem Header="{DynamicResource MenuDirections}" FontSize="16" Foreground="White" Click="GoToDirections"/>
             <MenuItem Header="{DynamicResource MenuTrainers}" FontSize="16" Foreground="White" Click="GoToTrainers"/>
@@ -39,7 +39,9 @@
             <MenuItem Header="{DynamicResource MenuSignUp}" FontSize="16" Foreground="White" Click="GoToSignUp"/>
             <MenuItem Header="{DynamicResource MenuExit}" FontSize="16" HorizontalAlignment="Right" Foreground="White" Click="GoToLogin"/>
             <MenuItem Header="{DynamicResource MenuAccount}" FontSize="16" HorizontalAlignment="Right" Foreground="White" Click="GoToAccount"/>
-        </Menu>
+       
+            </Menu>
+        
 
         <TextBlock TextWrapping="Wrap" Text="{DynamicResource DanceStudio}" VerticalAlignment="Top" FontSize="70" Height="105" Width="484" Margin="0,44,0,0" HorizontalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Left" Margin="230,161,0,0" TextWrapping="Wrap" Text="{DynamicResource MainText1}" VerticalAlignment="Top" FontSize="30" Height="50" Width="732"/>

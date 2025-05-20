@@ -22,7 +22,7 @@
         </Grid.Background>
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
-            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
+            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White"  Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}" FontSize="16" Foreground="White" Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
             <MenuItem Header="{DynamicResource MenuDirections}" FontSize="16" Foreground="White" Click="GoToDirections"/>
             <MenuItem Header="{DynamicResource MenuTrainers}" FontSize="16" Foreground="White" Click="GoToTrainers"/>
@@ -70,7 +70,7 @@
 
                 <!-- Кнопки -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                    <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100"  FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Click="SaveButton_Click"/> 
+                    <Button Name="SaveButton" Content="{DynamicResource SaveActionsButton}" Width="348"  FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Click="SaveButton_Click"/> 
                     <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
                 </StackPanel>
             </StackPanel>

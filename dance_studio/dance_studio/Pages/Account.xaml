@@ -38,7 +38,7 @@
         </Grid.Background>
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
-            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
+            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White"  Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}" FontSize="16" Foreground="White" Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
             <MenuItem Header="{DynamicResource MenuDirections}" FontSize="16" Foreground="White" Click="GoToDirections"/>
             <MenuItem Header="{DynamicResource MenuTrainers}" FontSize="16" Foreground="White" Click="GoToTrainers"/>
@@ -66,7 +66,7 @@
             <TextBlock Text="{DynamicResource Phone}" FontSize="18" Margin="0,5,0,0"/>
             <TextBox x:Name="PhoneBox" IsReadOnly="False" Margin="0,5,0,0" FontSize="18"/>
 
-            <TextBlock Text="{DynamicResource Email}" FontSize="18" Margin="0,5,0,0"/>
+            <TextBlock Text="Instagram:" FontSize="18" Margin="0,5,0,0"/>
             <TextBox x:Name="EmailBox" IsReadOnly="False" Margin="0,5,0,0" FontSize="18"/>
 
             <TextBlock Text="{DynamicResource Notifications}" FontSize="18" Margin="0,5,0,0"/>

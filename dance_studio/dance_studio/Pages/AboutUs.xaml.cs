@@ -347,10 +347,19 @@ namespace dance_studio.Pages
                         Background = new SolidColorBrush(Colors.White),
                         Margin = new Thickness(10),
                         Padding = new Thickness(15),
-                        Width = 300,
+                        Width = 350,
+                        MaxHeight = 200, // Ограничиваем высоту отзыва
                         BorderBrush = Brushes.LightGray,
                         BorderThickness = new Thickness(1)
                     };
+
+                    // Главный контейнер с прокруткой
+                    var scrollViewer = new ScrollViewer
+                    {
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled
+                    };
+
 
                     var stackPanel = new StackPanel();
 
@@ -370,13 +379,16 @@ namespace dance_studio.Pages
                         FontSize = 14
                     });
 
-                    stackPanel.Children.Add(new TextBlock
+                    // Текст отзыва с возможностью прокрутки
+                    var reviewTextBlock = new TextBlock
                     {
                         Text = review.Text,
                         TextWrapping = TextWrapping.Wrap,
                         Margin = new Thickness(0, 10, 0, 0),
                         FontSize = 14
-                    });
+                    };
+                    stackPanel.Children.Add(reviewTextBlock);
+
 
                     // Добавляем кнопки (если это отзыв текущего пользователя)
                     if (review.EditButtonsVisibility == Visibility.Visible)
@@ -417,8 +429,8 @@ namespace dance_studio.Pages
 
                         stackPanel.Children.Add(buttonsPanel);
                     }
-
-                    reviewItem.Child = stackPanel;
+                    scrollViewer.Content = stackPanel;
+                    reviewItem.Child = scrollViewer;
                     ReviewStackPanel.Children.Add(reviewItem);
                 }
             }

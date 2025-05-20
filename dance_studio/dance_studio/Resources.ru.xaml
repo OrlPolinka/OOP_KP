@@ -151,8 +151,7 @@
     <sys:String x:Key="Rev">Текст отзыва:</sys:String>
     <sys:String x:Key="Grade">Оценка:</sys:String>
 
-    <sys:String x:Key="light">Светлая тема</sys:String>
-    <sys:String x:Key="dark">Розовая тема</sys:String>
+    <sys:String x:Key="SaveActionsButton">Сохранить и оповестить всех пользователей</sys:String>
 
 
 </ResourceDictionary>

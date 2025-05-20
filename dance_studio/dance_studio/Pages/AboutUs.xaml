@@ -24,7 +24,7 @@
 
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
-            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
+            <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White"  Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}" FontSize="16" Foreground="White" Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
             <MenuItem Header="{DynamicResource MenuDirections}" FontSize="16" Foreground="White" Click="GoToDirections"/>
             <MenuItem Header="{DynamicResource MenuTrainers}" FontSize="16" Foreground="White" Click="GoToTrainers"/>
@@ -108,6 +108,7 @@
             <Button Content="←" Width="50" Margin="0,470,1390,-311" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
 
             <ScrollViewer x:Name="MyScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Margin="0,458,0,-333">
+
                 <StackPanel x:Name="ReviewStackPanel" Orientation="Horizontal" Margin="20">
 
                 </StackPanel>

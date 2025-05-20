@@ -13,7 +13,7 @@
                     <Border
             x:Name="Border"
             Background="{TemplateBinding Background}"
-            Padding="5">
+            Padding="25 0 25 0">
                         <TextBlock
                 Text="{TemplateBinding Header}"
                 HorizontalAlignment="Center"

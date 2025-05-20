@@ -90,6 +90,10 @@ namespace dance_studio.Pages
                     MessageBox.Show($"Данный пароль не может быть использован для регистрации");
 
                 }
+                else if (username == "Орловская Полина")
+                {
+                    MessageBox.Show("Данное имя пользователя не может быть использовано, выберите другое имя пользователя.");
+                }
                 else if (DatabaseHelper.RegisterUser(username, password, role))
                 {
                     MessageBox.Show($"Успешная регистрация как {role}: {username}");
