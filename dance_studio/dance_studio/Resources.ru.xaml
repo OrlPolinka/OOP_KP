@@ -11,7 +11,7 @@
     <sys:String x:Key="Continue">Продолжить</sys:String>
 
     <sys:String x:Key="MenuMain">Главная</sys:String>
-    <sys:String x:Key="MenuNews">Новости</sys:String>
+    <sys:String x:Key="MenuNews">Акции</sys:String>
     <sys:String x:Key="MenuDirections">Направления</sys:String>
     <sys:String x:Key="MenuTrainers">Тренеры</sys:String>
     <sys:String x:Key="MenuTimetable">Расписание</sys:String>

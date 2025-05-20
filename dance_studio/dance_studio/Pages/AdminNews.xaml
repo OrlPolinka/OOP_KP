@@ -16,8 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
-
+    <Grid Width="1440" Height="800" >
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
@@ -68,7 +70,7 @@
 
                 <!-- Кнопки -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                    <Button Name="SaveButton" Command="{x:Static local:AdminNews.SaveCommand}" Content="{DynamicResource SaveButton}" Width="100"  FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/> <!--Click="SaveButton_Click"-->
+                    <Button Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100"  FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Click="SaveButton_Click"/> 
                     <Button Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0" Click="CancelButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
                 </StackPanel>
             </StackPanel>

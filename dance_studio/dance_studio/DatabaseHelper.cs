@@ -393,20 +393,27 @@ namespace dance_studio
             {
                 conn.Open();
 
-                int styleId = GetStyleIdByTitle(conn, entry.Style);
-                int trainerId = GetTrainerIdByFIO(conn, entry.Trainer);
+                try
+                {
+                    int styleId = GetStyleIdByTitle(conn, entry.Style);
+                    int trainerId = GetTrainerIdByFIO(conn, entry.Trainer);
 
-                string query = @"
+                    string query = @"
             INSERT INTO TIMETABLE (DAY_OF_WEEK, TIME, STYLE_ID, TRAINER_ID)
             VALUES (@DayOfWeek, @Time, @StyleId, @TrainerId)";
 
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@DayOfWeek", entry.DayOfWeek);
-                cmd.Parameters.AddWithValue("@Time", entry.Time);
-                cmd.Parameters.AddWithValue("@StyleId", styleId);
-                cmd.Parameters.AddWithValue("@TrainerId", trainerId);
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@DayOfWeek", entry.DayOfWeek);
+                    cmd.Parameters.AddWithValue("@Time", entry.Time);
+                    cmd.Parameters.AddWithValue("@StyleId", styleId);
+                    cmd.Parameters.AddWithValue("@TrainerId", trainerId);
 
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
         }
 
@@ -416,7 +423,7 @@ namespace dance_studio
             cmd.Parameters.AddWithValue("@title", styleTitle);
             object result = cmd.ExecuteScalar();
             if (result == null)
-                throw new Exception($"Стиль '{styleTitle}' не найден.");
+                MessageBox.Show($"Стиль '{styleTitle}' не найден.");
             return (int)result;
         }
 
@@ -426,7 +433,7 @@ namespace dance_studio
             cmd.Parameters.AddWithValue("@fio", trainerFIO);
             object result = cmd.ExecuteScalar();
             if (result == null)
-                throw new Exception($"Тренер '{trainerFIO}' не найден.");
+                MessageBox.Show($"Тренер '{trainerFIO}' не найден.");
             return (int)result;
         }
 
@@ -719,119 +726,130 @@ namespace dance_studio
                 return false;
             }
         }
-        public void AddNewsWithLocalizations(string titleRu, string titleEn,
-                           string descRu, string descEn,
-                           DateTime publishDate, string imagePath)
-        {
-            using (var context = new DanceStudioContext())
-            {
-                var news = new Newss
-                {
-                    PublishDate = publishDate,
-                    ImagePath = imagePath,
-                    Status = "Active",
-                    Localizations =
-            {
-                new NewsLocalization { LanguageCode = "ru", Title = titleRu, Description = descRu },
-                new NewsLocalization { LanguageCode = "en", Title = titleEn, Description = descEn }
-            }
-                };
 
-                context.News.Add(news);
-                context.SaveChanges();
-            }
-        }
 
-        public List<Newss> GetNewsByLanguage(string languageCode)
-        {
-            using (var context = new DanceStudioContext())
-            {
-                return context.News
-                    .Include(n => n.Localizations)
-                    .Where(n => n.Localizations.Any(l => l.LanguageCode == languageCode))
-                    .OrderByDescending(n => n.PublishDate)
-                    .ToList();
-            }
-        }
 
-        public void UpdateNewsLocalization(int newsId, string languageCode,
-                                 string newTitle, string newDescription)
-        {
-            using (var context = new DanceStudioContext())
-            {
-                var localization = context.NewsLocalizations
-                    .FirstOrDefault(nl => nl.NewsId == newsId && nl.LanguageCode == languageCode);
 
-                if (localization != null)
-                {
-                    localization.Title = newTitle;
-                    localization.Description = newDescription;
-                    context.SaveChanges();
-                }
-            }
-        }
 
-        public void DeleteNews(int newsId)
-        {
-            using (var context = new DanceStudioContext())
-            {
-                var news = context.News
-                    .Include(n => n.Localizations)
-                    .FirstOrDefault(n => n.Id == newsId);
 
-                if (news != null)
-                {
-                    context.NewsLocalizations.RemoveRange(news.Localizations);
-                    context.News.Remove(news);
-                    context.SaveChanges();
-                }
-            }
-        }
 
-        // Асинхронный метод с фильтрацией
-        public async Task<List<Newss>> GetFilteredNewsAsync(string language,
-                                                          DateTime? fromDate = null,
-                                                          string status = null)
-        {
-            using (var context = new DanceStudioContext())
-            {
-                var query = context.News
-                    .Include(n => n.Localizations)
-                    .Where(n => n.Localizations.Any(l => l.LanguageCode == language));
+        //public void AddNewsWithLocalizations(string titleRu, string titleEn,
+        //                   string descRu, string descEn,
+        //                   DateTime publishDate, string imagePath)
+        //{
+        //    using (var context = new DanceStudioContext())
+        //    {
+        //        var news = new Newss
+        //        {
+        //            PublishDate = publishDate,
+        //            ImagePath = imagePath,
+        //            Status = "Active",
+        //            Localizations =
+        //    {
+        //        new NewsLocalization { LanguageCode = "ru", Title = titleRu, Description = descRu },
+        //        new NewsLocalization { LanguageCode = "en", Title = titleEn, Description = descEn }
+        //    }
+        //        };
 
-                if (fromDate.HasValue)
-                    query = query.Where(n => n.PublishDate >= fromDate);
+        //        context.News.Add(news);
+        //        context.SaveChanges();
+        //    }
+        //}
 
-                if (!string.IsNullOrEmpty(status))
-                    query = query.Where(n => n.Status == status);
+        //public List<Newss> GetNewsByLanguage(string languageCode)
+        //{
+        //    using (var context = new DanceStudioContext())
+        //    {
+        //        return context.News
+        //            .Include(n => n.Localizations)
+        //            .Where(n => n.Localizations.Any(l => l.LanguageCode == languageCode))
+        //            .OrderByDescending(n => n.PublishDate)
+        //            .ToList();
+        //    }
+        //}
 
-                return await query
-                    .OrderByDescending(n => n.PublishDate)
-                    .ToListAsync();
-            }
-        }
+        //public void UpdateNewsLocalization(int newsId, string languageCode,
+        //                         string newTitle, string newDescription)
+        //{
+        //    using (var context = new DanceStudioContext())
+        //    {
+        //        var localization = context.NewsLocalizations
+        //            .FirstOrDefault(nl => nl.NewsId == newsId && nl.LanguageCode == languageCode);
 
-        public void UpdateNewsWithTransaction(int newsId, DateTime newDate, string newImagePath)
-        {
-            using (var context = new DanceStudioContext())
-            using (var transaction = context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var news = context.News.Find(newsId);
-                    news.PublishDate = newDate;
-                    news.ImagePath = newImagePath;
+        //        if (localization != null)
+        //        {
+        //            localization.Title = newTitle;
+        //            localization.Description = newDescription;
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //}
 
-                    context.SaveChanges();
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
-        }
+        //public void DeleteNews(int newsId)
+        //{
+        //    using (var context = new DanceStudioContext())
+        //    {
+        //        var news = context.News
+        //            .Include(n => n.Localizations)
+        //            .FirstOrDefault(n => n.Id == newsId);
+
+        //        if (news != null)
+        //        {
+        //            context.NewsLocalizations.RemoveRange(news.Localizations);
+        //            context.News.Remove(news);
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //}
+
+        //// Асинхронный метод с фильтрацией
+        //public async Task<List<Newss>> GetFilteredNewsAsync(string language,
+        //                                                  DateTime? fromDate = null,
+        //                                                  string status = null)
+        //{
+        //    using (var context = new DanceStudioContext())
+        //    {
+        //        var query = context.News
+        //            .Include(n => n.Localizations)
+        //            .Where(n => n.Localizations.Any(l => l.LanguageCode == language));
+
+        //        if (fromDate.HasValue)
+        //            query = query.Where(n => n.PublishDate >= fromDate);
+
+        //        if (!string.IsNullOrEmpty(status))
+        //            query = query.Where(n => n.Status == status);
+
+        //        return await query
+        //            .OrderByDescending(n => n.PublishDate)
+        //            .ToListAsync();
+        //    }
+        //}
+
+        //public void UpdateNewsWithTransaction(int newsId, DateTime newDate, string newImagePath)
+        //{
+        //    using (var context = new DanceStudioContext())
+        //    using (var transaction = context.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            var news = context.News.Find(newsId);
+        //            news.PublishDate = newDate;
+        //            news.ImagePath = newImagePath;
+
+        //            context.SaveChanges();
+        //            transaction.Commit();
+        //        }
+        //        catch
+        //        {
+        //            transaction.Rollback();
+        //            throw;
+        //        }
+        //    }
+        //}
+
+
+
+
 
 
 

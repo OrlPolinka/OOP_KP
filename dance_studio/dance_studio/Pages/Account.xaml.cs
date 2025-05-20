@@ -39,51 +39,6 @@ namespace dance_studio.Pages
         }
 
 
-        public void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (LanguageComboBox.SelectedItem is ComboBoxItem item && item.Tag is string lang)
-                {
-                    ((App)Application.Current).ChangeLanguage(lang);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                // Логирование ошибки или вывод в консоль
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
-        }
-
-        private void ApplyTheme(string themePath)
-        {
-            var themeDictionary = new ResourceDictionary
-            {
-                Source = new Uri(themePath, UriKind.RelativeOrAbsolute)
-            };
-
-            // Находим текущую тему
-            var dictionaries = Application.Current.Resources.MergedDictionaries;
-            var existingTheme = dictionaries
-                .FirstOrDefault(d => d.Source != null &&
-                    (d.Source.OriginalString.Contains("LightTheme.xaml") || d.Source.OriginalString.Contains("DarkTheme.xaml")));
-
-            if (existingTheme != null)
-                dictionaries.Remove(existingTheme);
-
-            dictionaries.Add(themeDictionary);
-        }
-
-        private void LightTheme_Click(object sender, RoutedEventArgs e)
-        {
-            ApplyTheme("Resources/LightTheme.xaml");
-        }
-
-        private void DarkTheme_Click(object sender, RoutedEventArgs e)
-        {
-            ApplyTheme("Resources/DarkTheme.xaml");
-        }
 
 
         private void Subscriptions_Loaded(object sender, RoutedEventArgs e)

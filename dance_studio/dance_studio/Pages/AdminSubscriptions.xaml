@@ -16,8 +16,10 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
-
+    <Grid Width="1440" Height="800"  >
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
@@ -121,7 +123,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="{DynamicResource Title}" Grid.Row="0" Margin="0,0,0,5" FontSize="16"/>
@@ -145,13 +146,9 @@
                 <TextBlock Text="{DynamicResource Price}" Grid.Row="12" Margin="0,10,0,5" FontSize="16"/>
                 <TextBox Name="PriceTextBox" Grid.Row="13" Width="450" TextWrapping="Wrap" AcceptsReturn="True" Margin="105,0,105,10"  Height="30" FontSize="16"/>
 
-                <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,39,10,-37" Width="473" Grid.RowSpan="3">
-                    <Button x:Name="UndoButton" Margin="10" Content="{DynamicResource UndoButton}" Click="UndoButton_Click" Height="38" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" />
-                    <Button x:Name="RedoButton" Content="{DynamicResource RedoButton}" Click="RedoButton_Click" Height="38" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" />
+                <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,39,10,-37" Width="473" Grid.RowSpan="3"/>
 
-                </StackPanel>
-
-                <StackPanel Grid.Row="15" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,43,10,-81" Width="213">
+                <StackPanel Grid.Row="14" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,28,105,-66" Width="213" Grid.RowSpan="2">
                     <Button x:Name="SaveButton" Content="{DynamicResource SaveButton}" Width="100" Click="SaveButton_Click" Height="38" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
                     <Button x:Name="CancelButton" Content="{DynamicResource CancelButton}" Width="100" Margin="10,0,0,0"  Height="38" Click="CancelButton_Click" FontSize="16" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1"/>
 

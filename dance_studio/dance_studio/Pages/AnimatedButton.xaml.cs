@@ -26,15 +26,19 @@ namespace dance_studio.Pages
         }
         public void GoToSignUp(object sender, RoutedEventArgs e)
         {
-            var navService = NavigationService.GetNavigationService(this);
-            if (navService != null)
+            if (Seccion.IsClient)
             {
-                navService.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                var navService = NavigationService.GetNavigationService(this);
+                if (navService != null)
+                {
+                    navService.Navigate(new Uri("Pages/SignUp.xaml", UriKind.Relative));
+                }
+                else
+                {
+                    MessageBox.Show("NavigationService не найден");
+                }
             }
-            else
-            {
-                MessageBox.Show("NavigationService не найден");
-            }
+            else { MessageBox.Show("Страница записи только для пользователей"); }
         }
     }
 }

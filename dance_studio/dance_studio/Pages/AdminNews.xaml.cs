@@ -21,21 +21,16 @@ namespace dance_studio.Pages
     /// </summary>
     public partial class AdminNews : Page
     {
-        public static readonly RoutedUICommand SaveCommand = new RoutedUICommand(
-        "Save",
-        "SaveCommand",
-        typeof(AdminNews));
+        
 
 
         private readonly DanceStudioContext _context = new DanceStudioContext();
-        private int? _editingNewsId = null;
         public AdminNews()
         {
             try
             {
                 InitializeComponent();
                 this.Loaded += News_Loaded;// Привязка команды к обработчику
-                CommandBindings.Add(new CommandBinding(SaveCommand, SaveCommand_Executed, SaveCommand_CanExecute));
 
             }
             catch (Exception ex)
@@ -43,20 +38,7 @@ namespace dance_studio.Pages
                 MessageBox.Show(ex.Message);
             }
         }
-        private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            SaveButton_Click(sender, e);  // повторно используем существующий метод сохранения
-        }
-
-        private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            // Логика для активации команды (например, проверка заполненности полей)
-            bool canSave = !string.IsNullOrEmpty(TitleTextBox.Text) &&
-                           !string.IsNullOrEmpty(DescriptionTextBox.Text) &&
-                           PublishDatePicker.SelectedDate.HasValue;
-            e.CanExecute = canSave;
-        }
-
+        
         private async void News_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -168,23 +150,23 @@ namespace dance_studio.Pages
             }
         }
 
-        // Метод для загрузки новостей из базы данных и отображения их в ListBox
-        private async Task LoadNewsListAsync()
-        {
-            try
-            {
-                var newsList = await _context.News
-                     .Include("Localizations")
-                    .OrderByDescending(n => n.PublishDate)
-                    .ToListAsync();
+        //// Метод для загрузки новостей из базы данных и отображения их в ListBox
+        //private async Task LoadNewsListAsync()
+        //{
+        //    try
+        //    {
+        //        var newsList = await _context.News
+        //             .Include("Localizations")
+        //            .OrderByDescending(n => n.PublishDate)
+        //            .ToListAsync();
 
-                NewsListBox.ItemsSource = newsList;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке новостей: {ex.Message}");
-            }
-        }
+        //        NewsListBox.ItemsSource = newsList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Ошибка при загрузке новостей: {ex.Message}");
+        //    }
+        //}
 
         private void LoadNewsList()
         {

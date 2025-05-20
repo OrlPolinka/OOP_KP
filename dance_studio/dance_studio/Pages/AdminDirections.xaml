@@ -16,7 +16,11 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid  Background="{DynamicResource BackgroundBrush}" Width="1440" Height="800">
+    <Grid  Width="1440" Height="800">
+        
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="*"/>
@@ -126,9 +130,9 @@ Click="DeleteButton_Click"/>
 
            
             </Border>
-             <Button  Content="←" Width="50" Margin="10,122,860,36" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
+             <Button  Content="←" Width="50" Margin="10,122,860,60" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
 
-            <Button Content="→" Width="50" Margin="0,122,10,36" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
+            <Button Content="→" Width="50" Margin="0,122,10,60" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
             <TextBlock  HorizontalAlignment="Left" Margin="25,73,0,0" TextWrapping="Wrap" Text="{DynamicResource MenuDirections}" VerticalAlignment="Top" FontSize="24"/>
             
             <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="289,10,0,0" TextWrapping="Wrap" Text="{DynamicResource ChooseStyle}" VerticalAlignment="Top" FontSize="36" Foreground="#FFF30000" Width="431"/>

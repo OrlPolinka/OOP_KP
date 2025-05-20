@@ -32,7 +32,10 @@
         
     </Page.Resources>
 
-    <Grid Width="1440" Height="800" Background="{DynamicResource BackgroundBrush}">
+    <Grid Width="1440" Height="800"  >
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
 
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" FontSize="16" Padding="6,0,6,0" Height="38" Foreground="White" Margin="300,0,0,0" Click="GoToMain"/>
@@ -49,16 +52,8 @@
         </Menu>
         <Frame x:Name="MainFrame" Grid.Row="1"/>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,20,0">
-            <Button Content="{DynamicResource light}" Click="LightTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Style="{StaticResource RoundButtonStyle}" Height="49" Width="137" />
-            <Button Content="{DynamicResource dark}" Click="DarkTheme_Click" Margin="5" Padding="8,4" Background="#FFF75555" BorderBrush="#8B0000" BorderThickness="1" Style="{StaticResource RoundButtonStyle}" Height="49" Width="137"/>
-        </StackPanel>
 
-        <ComboBox x:Name="LanguageComboBox" SelectionChanged="LanguageComboBox_SelectionChanged" Margin="31,58,1259,696" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16">
-            <ComboBoxItem Tag="ru" IsSelected="True" FontSize="16">Русский</ComboBoxItem>
-            <ComboBoxItem Tag="en" FontSize="16">English</ComboBoxItem>
-        </ComboBox>
-
+        
         <StackPanel Margin="294,44,192,0">
             <TextBlock Text="{DynamicResource MenuAccount}" FontWeight="Bold" Margin="0,0,0,5" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
@@ -75,7 +70,14 @@
             <TextBox x:Name="EmailBox" IsReadOnly="False" Margin="0,5,0,0" FontSize="18"/>
 
             <TextBlock Text="{DynamicResource Notifications}" FontSize="18" Margin="0,5,0,0"/>
-            <TextBox x:Name="NotificationsBox" IsReadOnly="True" Margin="0,5,0,0" FontSize="18" Height="53"/>
+            <TextBox x:Name="NotificationsBox" 
+         IsReadOnly="True" 
+         Margin="0,5,0,0" 
+         FontSize="18" 
+         Height="53"
+         VerticalScrollBarVisibility="Auto"
+         HorizontalScrollBarVisibility="Auto"
+         TextWrapping="Wrap"/>
 
             <Grid Height="224">
                 <Grid.ColumnDefinitions>

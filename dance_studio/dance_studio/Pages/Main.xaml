@@ -17,8 +17,11 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Height="800" Width="1440" Panel.ZIndex="5" Background="{DynamicResource BackgroundBrush}">
-
+    <Grid Height="800" Width="1440" Panel.ZIndex="5" >
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
+        
         <custom:AnimatedButton HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,665,0,0"/>
 
 

@@ -16,8 +16,11 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Width="1440" Background="{DynamicResource BackgroundBrush}">
-
+    <Grid Width="1440" >
+        <Grid.Background>
+            <ImageBrush ImageSource="/Pages/главная5.jpg"/>
+        </Grid.Background>
+        
         <Menu Background="#FF110E0E" VerticalAlignment="Top" Grid.Row="0" Height="39">
             <MenuItem Header="{DynamicResource MenuMain}" Padding="6,0,6,0" Height="38"  Margin="300,0,0,0" Click="GoToMain"/>
             <MenuItem Header="{DynamicResource MenuNews}"  Click="GoToNews"  Visibility="{Binding NewsVisibility}"/>
@@ -33,7 +36,7 @@
         </Menu>
         <Frame x:Name="MainFrame" Grid.Row="1"/>
 
-        <Button Content="←" Width="50" Margin="10,144,1380,136" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
+        <Button Content="←" Width="50" Margin="10,111,1380,136" Click="ScrollLeft" Background="{x:Null}" BorderBrush="{x:Null}" Panel.ZIndex="5"/>
 
         <Border Grid.Row="0" Grid.Column="0" BorderBrush="#8B0000" BorderThickness="1" Margin="10,111,10,136">
             <ScrollViewer x:Name="MyScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Margin="0,-30,0,-22">
@@ -61,7 +64,7 @@
 
 
 
-        <Button Content="→" Width="50" Margin="0,144,10,136" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
+        <Button Content="→" Width="50" Margin="0,111,10,136" Click="ScrollRight" BorderBrush="{x:Null}" Background="{x:Null}" Panel.ZIndex="5" HorizontalAlignment="Right"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,57,0,0" TextWrapping="Wrap" Text="{DynamicResource OurTrainers}" VerticalAlignment="Top" FontSize="36"/>
 
         <Button Content="{DynamicResource ViewTimetable}" FontSize="24" Margin="0,686,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="414" Height="72" Foreground="Black" Cursor="Hand" Background="Red" Click="GoToTimetable">

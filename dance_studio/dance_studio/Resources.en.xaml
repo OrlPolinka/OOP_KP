@@ -11,7 +11,7 @@
     <sys:String x:Key="Continue">Continue</sys:String>
 
     <sys:String x:Key="MenuMain">Main</sys:String>
-    <sys:String x:Key="MenuNews">News</sys:String>
+    <sys:String x:Key="MenuNews">Stock</sys:String>
     <sys:String x:Key="MenuDirections">Directions</sys:String>
     <sys:String x:Key="MenuTrainers">Trainers</sys:String>
     <sys:String x:Key="MenuTimetable">Timetable</sys:String>

@@ -83,6 +83,8 @@ namespace dance_studio.Pages
             FIOTextBox.Text = string.Empty;
             DescriptionTextBox.Text = string.Empty;
             ImagePathTextBlock.Text = string.Empty;
+            FIOENTextBox.Text = string.Empty;
+            DescriptionENTextBox.Text = string.Empty;
         }
 
 
@@ -90,9 +92,7 @@ namespace dance_studio.Pages
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             // Очистка всех полей формы
-            FIOTextBox.Clear();
-            DescriptionTextBox.Clear();
-            ImagePathTextBlock.Text = string.Empty;
+            ClearForm();
         }
 
         // Обработчик кнопки "Загрузить изображение"
@@ -150,31 +150,6 @@ namespace dance_studio.Pages
             TrainersItemsControl.ItemsSource = trainers;
         }
 
-        //private void AnimateScroll(double toValue)
-        //{
-        //    DoubleAnimation animation = new DoubleAnimation
-        //    {
-        //        To = toValue,
-        //        Duration = TimeSpan.FromMilliseconds(500),
-        //        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-        //    };
-
-        //    AnimationClock clock = animation.CreateClock();
-        //    MyScroll.ApplyAnimationClock(ScrollViewerHorizontalOffsetProperty, clock);
-        //}
-
-        //// Вспомогательное свойство для прокрутки
-        //public static readonly DependencyProperty ScrollViewerHorizontalOffsetProperty =
-        //    DependencyProperty.RegisterAttached("ScrollViewerHorizontalOffset", typeof(double), typeof(MainWindow),
-        //        new PropertyMetadata(0.0, OnHorizontalOffsetChanged));
-
-        //private static void OnHorizontalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is ScrollViewer scrollViewer)
-        //    {
-        //        scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
-        //    }
-        //}
 
         public static ScrollViewer My_Scroll { get; set; } // Статическое свойство
 
