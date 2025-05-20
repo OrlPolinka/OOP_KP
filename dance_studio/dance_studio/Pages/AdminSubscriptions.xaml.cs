@@ -20,118 +20,9 @@ namespace dance_studio.Pages
     /// </summary>
     /// 
 
-    // Интерфейс команды для Undo/Redo
-    public interface ICommandAction
-    {
-        void Execute();
-        void Undo();
-    }
-
-
-    // Команда добавления абонемента (добавляет в БД при Execute, удаляет при Undo)
-    public class AddSubscriptionCommand : ICommandAction
-    {
-        private Abonements _abonement;
-
-        public AddSubscriptionCommand(Abonements abonement)
-        {
-            _abonement = abonement;
-        }
-
-        public void Execute()
-        {
-            // Добавляем в БД
-            DatabaseHelper.AddAbonement(
-                _abonement.Title,
-                _abonement.Description,
-                _abonement.Price.ToString(),
-                _abonement.Style,
-                _abonement.TitleEn,
-                _abonement.DescriptionEn,
-                _abonement.StyleEn
-            );
-        }
-
-        public void Undo()
-        {
-            // Удаляем из БД
-            DatabaseHelper.DeleteAbonementByTitle(_abonement.Title);
-        }
-    }
-
-    // Команда удаления абонемента (удаляет в Execute, добавляет назад при Undo)
-    public class RemoveSubscriptionCommand : ICommandAction
-    {
-        private Abonements _abonement;
-
-        public RemoveSubscriptionCommand(Abonements abonement)
-        {
-            _abonement = abonement;
-        }
-
-        public void Execute()
-        {
-            // Удаляем из БД
-            DatabaseHelper.DeleteAbonementByTitle(_abonement.Title);
-        }
-
-        public void Undo()
-        {
-            // Добавляем обратно в БД
-            DatabaseHelper.AddAbonement(
-                _abonement.Title,
-                _abonement.Description,
-                _abonement.Price.ToString(),
-                _abonement.Style,
-                _abonement.TitleEn,
-                _abonement.DescriptionEn,
-                _abonement.StyleEn
-            );
-        }
-    }
-
-    // Менеджер Undo/Redo с двумя стеками
-    public class UndoRedoManager
-    {
-        private Stack<ICommandAction> _undoStack = new Stack<ICommandAction>();
-        private Stack<ICommandAction> _redoStack = new Stack<ICommandAction>();
-
-
-        public void ExecuteCommand(ICommandAction command)
-        {
-            command.Execute();
-            _undoStack.Push(command);
-            _redoStack.Clear();
-        }
-
-        public void Undo()
-        {
-            if (_undoStack.Any())
-            {
-                var command = _undoStack.Pop();
-                command.Undo();
-                _redoStack.Push(command);
-            }
-        }
-
-        public void Redo()
-        {
-            if (_redoStack.Any())
-            {
-                var command = _redoStack.Pop();
-                command.Execute();
-                _undoStack.Push(command);
-            }
-        }
-
-        public bool CanUndo => _undoStack.Any();
-        public bool CanRedo => _redoStack.Any();
-    }
-
-
     public partial class AdminSubscriptions : Page
     {
-        private UndoRedoManager _undoRedoManager = new UndoRedoManager();
+        
         public AdminSubscriptions()
         {
             try
@@ -173,28 +64,17 @@ namespace dance_studio.Pages
                 var result = MessageBox.Show($"Удалить абонемент '{abonement.Title}'?", "Подтверждение", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    try
+                
+                    bool deleted = DatabaseHelper.DeleteAbonementByTitle(abonement.Title);
+                    if (deleted)
                     {
-                        var command = new RemoveSubscriptionCommand(abonement);
-                        _undoRedoManager.ExecuteCommand(command);
-
                         MessageBox.Show("Абонемент удалён.");
                         LoadSubscriptionCards();
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show("Ошибка удаления: " + ex.Message);
+                        MessageBox.Show("Ошибка при удалении.");
                     }
-                    //bool deleted = DatabaseHelper.DeleteAbonementByTitle(abonement.Title);
-                    //if (deleted)
-                    //{
-                    //    MessageBox.Show("Абонемент удалён.");
-                    //    LoadSubscriptionCards();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Ошибка при удалении.");
-                    //}
                 }
             }
         }
@@ -238,92 +118,49 @@ namespace dance_studio.Pages
                 return;
             }
 
-            if (!decimal.TryParse(price, out decimal priceValue) || priceValue <= 0)
+            if (AdminDirections.IsEnglishTextStrict(titleEn) && AdminDirections.IsEnglishTextStrict(descriptionEn) && AdminDirections.IsEnglishTextStrict(styleEn))
             {
-                MessageBox.Show("Введите корректную цену (только цифры, больше нуля)");
-                return;
+
+                if (!decimal.TryParse(price, out decimal priceValue) || priceValue <= 0)
+                {
+                    MessageBox.Show("Введите корректную цену (только цифры, больше нуля)");
+                    return;
+                }
+
+                var abonement = new Abonements
+                {
+                    Title = title,
+                    Description = description,
+                    Price = priceValue.ToString(),
+                    Style = style,
+                    TitleEn = titleEn,
+                    DescriptionEn = descriptionEn,
+                    StyleEn = styleEn
+                };
+
+
+
+                // Сохранение новости в базу данных
+                bool isSuccess = DatabaseHelper.AddAbonement(title, description, price, style, titleEn, descriptionEn, styleEn);
+
+                if (isSuccess)
+                {
+                    MessageBox.Show("Абонемент успешно сохранен!");
+                    LoadSubscriptionCards(); // Перезагружаем список новостей
+                    ClearForm();
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при сохранении новости.");
+                }
             }
+            else MessageBox.Show("Строки предназначенные для английской версии данных не могут содержать русские символы.");
 
-            var abonement = new Abonements
-            {
-                Title = title,
-                Description = description,
-                Price = priceValue.ToString(),
-                Style = style,
-                TitleEn = titleEn,
-                DescriptionEn = descriptionEn,
-                StyleEn = styleEn
-            };
-
-            try
-            {
-                var command = new AddSubscriptionCommand(abonement);
-                _undoRedoManager.ExecuteCommand(command);
-
-                MessageBox.Show("Абонемент успешно сохранён.");
-                LoadSubscriptionCards();
-                ClearForm();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка сохранения: " + ex.Message);
-            }
-
-
-            //// Сохранение новости в базу данных
-            //bool isSuccess = DatabaseHelper.AddAbonement(title, description, price, style, titleEn, descriptionEn, styleEn);
-
-            //if (isSuccess)
-            //{
-            //    MessageBox.Show("Абонемент успешно сохранен!");
-            //    LoadSubscriptionCards(); // Перезагружаем список новостей
-            //    ClearForm();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Произошла ошибка при сохранении новости.");
-            //}
         }
 
-        private void UndoButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_undoRedoManager.CanUndo)
-            {
-                try
-                {
-                    _undoRedoManager.Undo();
-                    LoadSubscriptionCards();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка Undo: " + ex.Message);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Нечего отменять.");
-            }
-        }
 
-        private void RedoButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_undoRedoManager.CanRedo)
-            {
-                try
-                {
-                    _undoRedoManager.Redo();
-                    LoadSubscriptionCards();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка Redo: " + ex.Message);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Нечего повторять.");
-            }
-        }
+
+
 
 
         private void GoToMain(object sender, RoutedEventArgs e)

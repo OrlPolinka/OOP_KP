@@ -62,20 +62,24 @@ namespace dance_studio.Pages
                 MessageBox.Show("Пожалуйста, заполните все обязательные поля.");
                 return;
             }
+            if (AdminDirections.IsEnglishTextStrict(fioEn) && AdminDirections.IsEnglishTextStrict(descriptionEn)) {
 
-            // Сохранение новости в базу данных
-            bool isSuccess = DatabaseHelper.AddTrainersToDB(fio, description, imagePath, fioEn, descriptionEn);
+                // Сохранение новости в базу данных
+                bool isSuccess = DatabaseHelper.AddTrainersToDB(fio, description, imagePath, fioEn, descriptionEn);
 
-            if (isSuccess)
-            {
-                MessageBox.Show("Тренер успешно добавлен!");
-                LoadTrainers(); // Перезагружаем список новостей
-                ClearForm();
+                if (isSuccess)
+                {
+                    MessageBox.Show("Тренер успешно добавлен!");
+                    LoadTrainers(); // Перезагружаем список новостей
+                    ClearForm();
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при сохранении тренера.");
+                }
             }
-            else
-            {
-                MessageBox.Show("Произошла ошибка при сохранении тренера.");
-            }
+            else MessageBox.Show("Строки предназначенные для английской версии данных не могут содержать русские символы.");
+
         }
 
         private void ClearForm()

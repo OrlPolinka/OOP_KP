@@ -13,6 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace dance_studio.Pages
 {
@@ -21,7 +22,6 @@ namespace dance_studio.Pages
     /// </summary>
     public partial class AdminDirections : Page
     {
-        private UndoRedoManager _undoRedoManager = new UndoRedoManager();
         public AdminDirections()
         {
             try
@@ -36,6 +36,24 @@ namespace dance_studio.Pages
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+        public static bool IsEnglishTextStrict(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return false;
+
+            // Проверяем, что в строке нет кириллицы и других неанглийских символов
+            foreach (char c in input)
+            {
+                if (c >= 'А' && c <= 'я') // Русские буквы (включая Ёё)
+                    return false;
+            }
+
+            return true;
+        }
+
+
 
         private void Styles_Loaded(object sender, RoutedEventArgs e)
         {
@@ -61,20 +79,24 @@ namespace dance_studio.Pages
                 MessageBox.Show("Пожалуйста, заполните все обязательные поля.");
                 return;
             }
-
-            // Сохранение новости в базу данных
-            bool isSuccess = DatabaseHelper.AddStyle(style, description, styleEn, descriptionEn);
-
-            if (isSuccess)
+            if (IsEnglishTextStrict(styleEn) && IsEnglishTextStrict(descriptionEn))
             {
-                MessageBox.Show("Стиль успешно добавлен!");
-                LoadStyles(); // Перезагружаем список новостей
-                ClearForm();
+
+                // Сохранение новости в базу данных
+                bool isSuccess = DatabaseHelper.AddStyle(style, description, styleEn, descriptionEn);
+
+                if (isSuccess)
+                {
+                    MessageBox.Show("Стиль успешно добавлен!");
+                    LoadStyles(); // Перезагружаем список новостей
+                    ClearForm();
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при сохранении стиля.");
+                }
             }
-            else
-            {
-                MessageBox.Show("Произошла ошибка при сохранении стиля.");
-            }
+            else MessageBox.Show("Строки предназначенные для английской версии данных не могут содержать русские символы.");
         }
 
         private void ClearForm()
