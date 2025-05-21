@@ -38,7 +38,7 @@ namespace dance_studio.Pages
             }
         }
         
-        private async void News_Loaded(object sender, RoutedEventArgs e)
+        private void News_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -50,13 +50,13 @@ namespace dance_studio.Pages
             }
         }
 
-        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string titleRu = TitleTextBox.Text.Trim();
             string titleEn = TitleTextBoxEn.Text.Trim();
             string descRu = DescriptionTextBox.Text.Trim();
             string descEn = DescriptionTextBoxEn.Text.Trim();
-            DateTime? publishDate = PublishDatePicker.SelectedDate.Value;
+            DateTime? publishDate = PublishDatePicker.SelectedDate;
             string imagePath = ImagePathTextBlock.Text;
 
             if (string.IsNullOrEmpty(titleRu) || string.IsNullOrEmpty(descRu) || !publishDate.HasValue || string.IsNullOrEmpty(titleEn) || string.IsNullOrEmpty(descEn))
@@ -119,7 +119,7 @@ namespace dance_studio.Pages
             NewsListBox.ItemsSource = newsList;
         }
 
-        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             
 

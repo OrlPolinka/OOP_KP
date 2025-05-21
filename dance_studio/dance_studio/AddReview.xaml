@@ -16,7 +16,10 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Background="{DynamicResource BackgroundBrush}">
+    <Grid >
+        <Grid.Background>
+            <ImageBrush ImageSource="/главная5.jpg"/>
+        </Grid.Background>
         <StackPanel Margin="10">
             <TextBlock Text="{DynamicResource Grade}" Margin="0,0,0,5"/>
             <ComboBox x:Name="RatingComboBox" SelectedIndex="4">
