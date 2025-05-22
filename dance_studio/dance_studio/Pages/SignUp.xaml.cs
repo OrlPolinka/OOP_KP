@@ -31,6 +31,9 @@ namespace dance_studio.Pages
                 InitializeComponent();
                 AbonementComboBox.SelectionChanged += AbonementComboBox_SelectionChanged;
                 this.Loaded += Data_Loaded;
+                // Добавляем обработчики для фильтрации
+                DayOfWeekComboBox.SelectionChanged += DayOfWeekComboBox_SelectionChanged;
+                TimeComboBox.SelectionChanged += TimeComboBox_SelectionChanged;
             }
             catch (Exception ex)
             {
@@ -38,12 +41,6 @@ namespace dance_studio.Pages
             }
         }
 
-
-        private void PhoneBox1_PhoneValidated(object sender, RoutedEventArgs e)
-        {
-            string phone = PhoneBox1.PhoneTextBox.Text;
-            MessageBox.Show($"Номер телефона валиден: {phone}");
-        }
 
         private void Data_Loaded(object sender, RoutedEventArgs e)
         {
@@ -97,36 +94,13 @@ namespace dance_studio.Pages
                     AbonementComboBox.SelectedIndex = 0;
 
 
-                    // Загрузка уникальных времён
-                    SqlDataAdapter timeAdapter = new SqlDataAdapter("SELECT DISTINCT TIME FROM TIMETABLE", conn);
-                    DataTable timeTable = new DataTable();
-                    timeAdapter.Fill(timeTable);
-                    TimeComboBox.ItemsSource = timeTable.DefaultView;
-
-                    
-                    SqlDataAdapter dayOfWeekAdapter = new SqlDataAdapter("SELECT DISTINCT DAY_OF_WEEK FROM TIMETABLE", conn);
+                    // Загрузка дней недели (уникальных)
+                    SqlDataAdapter dayOfWeekAdapter = new SqlDataAdapter(
+                        "SELECT DISTINCT DAY_OF_WEEK FROM TIMETABLE", conn);
                     DataTable dayOfWeekTable = new DataTable();
                     dayOfWeekAdapter.Fill(dayOfWeekTable);
-                    DayOfWeekComboBox.DisplayMemberPath = "DAY_OF_WEEK";
                     DayOfWeekComboBox.ItemsSource = dayOfWeekTable.DefaultView;
-
-                    // Загрузка уникальных стилей из связанной таблицы
-                    SqlDataAdapter styleAdapter = new SqlDataAdapter(@"
-    SELECT DISTINCT S.STYLE_TITLE 
-    FROM TIMETABLE T
-    JOIN STYLES S ON T.STYLE_ID = S.STYLE_ID", conn);
-                    DataTable styleTable = new DataTable();
-                    styleAdapter.Fill(styleTable);
-                    StyleComboBox.ItemsSource = styleTable.DefaultView;
-
-                    // Загрузка уникальных тренеров из связанной таблицы
-                    SqlDataAdapter trainerAdapter = new SqlDataAdapter(@"
-    SELECT DISTINCT T.FIO 
-    FROM TRAINERS T
-    JOIN TIMETABLE TR ON T.TRAINERS_ID = TR.TRAINER_ID", conn);
-                    DataTable trainerTable = new DataTable();
-                    trainerAdapter.Fill(trainerTable);
-                    TrainerComboBox.ItemsSource = trainerTable.DefaultView;
+                    DayOfWeekComboBox.DisplayMemberPath = "DAY_OF_WEEK";
 
 
                 }
@@ -136,6 +110,128 @@ namespace dance_studio.Pages
                 MessageBox.Show(ex.ToString());
             }
         }
+
+
+        private void DayOfWeekComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DayOfWeekComboBox.SelectedItem == null) return;
+
+            string selectedDay = (DayOfWeekComboBox.SelectedItem as DataRowView)?["DAY_OF_WEEK"].ToString();
+            if (string.IsNullOrEmpty(selectedDay)) return;
+
+            FilterTimeComboBox(selectedDay);
+        }
+
+        private void FilterTimeComboBox(string dayOfWeek)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Загружаем время только для выбранного дня
+                    SqlDataAdapter timeAdapter = new SqlDataAdapter(
+                        "SELECT DISTINCT TIME FROM TIMETABLE WHERE DAY_OF_WEEK = @DayOfWeek", conn);
+                    timeAdapter.SelectCommand.Parameters.AddWithValue("@DayOfWeek", dayOfWeek);
+
+                    DataTable timeTable = new DataTable();
+                    timeAdapter.Fill(timeTable);
+                    // Проверяем, есть ли данные
+                    if (timeTable.Rows.Count > 0)
+                    {
+                        TimeComboBox.ItemsSource = timeTable.DefaultView;
+                        TimeComboBox.DisplayMemberPath = "TIME";
+                        TimeComboBox.SelectedIndex = 0; // Автоматически выбираем первый элемент
+                    }
+                    else
+                    {
+                        TimeComboBox.ItemsSource = null; // Очищаем, если данных нет
+                        MessageBox.Show("Нет доступного времени для выбранного дня.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void TimeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TimeComboBox.SelectedItem == null || DayOfWeekComboBox.SelectedItem == null) return;
+
+            string selectedDay = (DayOfWeekComboBox.SelectedItem as DataRowView)?["DAY_OF_WEEK"].ToString();
+            string selectedTime = (TimeComboBox.SelectedItem as DataRowView)?["TIME"].ToString();
+
+            if (string.IsNullOrEmpty(selectedDay) || string.IsNullOrEmpty(selectedTime)) return;
+
+            FilterTrainerAndStyleComboBoxes(selectedDay, selectedTime);
+        }
+
+        private void FilterTrainerAndStyleComboBoxes(string dayOfWeek, string time)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Загружаем тренеров для выбранного дня и времени
+                    SqlDataAdapter trainerAdapter = new SqlDataAdapter(@"
+                SELECT DISTINCT T.FIO 
+                FROM TRAINERS T
+                JOIN TIMETABLE TR ON T.TRAINERS_ID = TR.TRAINER_ID
+                WHERE TR.DAY_OF_WEEK = @DayOfWeek AND TR.TIME = @Time", conn);
+                    trainerAdapter.SelectCommand.Parameters.AddWithValue("@DayOfWeek", dayOfWeek);
+                    trainerAdapter.SelectCommand.Parameters.AddWithValue("@Time", time);
+
+                    DataTable trainerTable = new DataTable();
+                    trainerAdapter.Fill(trainerTable);
+                    // Проверяем, есть ли тренеры
+                    if (trainerTable.Rows.Count > 0)
+                    {
+                        TrainerComboBox.ItemsSource = trainerTable.DefaultView;
+                        TrainerComboBox.DisplayMemberPath = "FIO";
+                        TrainerComboBox.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        TrainerComboBox.ItemsSource = null;
+                        MessageBox.Show("Нет доступных тренеров для выбранного времени.");
+                    }
+
+                    // Загружаем стили для выбранного дня и времени
+                    SqlDataAdapter styleAdapter = new SqlDataAdapter(@"
+                SELECT DISTINCT S.STYLE_TITLE 
+                FROM STYLES S
+                JOIN TIMETABLE T ON S.STYLE_ID = T.STYLE_ID
+                WHERE T.DAY_OF_WEEK = @DayOfWeek AND T.TIME = @Time", conn);
+                    styleAdapter.SelectCommand.Parameters.AddWithValue("@DayOfWeek", dayOfWeek);
+                    styleAdapter.SelectCommand.Parameters.AddWithValue("@Time", time);
+
+                    DataTable styleTable = new DataTable();
+                    styleAdapter.Fill(styleTable);
+                    // Проверяем, есть ли стили
+                    if (styleTable.Rows.Count > 0)
+                    {
+                        StyleComboBox.ItemsSource = styleTable.DefaultView;
+                        StyleComboBox.DisplayMemberPath = "STYLE_TITLE";
+                        StyleComboBox.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        StyleComboBox.ItemsSource = null;
+                        MessageBox.Show("Нет доступных стилей для выбранного времени.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
 
 
         public void BuyAbonement_Click(object sender, RoutedEventArgs e)

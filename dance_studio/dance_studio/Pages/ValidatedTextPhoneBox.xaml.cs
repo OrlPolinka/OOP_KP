@@ -147,7 +147,7 @@ namespace dance_studio.Pages
 
             if (!ValidatePhone(Text))
             {
-                MessageBox.Show("Неверный формат номера телефона. Ожидается: +375 (29) 123-45-67 или +375 (33) 123-45-67",
+                MessageBox.Show("Неверный формат номера телефона. Ожидается: +375 (29) ***-**-** или +375 (33) ***-**-**",
                     "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }

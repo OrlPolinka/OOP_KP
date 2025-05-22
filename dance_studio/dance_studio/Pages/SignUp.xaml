@@ -172,8 +172,8 @@
 FontSize="16"
 IsReadOnly="True"/>
 
-                    <TextBlock Text="{DynamicResource Time}" FontSize="16"/>
-                    <ComboBox x:Name="TimeComboBox" DisplayMemberPath="TIME" FontSize="16">
+                    <TextBlock Text="{DynamicResource DayOfTheWeek}" FontSize="16"/>
+                    <ComboBox x:Name="DayOfWeekComboBox" DisplayMemberPath="TIME" FontSize="16">
                         <ComboBox.Style>
                             <Style TargetType="ComboBox">
                                 <Style.Triggers>
@@ -186,8 +186,8 @@ IsReadOnly="True"/>
                         </ComboBox.Style>
                     </ComboBox>
 
-                    <TextBlock Text="{DynamicResource DayOfTheWeek}" FontSize="16"/>
-                    <ComboBox x:Name="DayOfWeekComboBox" DisplayMemberPath="TIME" FontSize="16">
+                    <TextBlock Text="{DynamicResource Time}" FontSize="16"/>
+                    <ComboBox x:Name="TimeComboBox" DisplayMemberPath="TIME" FontSize="16">
                         <ComboBox.Style>
                             <Style TargetType="ComboBox">
                                 <Style.Triggers>
@@ -229,7 +229,7 @@ IsReadOnly="True"/>
                     </ComboBox>
 
                     <TextBlock Text="{DynamicResource Phone}" FontSize="16"/>
-                    <local:ValidatedTextPhoneBox x:Name="PhoneBox2" Margin="0,0,0,0" Text="+375 (29) 123-45-67" />
+                    <local:ValidatedTextPhoneBox x:Name="PhoneBox2" Margin="0,0,0,0" />
 
 
                     <TextBlock Text="Instagram:" FontSize="16"/>
