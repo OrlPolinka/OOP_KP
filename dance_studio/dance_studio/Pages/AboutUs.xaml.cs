@@ -391,8 +391,9 @@ namespace dance_studio.Pages
 
 
                     // Добавляем кнопки (если это отзыв текущего пользователя)
-                    if (review.EditButtonsVisibility == Visibility.Visible)
+                    if (review.EditButtonsVisibility == Visibility.Visible || !Seccion.IsClient)
                     {
+                        
                         var buttonsPanel = new StackPanel
                         {
                             Orientation = Orientation.Horizontal,
@@ -401,17 +402,22 @@ namespace dance_studio.Pages
                             
                         };
 
-                        var editButton = new Button
+                        // Кнопка "Изменить" показываем только автору отзыва
+                        if (review.EditButtonsVisibility == Visibility.Visible)
                         {
-                            Content = "Изменить",
-                            Margin = new Thickness(0, 0, 10, 0),
-                            Padding = new Thickness(5),
-                            DataContext = review,
-                            Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF75555")),
-                            BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B0000")),
-                            BorderThickness = new Thickness(1)
-                        };
-                        editButton.Click += EditReview_Click;
+                            var editButton = new Button
+                            {
+                                Content = "Изменить",
+                                Margin = new Thickness(0, 0, 10, 0),
+                                Padding = new Thickness(5),
+                                DataContext = review,
+                                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF75555")),
+                                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8B0000")),
+                                BorderThickness = new Thickness(1)
+                            };
+                            editButton.Click += EditReview_Click;
+                            buttonsPanel.Children.Add(editButton);
+                        }
 
                         var deleteButton = new Button
                         {
@@ -424,7 +430,6 @@ namespace dance_studio.Pages
                         };
                         deleteButton.Click += DeleteReview_Click;
 
-                        buttonsPanel.Children.Add(editButton);
                         buttonsPanel.Children.Add(deleteButton);
 
                         stackPanel.Children.Add(buttonsPanel);
