@@ -119,9 +119,9 @@ namespace dance_studio.Pages
             string email = EmailBox.Text.Trim();
 
 
-            if (string.IsNullOrEmpty(newUsername))
+            if (string.IsNullOrEmpty(newUsername) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Имя пользователя не может быть пустым!");
+                MessageBox.Show("Имя пользователя и пароль не может быть пустым!");
                 return;
             }
 

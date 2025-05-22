@@ -143,12 +143,18 @@ namespace dance_studio.Pages
         private void PhoneTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             // При потере фокуса вызываем коррекцию и присваиваем Text (вызывает OnTextChanged и обновляет IsValid)
-            Text = CoerceText(this, PhoneTextBox.Text) as string ?? PhoneTextBox.Text;
-
+            //string Text = CoerceText(this, PhoneTextBox.Text) as string ?? PhoneTextBox.Text;
+            string correctedText = CoerceText(this, PhoneTextBox.Text) as string;
             if (!ValidatePhone(Text))
             {
                 MessageBox.Show("Неверный формат номера телефона. Ожидается: +375 (29) ***-**-** или +375 (33) ***-**-**",
                     "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Text = string.Empty;
+                PhoneTextBox.Text = string.Empty;
+            }
+            else
+            {
+                Text = correctedText;
             }
         }
 

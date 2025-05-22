@@ -59,12 +59,13 @@
 
             <TextBlock Text="{DynamicResource Username}" FontSize="18" Margin="0,5,0,0"/>
             <TextBox x:Name="UsernameBox" IsReadOnly="False" Margin="0,5,0,0" FontSize="18"/>
+            
 
             <TextBlock Text="{DynamicResource Password}" FontSize="18" Margin="0,5,0,0"/>
             <TextBox x:Name="PasswordBox" IsReadOnly="False" Margin="0,5,0,0" FontSize="18"/>
 
             <TextBlock Text="{DynamicResource Phone}" FontSize="18" Margin="0,5,0,0"/>
-            <TextBox x:Name="PhoneBox" IsReadOnly="False" Margin="0,5,0,0" FontSize="18"/>
+            <local:ValidatedTextPhoneBox x:Name="PhoneBox" Margin="0,5,0,0" FontSize="18"/>
 
             <TextBlock Text="Instagram:" FontSize="18" Margin="0,5,0,0"/>
             <TextBox x:Name="EmailBox" IsReadOnly="False" Margin="0,5,0,0" FontSize="18"/>
